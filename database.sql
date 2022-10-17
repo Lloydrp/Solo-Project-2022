@@ -30,7 +30,7 @@ CREATE TABLE "user_account" (
 	"user_id" bigint NOT NULL,
 	"organization_id" bigint NOT NULL,
 	"is_admin" BOOLEAN NOT NULL DEFAULT 'false',
-	"title_id" bigint NOT NULL,
+	"title_id" bigint,
 	CONSTRAINT "user_account_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE
@@ -114,7 +114,7 @@ CREATE TABLE "events_participants" (
 	"id" serial NOT NULL,
 	"event_id" bigint NOT NULL,
 	"user_account_id" bigint NOT NULL,
-	"event_duty" varchar(80) NOT NULL,
+	"event_duty" varchar(80),
 	CONSTRAINT "events_participants_pk" PRIMARY KEY ("id")
 ) WITH (
   OIDS=FALSE

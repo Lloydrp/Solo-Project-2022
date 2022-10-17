@@ -8,3 +8,150 @@ CREATE TABLE "user" (
     "username" VARCHAR (80) UNIQUE NOT NULL,
     "password" VARCHAR (1000) NOT NULL
 );
+
+-- Above is provided by EDA | Below is generated from DBDesigner
+
+CREATE TABLE "public.user" (
+	"id" serial NOT NULL,
+	"username" varchar(80) NOT NULL UNIQUE,
+	"password" varchar(1000) NOT NULL,
+	"first_name" varchar(80) NOT NULL,
+	"last_name" varchar(80) NOT NULL,
+	"email" varchar(80) NOT NULL,
+	CONSTRAINT "user_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.user_account" (
+	"id" serial NOT NULL,
+	"user_id" bigint NOT NULL,
+	"organization_id" bigint NOT NULL,
+	"is_admin" BOOLEAN NOT NULL DEFAULT 'false',
+	"title_id" bigint NOT NULL,
+	CONSTRAINT "user_account_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.organizations_types" (
+	"id" serial NOT NULL,
+	"name" TEXT NOT NULL UNIQUE,
+	CONSTRAINT "organizations_types_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.organizations" (
+	"id" serial NOT NULL,
+	"name" TEXT NOT NULL UNIQUE,
+	"type_id" int NOT NULL,
+	CONSTRAINT "organizations_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.resources" (
+	"id" serial NOT NULL,
+	"file_name" TEXT NOT NULL,
+	"date_created" DATE NOT NULL DEFAULT 'GETDATE()',
+	"file_type" integer(10) NOT NULL,
+	"created_by_id" bigint NOT NULL,
+	"organization_id" bigint NOT NULL,
+	CONSTRAINT "resources_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.events" (
+	"id" serial NOT NULL,
+	"event_name" varchar(255) NOT NULL,
+	"date_created" DATE NOT NULL DEFAULT 'GETDATE()',
+	"start_event" DATE NOT NULL,
+	"organization_id" bigint NOT NULL,
+	CONSTRAINT "events_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.titles" (
+	"id" serial NOT NULL,
+	"title_name" varchar(80) NOT NULL,
+	"organization_id" bigint NOT NULL,
+	CONSTRAINT "titles_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.messages" (
+	"id" serial NOT NULL,
+	"message" varchar(1000) NOT NULL,
+	"date_sent" DATE NOT NULL DEFAULT 'GETDATE()',
+	"user_sent_id" bigint NOT NULL,
+	"organization_id" bigint NOT NULL,
+	CONSTRAINT "messages_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.events_participants" (
+	"id" serial NOT NULL,
+	"event_id" bigint NOT NULL,
+	"user_account_id" bigint NOT NULL,
+	"event_duty" varchar(80) NOT NULL,
+	CONSTRAINT "events_participants_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+CREATE TABLE "public.blackout_dates" (
+	"id" serial NOT NULL,
+	"user_account_id" bigint NOT NULL,
+	"unavailable_date" DATE NOT NULL,
+	CONSTRAINT "blackout_dates_pk" PRIMARY KEY ("id")
+) WITH (
+  OIDS=FALSE
+);
+
+
+
+
+ALTER TABLE "user_account" ADD CONSTRAINT "user_account_fk0" FOREIGN KEY ("user_id") REFERENCES "user"("id");
+ALTER TABLE "user_account" ADD CONSTRAINT "user_account_fk1" FOREIGN KEY ("organization_id") REFERENCES "organizations"("id");
+ALTER TABLE "user_account" ADD CONSTRAINT "user_account_fk2" FOREIGN KEY ("title_id") REFERENCES "titles"("id");
+
+
+ALTER TABLE "organizations" ADD CONSTRAINT "organizations_fk0" FOREIGN KEY ("type_id") REFERENCES "organizations_types"("id");
+
+ALTER TABLE "resources" ADD CONSTRAINT "resources_fk0" FOREIGN KEY ("created_by_id") REFERENCES "user_account"("id");
+ALTER TABLE "resources" ADD CONSTRAINT "resources_fk1" FOREIGN KEY ("organization_id") REFERENCES "organizations"("id");
+
+ALTER TABLE "events" ADD CONSTRAINT "events_fk0" FOREIGN KEY ("organization_id") REFERENCES "organizations"("id");
+
+ALTER TABLE "titles" ADD CONSTRAINT "titles_fk0" FOREIGN KEY ("organization_id") REFERENCES "organizations"("id");
+
+ALTER TABLE "messages" ADD CONSTRAINT "messages_fk0" FOREIGN KEY ("user_sent_id") REFERENCES "user_account"("id");
+ALTER TABLE "messages" ADD CONSTRAINT "messages_fk1" FOREIGN KEY ("organization_id") REFERENCES "organizations"("id");
+
+ALTER TABLE "events_participants" ADD CONSTRAINT "events_participants_fk0" FOREIGN KEY ("event_id") REFERENCES "events"("id");
+ALTER TABLE "events_participants" ADD CONSTRAINT "events_participants_fk1" FOREIGN KEY ("user_account_id") REFERENCES "user_account"("id");
+
+ALTER TABLE "blackout_dates" ADD CONSTRAINT "blackout_dates_fk0" FOREIGN KEY ("user_account_id") REFERENCES "user_account"("id");

@@ -12,7 +12,6 @@ function LandingPage() {
     <main className="landing-page">
       <h1>Organization Station</h1>
       <button onClick={getStartHandler}>Get Started</button>
-      <br />
       <a href="/#/login">Already a user? Login</a>
     </main>
   );

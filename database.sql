@@ -11,7 +11,7 @@ CREATE TABLE "user" (
 
 -- Above is provided by EDA | Below is generated from DBDesigner
 
-CREATE TABLE "public.user" (
+CREATE TABLE "user" (
 	"id" serial NOT NULL,
 	"username" varchar(80) NOT NULL UNIQUE,
 	"password" varchar(1000) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE "public.user" (
 
 
 
-CREATE TABLE "public.user_account" (
+CREATE TABLE "user_account" (
 	"id" serial NOT NULL,
 	"user_id" bigint NOT NULL,
 	"organization_id" bigint NOT NULL,
@@ -38,7 +38,7 @@ CREATE TABLE "public.user_account" (
 
 
 
-CREATE TABLE "public.organizations_types" (
+CREATE TABLE "organizations_types" (
 	"id" serial NOT NULL,
 	"name" TEXT NOT NULL UNIQUE,
 	CONSTRAINT "organizations_types_pk" PRIMARY KEY ("id")
@@ -48,7 +48,7 @@ CREATE TABLE "public.organizations_types" (
 
 
 
-CREATE TABLE "public.organizations" (
+CREATE TABLE "organizations" (
 	"id" serial NOT NULL,
 	"name" TEXT NOT NULL UNIQUE,
 	"type_id" int NOT NULL,
@@ -59,11 +59,11 @@ CREATE TABLE "public.organizations" (
 
 
 
-CREATE TABLE "public.resources" (
+CREATE TABLE "resources" (
 	"id" serial NOT NULL,
 	"file_name" TEXT NOT NULL,
-	"date_created" DATE NOT NULL DEFAULT 'GETDATE()',
-	"file_type" integer(10) NOT NULL,
+	"date_created" DATE NOT NULL DEFAULT NOW(),
+	"file_type" integer NOT NULL,
 	"created_by_id" bigint NOT NULL,
 	"organization_id" bigint NOT NULL,
 	CONSTRAINT "resources_pk" PRIMARY KEY ("id")
@@ -73,10 +73,10 @@ CREATE TABLE "public.resources" (
 
 
 
-CREATE TABLE "public.events" (
+CREATE TABLE "events" (
 	"id" serial NOT NULL,
 	"event_name" varchar(255) NOT NULL,
-	"date_created" DATE NOT NULL DEFAULT 'GETDATE()',
+	"date_created" DATE NOT NULL DEFAULT NOW(),
 	"start_event" DATE NOT NULL,
 	"organization_id" bigint NOT NULL,
 	CONSTRAINT "events_pk" PRIMARY KEY ("id")
@@ -86,7 +86,7 @@ CREATE TABLE "public.events" (
 
 
 
-CREATE TABLE "public.titles" (
+CREATE TABLE "titles" (
 	"id" serial NOT NULL,
 	"title_name" varchar(80) NOT NULL,
 	"organization_id" bigint NOT NULL,
@@ -97,10 +97,10 @@ CREATE TABLE "public.titles" (
 
 
 
-CREATE TABLE "public.messages" (
+CREATE TABLE "messages" (
 	"id" serial NOT NULL,
 	"message" varchar(1000) NOT NULL,
-	"date_sent" DATE NOT NULL DEFAULT 'GETDATE()',
+	"date_sent" DATE NOT NULL DEFAULT NOW(),
 	"user_sent_id" bigint NOT NULL,
 	"organization_id" bigint NOT NULL,
 	CONSTRAINT "messages_pk" PRIMARY KEY ("id")
@@ -110,7 +110,7 @@ CREATE TABLE "public.messages" (
 
 
 
-CREATE TABLE "public.events_participants" (
+CREATE TABLE "events_participants" (
 	"id" serial NOT NULL,
 	"event_id" bigint NOT NULL,
 	"user_account_id" bigint NOT NULL,
@@ -122,7 +122,7 @@ CREATE TABLE "public.events_participants" (
 
 
 
-CREATE TABLE "public.blackout_dates" (
+CREATE TABLE "blackout_dates" (
 	"id" serial NOT NULL,
 	"user_account_id" bigint NOT NULL,
 	"unavailable_date" DATE NOT NULL,

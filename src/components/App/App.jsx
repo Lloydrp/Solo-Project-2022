@@ -19,6 +19,7 @@ import LoginPage from "../Pages/LoginPage/LoginPage";
 import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 
 import "./App.css";
+import ChoosePage from "../Pages/ChoosePage/ChoosePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ function App() {
           <ProtectedRoute exact path="/user">
             {/* logged in shows UserPage else shows LoginPage */}
             <UserPage />
+          </ProtectedRoute>
+          <ProtectedRoute>
+            <ChoosePage path="/choose" />
           </ProtectedRoute>
           <Route exact path="/login">
             {/* If the user is already logged in, redirect to the /user page */}

@@ -10,6 +10,19 @@ function UserPage() {
   const params = useParams();
   const history = useHistory();
 
+  const organization = user.organization_array?.find(
+    (item) => item.organization_id === params.orgid
+  );
+
+  console.log("user :>> ", user);
+  console.log("organization :>> ", organization.is_admin);
+
+  console.log(
+    user.organization_array.find(
+      (item) => item.organization_id === params.orgid
+    )
+  );
+
   useEffect(() => {
     if (
       !user.organization_array.some(
@@ -23,11 +36,15 @@ function UserPage() {
   return (
     <>
       <Nav className="navLink" orgid={params.orgid} />
-      <div className="container">
+      <main className="container">
         <h2>Welcome, {user.username}!</h2>
         <p>Your ID is: {user.id}</p>
+        <section className="org-container">
+          <div>Edit User Info</div>
+          {organization.is_admin && <div>Edit Organization</div>}
+        </section>
         <LogOutButton className="btn" />
-      </div>
+      </main>
     </>
   );
 }

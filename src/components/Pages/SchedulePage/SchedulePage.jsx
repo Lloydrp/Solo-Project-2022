@@ -35,8 +35,8 @@ function SchedulePage() {
       <section className="org-container">
         <nav>
           <ul>
-            {organization.orgUsers?.map((item) => (
-              <li>{`${item.first_name} ${item.last_name}`}</li>
+            {organization.orgUsers?.map((item, index) => (
+              <li key={index}>{`${item.first_name} ${item.last_name}`}</li>
             ))}
           </ul>
         </nav>
@@ -45,9 +45,10 @@ function SchedulePage() {
             <ul className="org-nav">{"Optional Nav for Filtering"}</ul>
           </nav>
           <div>
-            {organization.orgEvents.map((item) => (
-              <li>{`${item.event_name} ${item.start_event}`}</li>
-            ))}
+            {!organization.orgEvents.includes(null) &&
+              organization.orgEvents.map((item, index) => (
+                <li key={index}>{`${item.event_name} ${item.start_event}`}</li>
+              ))}
           </div>
         </div>
       </section>

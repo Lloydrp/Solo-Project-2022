@@ -14,7 +14,7 @@ function ResourcePage() {
   const [currentResource, setCurrentResource] = useState(0);
 
   const resourceArray = organization.orgResources.map((item, index) => {
-    if (currentResource === 3 || item.file_type === currentResource) {
+    if (currentResource === 3 || item?.file_type === currentResource) {
       return <li key={index}>{item.file_name}</li>;
     }
   });

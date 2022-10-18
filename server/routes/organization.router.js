@@ -23,8 +23,8 @@ router.post("/", (req, res) => {
     .query(queryText, [req.body.name, req.body.type_id])
     .then((result) => {
       const newOrg = result.rows[0].id;
-      const secondQueryText = `INSERT INTO "user_account" ("user_id", "organization_id")
-      VALUES ($1, $2);`;
+      const secondQueryText = `INSERT INTO "user_account" ("user_id", "organization_id", "is_admin")
+      VALUES ($1, $2, 'true');`;
 
       pool
         .query(secondQueryText, [req.user.id, newOrg])

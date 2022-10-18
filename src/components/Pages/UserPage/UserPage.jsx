@@ -23,6 +23,10 @@ function UserPage() {
     )
   );
 
+  function handleChangeOrganization() {
+    history.push("/choose");
+  }
+
   useEffect(() => {
     if (
       !user.organization_array.some(
@@ -43,6 +47,7 @@ function UserPage() {
           <div>Edit User Info</div>
           {organization.is_admin && <div>Edit Organization</div>}
         </section>
+        <button onClick={handleChangeOrganization}>Change Organization</button>
         <LogOutButton className="btn" />
       </main>
     </>

@@ -5,7 +5,7 @@ import { useHistory, useParams } from "react-router-dom";
 import Nav from "../../Nav/Nav";
 import ChatWrapper from "../../ChatComponents/ChatWrapper";
 
-function ChatPage() {
+function ChatPage({ socket }) {
   const organization = useSelector((store) => store.organization);
   const user = useSelector((store) => store.user);
   const params = useParams();
@@ -27,7 +27,7 @@ function ChatPage() {
   return (
     <>
       <Nav orgid={params.orgid} />
-      <ChatWrapper />
+      <ChatWrapper socket={socket} />
     </>
   );
 }

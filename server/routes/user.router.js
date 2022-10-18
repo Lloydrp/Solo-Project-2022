@@ -65,16 +65,17 @@ router.post("/login", userStrategy.authenticate("local"), (req, res) => {
 router.get("/choose/:orgid", rejectUnauthenticated, (req, res) => {
   const orgid = req.params.orgid;
   const queryText = `SELECT "organizations"."id" AS "id",
-    array_agg("titles"."title_name") AS "titles",
-    json_agg("events".*) AS "events",
-    json_agg("messages".*) AS "messages"
-    FROM "organizations"
-    LEFT JOIN "resources" ON "resources"."organization_id" = "organizations"."id"
-    LEFT JOIN "events" ON "events"."organization_id" = "organizations"."id"
-    LEFT JOIN "messages" ON "messages"."organization_id" = "organizations"."id"
-    LEFT JOIN "titles" ON "titles"."organization_id" = "organizations"."id"
-    WHERE "organizations"."id" = $1
-    GROUP BY "organizations"."id";`;
+  array_agg(DISTINCT "titles"."title_name") AS "titles",
+  json_agg(DISTINCT "events".*) AS "events",
+  json_agg(DISTINCT "messages".*) AS "messages",
+  json_agg(DISTINCT "resources".*) AS "resources"
+  FROM "organizations"
+  LEFT JOIN "resources" ON "resources"."organization_id" = "organizations"."id"
+  LEFT JOIN "events" ON "events"."organization_id" = "organizations"."id"
+  LEFT JOIN "messages" ON "messages"."organization_id" = "organizations"."id"
+  LEFT JOIN "titles" ON "titles"."organization_id" = "organizations"."id"
+  WHERE "organizations"."id" = $1
+  GROUP BY "organizations"."id";`;
 
   pool
     .query(queryText, [orgid])

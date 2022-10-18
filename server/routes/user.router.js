@@ -18,7 +18,11 @@ router.get("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, [req.user.id])
     .then((result) => {
-      req.user = { ...req.user, organization_array: result.rows };
+      req.user = {
+        ...req.user,
+        organization_array: result.rows,
+        active_organization: 0,
+      };
       res.send(req.user);
     })
     .catch((error) => {
@@ -61,10 +65,17 @@ router.post("/login", userStrategy.authenticate("local"), (req, res) => {
 // Handles selection of organization and getting correct user_account
 router.get("/choose/:orgid", rejectUnauthenticated, (req, res) => {
   const orgid = req.params.orgid;
-  const queryText = `SELECT "user_account".* AS "id", "organizations"."name" AS "organization_name" from "user"
-JOIN "user_account" ON "user"."id" = "user_account"."user_id"
-JOIN "organizations" ON "organizations"."id" = "user_account"."organization_id" WHERE "user"."id" = $1
-GROUP BY "organizations"."name", "user_account"."id";`;
+  const queryText = `SELECT "organizations"."id" AS "id",
+    array_agg("titles"."title_name") AS "titles",
+    json_agg("events".*) AS "events",
+    json_agg("messages".*) AS "messages"
+    FROM "organizations"
+    LEFT JOIN "resources" ON "resources"."organization_id" = "organizations"."id"
+    LEFT JOIN "events" ON "events"."organization_id" = "organizations"."id"
+    LEFT JOIN "messages" ON "messages"."organization_id" = "organizations"."id"
+    LEFT JOIN "titles" ON "titles"."organization_id" = "organizations"."id"
+    WHERE "organizations"."id" = $1
+    GROUP BY "organizations"."id";`;
 
   pool
     .query(queryText, [orgid])

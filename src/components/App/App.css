@@ -287,3 +287,20 @@ code {
   font-style: italic;
 }
 /* End Chat CSS */
+
+.modal-background {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(100, 100, 100, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-wrapper {
+  background-color: #00acb0;
+  z-index: 1;
+}

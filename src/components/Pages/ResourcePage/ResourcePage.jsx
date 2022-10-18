@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import AddResourceModal from "../../AddResourceModal/AddResourceModal";
 import Nav from "../../Nav/Nav";
 
 function ResourcePage() {
@@ -12,6 +13,7 @@ function ResourcePage() {
   const dispatch = useDispatch();
   // File_types are 0 for file, 1 for links, and 2 for images. 3 is default for all files
   const [currentResource, setCurrentResource] = useState(0);
+  const [toggleModal, setToggleModal] = useState(false);
 
   const resourceArray = organization.orgResources.map((item, index) => {
     if (
@@ -21,6 +23,10 @@ function ResourcePage() {
       return <li key={index}>{item?.file_name}</li>;
     }
   });
+
+  function handleAddResource() {
+    setToggleModal(true);
+  }
 
   useEffect(() => {
     if (
@@ -36,9 +42,19 @@ function ResourcePage() {
 
   return (
     <main>
+      {toggleModal && (
+        <AddResourceModal
+          orgid={params.orgid}
+          setToggleModal={setToggleModal}
+          shouldCloseOnOverlayClick={true}
+        />
+      )}
       <Nav orgid={params.orgid} />
       <section className="org-container">
         <nav>
+          <button onClick={handleAddResource}>Add Resource</button>
+          <br />
+          <input type="text" placeholder="Search" />
           <ul>
             {!resourceArray.includes(undefined)
               ? resourceArray

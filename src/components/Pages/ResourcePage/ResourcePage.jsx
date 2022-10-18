@@ -1,16 +1,13 @@
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import Nav from "../../Nav/Nav";
 
 function ResourcePage() {
   const organization = useSelector((store) => store.organization);
   const user = useSelector((store) => store.user);
   const params = useParams();
   const history = useHistory();
-
-  console.log("organization :>> ", organization);
-  console.log("user :>> ", user);
-  console.log("params :>> ", params);
 
   useEffect(() => {
     if (
@@ -24,7 +21,7 @@ function ResourcePage() {
 
   return (
     <main>
-      <h2>Resource Page</h2>
+      <Nav orgid={params.orgid} />
     </main>
   );
 }

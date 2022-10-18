@@ -1,44 +1,65 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import LogOutButton from '../LogOutButton/LogOutButton';
-import './Nav.css';
-import { useSelector } from 'react-redux';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "./Nav.css";
+import { useSelector } from "react-redux";
 
-function Nav() {
+function Nav({ orgid }) {
   const user = useSelector((store) => store.user);
 
   return (
     <div className="nav">
-      <Link to="/home">
-        <h2 className="nav-title">Prime Solo Project</h2>
-      </Link>
+      <NavLink to="/home">
+        <h2 className="nav-title">Organization Station</h2>
+      </NavLink>
       <div>
         {/* If no user is logged in, show these links */}
         {!user.id && (
           // If there's no user, show login/registration links
-          <Link className="navLink" to="/login">
+          <NavLink className="navLink" to="/login">
             Login / Register
-          </Link>
+          </NavLink>
         )}
 
         {/* If a user is logged in, show these links */}
         {user.id && (
           <>
-            <Link className="navLink" to="/user">
-              Home
-            </Link>
+            <NavLink
+              to={`/resources/${orgid}`}
+              className={({ isActive }) =>
+                isActive ? "navLink active" : "navLink"
+              }
+            >
+              Resources
+            </NavLink>
 
-            <Link className="navLink" to="/info">
-              Info Page
-            </Link>
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "navLink active" : "navLink"
+              }
+              to={`/schedule/${orgid}`}
+            >
+              Schedule
+            </NavLink>
 
-            <LogOutButton className="navLink" />
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "navLink active" : "navLink"
+              }
+              to={`/chat/${orgid}`}
+            >
+              Chat
+            </NavLink>
+
+            <NavLink
+              className={({ isActive }) =>
+                isActive ? "navLink active" : "navLink"
+              }
+              to={`/user/${orgid ? orgid : ""}`}
+            >
+              User (Insert Icon)
+            </NavLink>
           </>
         )}
-
-        <Link className="navLink" to="/about">
-          About
-        </Link>
       </div>
     </div>
   );

@@ -21,6 +21,8 @@ import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 import "./App.css";
 import ChoosePage from "../Pages/ChoosePage/ChoosePage";
 import ResourcePage from "../Pages/ResourcePage/ResourcePage";
+import SchedulePage from "../Pages/SchedulePage/SchedulePage";
+import ChatPage from "../Pages/ChatPage/ChatPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -50,11 +52,19 @@ function App() {
             <ResourcePage />
           </ProtectedRoute>
 
+          <ProtectedRoute exact path="/schedule/:orgid">
+            <SchedulePage />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/chat/:orgid">
+            <ChatPage />
+          </ProtectedRoute>
+
           {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/user will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
             Even though it seems like they are different pages, the user is always on localhost:3000/user */}
-          <ProtectedRoute exact path="/user">
+          <ProtectedRoute exact path="/user/:orgid?">
             {/* logged in shows UserPage else shows LoginPage */}
             <UserPage />
           </ProtectedRoute>

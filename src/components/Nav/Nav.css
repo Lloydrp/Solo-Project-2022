@@ -40,3 +40,7 @@
 .navLink:hover {
   background-color: #008183;
 }
+
+.active {
+  border-bottom: 2px solid darkblue;
+}

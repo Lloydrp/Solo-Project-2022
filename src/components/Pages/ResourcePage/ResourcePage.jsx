@@ -12,15 +12,17 @@ function ResourcePage() {
   const history = useHistory();
   const dispatch = useDispatch();
   // File_types are 0 for file, 1 for links, and 2 for images. 3 is default for all files
-  const [currentResource, setCurrentResource] = useState(0);
+  const [currentResource, setCurrentResource] = useState(3);
   const [toggleModal, setToggleModal] = useState(false);
 
   const resourceArray = organization.orgResources.map((item, index) => {
     if (
       (currentResource === 3 && item !== null) ||
-      item?.file_type === currentResource
+      Number(item.file_type) === Number(currentResource)
     ) {
       return <li key={index}>{item?.file_name}</li>;
+    } else {
+      return;
     }
   });
 
@@ -56,7 +58,7 @@ function ResourcePage() {
           <br />
           <input type="text" placeholder="Search" />
           <ul>
-            {!resourceArray.includes(undefined)
+            {!resourceArray.includes(null)
               ? resourceArray
               : "No resources of that type"}
           </ul>

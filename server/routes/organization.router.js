@@ -40,4 +40,20 @@ router.post("/", (req, res) => {
     });
 });
 
+router.post("/addresource", (req, res) => {
+  console.log("req.body :>> ", req.body);
+  const { file_name, file_url, type_id, user_id, organization_id } = req.body;
+  const queryText = `INSERT INTO "resources" ("file_name", "file_url", "file_type", "user_id", "organization_id")
+  VALUES ($1, $2, $3, $4, $5);`;
+
+  pool
+    .query(queryText, [file_name, file_url, type_id, user_id, organization_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in POST add resource :>> ", error);
+    });
+});
+
 module.exports = router;

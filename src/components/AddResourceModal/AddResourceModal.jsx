@@ -1,17 +1,26 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 function AddResourceModal({ setToggleModal, orgid }) {
+  const user = useSelector((store) => store.user);
+  const dispatch = useDispatch();
   const [resourceName, setResourceName] = useState("");
   const [resourceURL, setResourceURL] = useState("");
-  const [resourceType, setResourceType] = useState(0);
+  const [resourceType, setResourceType] = useState(3);
 
   function handleAddResource(event) {
     event.preventDefault();
 
-    console.log("object :>> ", {
-      file_name: resourceName,
-      file_url: resourceURL,
-      file_type: resourceType,
+    dispatch({
+      type: "ADD_RESOURCE",
+      payload: {
+        file_name: resourceName,
+        file_url: resourceURL,
+        type_id: resourceType,
+        organization_id: orgid,
+        user_id: user.id,
+      },
     });
 
     setToggleModal(false);

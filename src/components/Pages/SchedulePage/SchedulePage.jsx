@@ -35,7 +35,7 @@ function SchedulePage() {
       <section className="org-container">
         <nav>
           <ul>
-            {organization.orgUsers.map((item) => (
+            {organization.orgUsers?.map((item) => (
               <li>{`${item.first_name} ${item.last_name}`}</li>
             ))}
           </ul>

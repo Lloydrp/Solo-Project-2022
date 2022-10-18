@@ -83,7 +83,31 @@ router.get("/choose/:orgid", rejectUnauthenticated, (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
-      console.log("error caught in GET user_account_org :>> ", error);
+      console.log("error caught in GET org by id :>> ", error);
+    });
+});
+
+// Handles selection of organization and getting all user_account
+router.get("/choose/users/:orgid", rejectUnauthenticated, (req, res) => {
+  const orgid = req.params.orgid;
+  const queryText = `SELECT "organizations"."id",
+    json_agg(json_build_object(
+    'first_name',"user"."first_name",
+    'last_name',"user"."last_name",
+    'title', "user_account"."title_id")) AS "users"
+    FROM "organizations" 
+    JOIN "user_account" ON "organizations"."id" = "user_account"."organization_id" 
+    JOIN "user" ON "user"."id" = "user_account"."user_id"
+    WHERE "organizations"."id" = $1
+    GROUP BY "organizations"."id";`;
+
+  pool
+    .query(queryText, [orgid])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("error caught in GET org users :>> ", error);
     });
 });
 

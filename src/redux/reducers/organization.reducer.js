@@ -15,6 +15,11 @@ const organizationReducer = (state = defaultOrgState, action) => {
         orgMessages: action.payload[0].messages,
         orgResources: action.payload[0].resources,
       };
+    case "SET_ORG_USERS":
+      return {
+        ...state,
+        orgUsers: action.payload[0].users,
+      };
     default:
       return state;
   }

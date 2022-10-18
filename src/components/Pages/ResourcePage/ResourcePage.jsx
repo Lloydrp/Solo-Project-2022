@@ -19,8 +19,6 @@ function ResourcePage() {
     }
   });
 
-  console.log("resourceArray :>> ", resourceArray);
-
   useEffect(() => {
     if (
       !user.organization_array.some(

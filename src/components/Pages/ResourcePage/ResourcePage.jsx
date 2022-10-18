@@ -18,13 +18,14 @@ function ResourcePage() {
   const resourceArray = organization.orgResources.map((item, index) => {
     if (
       (currentResource === 3 && item !== null) ||
-      Number(item.file_type) === Number(currentResource)
+      Number(item?.file_type) === Number(currentResource)
     ) {
       return <li key={index}>{item?.file_name}</li>;
     } else {
       return;
     }
   });
+  console.log("resourceArray :>> ", resourceArray);
 
   function handleAddResource() {
     setToggleModal(true);
@@ -58,7 +59,7 @@ function ResourcePage() {
           <br />
           <input type="text" placeholder="Search" />
           <ul>
-            {!resourceArray.includes(null)
+            {!(resourceArray[0] === undefined)
               ? resourceArray
               : "No resources of that type"}
           </ul>

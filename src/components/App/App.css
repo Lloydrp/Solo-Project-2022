@@ -5,7 +5,7 @@ body,
 }
 
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   margin: 0px;
 }
 
@@ -109,4 +109,13 @@ Form Treatment
 input {
   margin: 5px;
   margin-bottom: 10px;
+}
+
+.org-container {
+  display: flex;
+}
+
+.org-sub-container {
+  display: flex;
+  flex-direction: column;
 }

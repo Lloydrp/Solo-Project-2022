@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Nav from "../../Nav/Nav";
+import ChatWrapper from "../../ChatComponents/ChatWrapper";
 
 function ChatPage() {
   const organization = useSelector((store) => store.organization);
@@ -24,9 +25,10 @@ function ChatPage() {
   }, []);
 
   return (
-    <main>
+    <>
       <Nav orgid={params.orgid} />
-    </main>
+      <ChatWrapper />
+    </>
   );
 }
 

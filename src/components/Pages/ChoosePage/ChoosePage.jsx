@@ -15,10 +15,13 @@ function ChoosePage() {
     history.push(`/resources/${orgid}`);
   }
 
+  function handleCreateOrg() {
+    history.push("/create");
+  }
+
   return (
     <main className="choose-page">
       <h2>Choose your organization</h2>
-      <LogOutButton />
       <ul>
         {user.organization_array.map((item, index) => (
           <li
@@ -29,6 +32,8 @@ function ChoosePage() {
           </li>
         ))}
       </ul>
+      <button onClick={() => handleCreateOrg()}>Create Organization</button>
+      <LogOutButton />
     </main>
   );
 }

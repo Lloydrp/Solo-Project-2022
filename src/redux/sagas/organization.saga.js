@@ -37,9 +37,40 @@ function* fetchOrgUsers(action) {
   }
 }
 
+function* fetchTypes(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    const results = yield axios.get(`/api/organization/types`, config);
+
+    yield put({ type: "SET_TYPES", payload: results.data });
+  } catch (error) {
+    console.log("error caught in fetchTypes :>> ", error);
+  }
+}
+
+function* createOrg(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.post("/api/organization", action.payload, config);
+    yield put({ type: "FETCH_USER" });
+  } catch (error) {
+    console.log("error caught in createOrg :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
+  yield takeEvery("CREATE_ORGANIZATION", createOrg);
+  yield takeEvery("FETCH_TYPES", fetchTypes);
 }
 
 export default organizationSaga;

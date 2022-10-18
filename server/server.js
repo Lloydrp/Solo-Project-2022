@@ -20,6 +20,7 @@ const passport = require("./strategies/user.strategy");
 
 // Route includes
 const userRouter = require("./routes/user.router");
+const orgRouter = require("./routes/organization.router");
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -65,6 +66,7 @@ socketIO.on("connection", (socket) => {
 
 /* Routes */
 app.use("/api/user", userRouter);
+app.use("/api/organization", orgRouter);
 
 // Serve static files
 app.use(express.static("build"));

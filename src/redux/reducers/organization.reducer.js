@@ -20,6 +20,8 @@ const organizationReducer = (state = defaultOrgState, action) => {
         ...state,
         orgUsers: action.payload[0].users,
       };
+    case "SET_TYPES":
+      return { ...state, orgTypes: action.payload };
     default:
       return state;
   }

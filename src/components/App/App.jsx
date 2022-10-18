@@ -22,6 +22,7 @@ import ResourcePage from "../Pages/ResourcePage/ResourcePage";
 import SchedulePage from "../Pages/SchedulePage/SchedulePage";
 import ChatPage from "../Pages/ChatPage/ChatPage";
 import socketIO from "socket.io-client";
+import CreateOrganization from "../Pages/CreateOrganization/CreateOrganization";
 
 const socket = socketIO.connect("http://localhost:5000");
 
@@ -47,6 +48,10 @@ function App() {
 
           <ProtectedRoute exact path="/choose">
             <ChoosePage />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/create">
+            <CreateOrganization />
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/resources/:orgid">

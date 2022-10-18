@@ -23,6 +23,9 @@ import ChoosePage from "../Pages/ChoosePage/ChoosePage";
 import ResourcePage from "../Pages/ResourcePage/ResourcePage";
 import SchedulePage from "../Pages/SchedulePage/SchedulePage";
 import ChatPage from "../Pages/ChatPage/ChatPage";
+import socketIO from "socket.io-client";
+
+const socket = socketIO.connect("http://localhost:5000");
 
 function App() {
   const dispatch = useDispatch();
@@ -57,7 +60,7 @@ function App() {
           </ProtectedRoute>
 
           <ProtectedRoute exact path="/chat/:orgid">
-            <ChatPage />
+            <ChatPage socket={socket} />
           </ProtectedRoute>
 
           {/* For protected routes, the view could show one of several things on the same route.

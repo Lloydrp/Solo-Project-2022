@@ -46,7 +46,7 @@ function ResourcePage() {
         </nav>
         <div className="org-sub-container">
           <nav>
-            <ul>
+            <ul className="org-nav">
               <li onClick={() => setCurrentResource(3)}>All</li>
               <li onClick={() => setCurrentResource(0)}>Files</li>
               <li onClick={() => setCurrentResource(1)}>Links</li>

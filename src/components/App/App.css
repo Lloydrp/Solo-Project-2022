@@ -119,3 +119,8 @@ input {
   display: flex;
   flex-direction: column;
 }
+
+.org-nav li {
+  display: inline-block;
+  margin-right: 5px;
+}

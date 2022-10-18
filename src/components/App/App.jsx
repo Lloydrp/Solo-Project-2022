@@ -46,7 +46,7 @@ function App() {
             <ChoosePage />
           </ProtectedRoute>
 
-          <ProtectedRoute exact path="/resources">
+          <ProtectedRoute exact path="/resources/:orgid">
             <ResourcePage />
           </ProtectedRoute>
 
@@ -62,19 +62,19 @@ function App() {
           <Route exact path="/login">
             {/* If the user is already logged in, redirect to the /user page */}
             {/* Otherwise, show the login page */}
-            {user.id ? <Redirect to="/user" /> : <LoginPage />}
+            {user.id ? <Redirect to="/choose" /> : <LoginPage />}
           </Route>
 
           {/* If the user is already logged in, redirect them to the /user page */}
           {/* Otherwise, show the registration page */}
           <Route exact path="/registration">
-            {user.id ? <Redirect to="/user" /> : <RegisterPage />}
+            {user.id ? <Redirect to="/choose" /> : <RegisterPage />}
           </Route>
 
           {/* If the user is already logged in, redirect them to the /user page */}
           {/* Otherwise, show the Landing page */}
           <Route exact path="/home">
-            {user.id ? <Redirect to="/user" /> : <LandingPage />}
+            {user.id ? <Redirect to="/choose" /> : <LandingPage />}
           </Route>
 
           {/* If none of the other routes matched, we will show a 404. */}

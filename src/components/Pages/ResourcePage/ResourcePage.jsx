@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Nav from "../../Nav/Nav";
@@ -8,6 +9,9 @@ function ResourcePage() {
   const user = useSelector((store) => store.user);
   const params = useParams();
   const history = useHistory();
+  const dispatch = useDispatch();
+
+  console.log("organization :>> ", organization);
 
   useEffect(() => {
     if (
@@ -17,6 +21,8 @@ function ResourcePage() {
     ) {
       history.replace("/choose");
     }
+
+    dispatch({ type: "FETCH_ORGANIZATION", payload: { id: params.orgid } });
   }, []);
 
   return (

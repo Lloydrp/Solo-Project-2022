@@ -21,7 +21,6 @@ router.get("/", rejectUnauthenticated, (req, res) => {
       req.user = {
         ...req.user,
         organization_array: result.rows,
-        active_organization: 0,
       };
       res.send(req.user);
     })

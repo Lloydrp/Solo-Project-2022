@@ -7,13 +7,12 @@ const defaultOrgState = {
 const organizationReducer = (state = defaultOrgState, action) => {
   switch (action.type) {
     case "SET_ORG":
-      return action.payload;
-    case "SET_ORG_TITLES":
-      return { ...state, orgTitles: action.payload };
-    case "SET_ORG_EVENTS":
-      return { ...state, orgEvents: action.payload };
-    case "SET_ORG_MESSAGES":
-      return { ...state, orgMessages: action.payload };
+      return {
+        ...state,
+        orgTitles: action.payload[0].titles,
+        orgEvents: action.payload[0].events,
+        orgMessages: action.payload[0].messages,
+      };
     default:
       return state;
   }

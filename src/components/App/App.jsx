@@ -20,6 +20,7 @@ import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 
 import "./App.css";
 import ChoosePage from "../Pages/ChoosePage/ChoosePage";
+import ResourcePage from "../Pages/ResourcePage/ResourcePage";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,15 @@ function App() {
           <Route path="/about">
             <AboutPage />
           </Route>
+
+          <ProtectedRoute exact path="/choose">
+            <ChoosePage />
+          </ProtectedRoute>
+
+          <ProtectedRoute exact path="/resources">
+            <ResourcePage />
+          </ProtectedRoute>
+
           {/* For protected routes, the view could show one of several things on the same route.
             Visiting localhost:3000/user will show the UserPage if the user is logged in.
             If the user is not logged in, the ProtectedRoute will show the LoginPage (component).
@@ -48,9 +58,7 @@ function App() {
             {/* logged in shows UserPage else shows LoginPage */}
             <UserPage />
           </ProtectedRoute>
-          <ProtectedRoute>
-            <ChoosePage path="/choose" />
-          </ProtectedRoute>
+
           <Route exact path="/login">
             {/* If the user is already logged in, redirect to the /user page */}
             {/* Otherwise, show the login page */}

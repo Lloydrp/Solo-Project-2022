@@ -1,14 +1,17 @@
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import "./ChoosePage.css";
 
 function ChoosePage() {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   function handleOrgSelect(orgid) {
     //Send GET for all info from organization or at least events
     dispatch({ type: "FETCH_ORGANIZATION", payload: { id: orgid } });
+    history.push("/resources");
   }
 
   return (

@@ -1,8 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Nav from "../../Nav/Nav";
+import AddEventModal from "../../AddEventModal/AddEventModal";
 
 function SchedulePage() {
   const organization = useSelector((store) => store.organization);
@@ -10,8 +11,11 @@ function SchedulePage() {
   const params = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+  const [toggleModal, setToggleModal] = useState(false);
 
-  console.log("organization :>> ", organization);
+  function handleAddEvent() {
+    setToggleModal(true);
+  }
 
   useEffect(() => {
     if (
@@ -31,6 +35,13 @@ function SchedulePage() {
 
   return (
     <main>
+      {toggleModal && (
+        <AddEventModal
+          orgid={params.orgid}
+          setToggleModal={setToggleModal}
+          shouldCloseOnOverlayClick={true}
+        />
+      )}
       <Nav orgid={params.orgid} />
       <section className="org-container">
         <nav>
@@ -41,6 +52,7 @@ function SchedulePage() {
           </ul>
         </nav>
         <div className="org-sub-container">
+          <button onClick={handleAddEvent}>Add Event</button>
           <nav>
             <ul className="org-nav">{"Optional Nav for Filtering"}</ul>
           </nav>

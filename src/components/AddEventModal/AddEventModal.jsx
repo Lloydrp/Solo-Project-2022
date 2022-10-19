@@ -12,11 +12,14 @@ function AddEventModal({ setToggleModal, orgid }) {
   function handleAddEvent(event) {
     event.preventDefault();
 
-    console.log({
-      event_name: eventName,
-      event_description: eventDescription,
-      start_event: eventDate,
-      organization_id: orgid,
+    dispatch({
+      type: "ADD_EVENT",
+      payload: {
+        event_name: eventName,
+        event_description: eventDescription,
+        start_event: eventDate,
+        organization_id: orgid,
+      },
     });
 
     setToggleModal(false);

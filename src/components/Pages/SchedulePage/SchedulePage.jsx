@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import Nav from "../../Nav/Nav";
 import AddEventModal from "../../AddEventModal/AddEventModal";
+import ScheduleCard from "../../ScheduleCard/ScheduleCard";
 
 function SchedulePage() {
   const organization = useSelector((store) => store.organization);
@@ -12,6 +13,7 @@ function SchedulePage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [toggleModal, setToggleModal] = useState(false);
+  const [toggleDetails, setToggleDetails] = useState(false);
 
   function handleAddEvent() {
     setToggleModal(true);
@@ -59,7 +61,7 @@ function SchedulePage() {
           <div>
             {!organization.orgEvents.includes(null) &&
               organization.orgEvents.map((item, index) => (
-                <li key={index}>{`${item.event_name} ${item.start_event}`}</li>
+                <ScheduleCard item={item} />
               ))}
           </div>
         </div>

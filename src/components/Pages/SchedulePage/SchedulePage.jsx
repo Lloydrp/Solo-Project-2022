@@ -13,7 +13,6 @@ function SchedulePage() {
   const history = useHistory();
   const dispatch = useDispatch();
   const [toggleModal, setToggleModal] = useState(false);
-  const [toggleDetails, setToggleDetails] = useState(false);
 
   function handleAddEvent() {
     setToggleModal(true);
@@ -31,6 +30,10 @@ function SchedulePage() {
     dispatch({ type: "FETCH_ORGANIZATION", payload: { id: params.orgid } });
     dispatch({
       type: "FETCH_ORG_USERS",
+      payload: { id: params.orgid },
+    });
+    dispatch({
+      type: "FETCH_PARTICIPANTS",
       payload: { id: params.orgid },
     });
   }, []);

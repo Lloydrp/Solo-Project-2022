@@ -22,6 +22,8 @@ const organizationReducer = (state = defaultOrgState, action) => {
       };
     case "SET_TYPES":
       return { ...state, orgTypes: action.payload };
+    case "SET_PARTICIPANTS":
+      return { ...state, eventParticipants: action.payload };
     default:
       return state;
   }

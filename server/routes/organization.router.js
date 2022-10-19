@@ -15,6 +15,40 @@ router.get("/types", (req, res) => {
     });
 });
 
+router.get("/participants/:orgid", (req, res) => {
+  const queryText = `SELECT
+    "events_participants"."event_id",
+    json_agg(json_build_object(
+    'ep_user_id',
+    "events_participants"."user_id",
+    'ep_event_duty',
+    "events_participants"."event_duty",
+    'first_name',
+    "user"."first_name",
+    'last_name',
+    "user"."last_name",
+    'title_id',
+    "user_account"."title_id",
+    'title_name',
+    "titles"."title_name")) AS "participant_info"
+    FROM "events_participants"
+    JOIN "events" ON "events"."id" = "events_participants"."event_id"
+    JOIN "user" ON "events_participants"."user_id" = "user"."id"
+    JOIN "user_account" ON "events"."organization_id" = "user_account"."organization_id"
+    LEFT JOIN "titles" ON "titles"."id" = "user_account"."title_id"
+    WHERE "events"."organization_id" = $1
+    GROUP BY "events_participants"."event_id";`;
+
+  pool
+    .query(queryText, [req.params.orgid])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("error caught in GET participants :>> ", error);
+    });
+});
+
 router.post("/", (req, res) => {
   const queryText = `INSERT INTO "organizations" ("name", "type_id")
   VALUES ($1, $2) RETURNING "id";`;

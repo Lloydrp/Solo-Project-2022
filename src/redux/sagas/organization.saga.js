@@ -117,6 +117,24 @@ function* updateEvent(action) {
   }
 }
 
+function* fetchParticipants(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    const results = yield axios.get(
+      `/api/organization/participants/${action.payload.id}`,
+      config
+    );
+
+    yield put({ type: "SET_PARTICIPANTS", payload: results.data });
+  } catch (error) {
+    console.log("error caught in fetchParticipants :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -125,6 +143,7 @@ function* organizationSaga() {
   yield takeEvery("ADD_RESOURCE", addResource);
   yield takeEvery("ADD_EVENT", addEvent);
   yield takeEvery("UPDATE_EVENT", updateEvent);
+  yield takeEvery("FETCH_PARTICIPANTS", fetchParticipants);
 }
 
 export default organizationSaga;

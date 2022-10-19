@@ -1,14 +1,18 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
-function ScheduleCard({ item, orgid }) {
+function ScheduleCard({ eventItem, orgid }) {
   const dispatch = useDispatch();
-  const [toggleEdit, setToggleEdit] = useState(false);
-  const [eventName, setEventName] = useState(item.event_name);
-  const [eventDescription, setEventDescription] = useState(
-    item.event_description
+  const participants = useSelector(
+    (store) => store.organization.eventParticipants
   );
-  const [eventDate, setEventDate] = useState(item.start_event);
+  const [toggleEdit, setToggleEdit] = useState(false);
+  const [eventName, setEventName] = useState(eventItem.event_name);
+  const [eventDescription, setEventDescription] = useState(
+    eventItem.event_description
+  );
+  const [eventDate, setEventDate] = useState(eventItem.start_event);
 
   function handleEdit(event) {
     event.preventDefault();
@@ -16,7 +20,7 @@ function ScheduleCard({ item, orgid }) {
     dispatch({
       type: "UPDATE_EVENT",
       payload: {
-        id: item.id,
+        id: eventItem.id,
         event_name: eventName,
         event_description: eventDescription,
         start_event: eventDate,
@@ -61,8 +65,17 @@ function ScheduleCard({ item, orgid }) {
   } else {
     return (
       <div>
-        {`${item.event_name} ${item.event_description} ${item.start_event}`}
+        {`${eventItem.event_name} ${eventItem.event_description} ${eventItem.start_event}`}
         <br />
+        {participants?.map(
+          (item, index) =>
+            Number(item.event_id) === Number(eventItem.id) && (
+              <li key={index}>
+                {item.participant_info[0].first_name}{" "}
+                {item.participant_info[0].last_name}
+              </li>
+            )
+        )}
         <button onClick={() => setToggleEdit(true)}>Edit</button>
       </div>
     );

@@ -64,7 +64,11 @@ function SchedulePage() {
           <div>
             {!organization.orgEvents.includes(null) &&
               organization.orgEvents.map((item, index) => (
-                <ScheduleCard key={index} item={item} orgid={params.orgid} />
+                <ScheduleCard
+                  key={index}
+                  eventItem={item}
+                  orgid={params.orgid}
+                />
               ))}
           </div>
         </div>

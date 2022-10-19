@@ -15,17 +15,11 @@ function ResourcePage() {
   const [currentResource, setCurrentResource] = useState(3);
   const [toggleModal, setToggleModal] = useState(false);
 
-  const resourceArray = organization.orgResources.map((item, index) => {
-    if (
+  const resourceArray = organization.orgResources.filter(
+    (item) =>
       (currentResource === 3 && item !== null) ||
       Number(item?.file_type) === Number(currentResource)
-    ) {
-      return <li key={index}>{item?.file_name}</li>;
-    } else {
-      return;
-    }
-  });
-  console.log("resourceArray :>> ", resourceArray);
+  );
 
   function handleAddResource() {
     setToggleModal(true);
@@ -59,9 +53,11 @@ function ResourcePage() {
           <br />
           <input type="text" placeholder="Search" />
           <ul>
-            {!(resourceArray[0] === undefined)
-              ? resourceArray
-              : "No resources of that type"}
+            {resourceArray.length > 0
+              ? resourceArray.map((item, index) => (
+                  <li key={index}>{item?.file_name}</li>
+                ))
+              : "No files found"}
           </ul>
         </nav>
         <div className="org-sub-container">

@@ -5,17 +5,18 @@ import { useDispatch } from "react-redux";
 function AddEventModal({ setToggleModal, orgid }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [resourceName, setResourceName] = useState("");
-  const [resourceURL, setResourceURL] = useState("");
-  const [resourceType, setResourceType] = useState(3);
+  const [eventName, setEventName] = useState("");
+  const [eventDate, setEventDate] = useState("");
+  const [eventDescription, setEventDescription] = useState();
 
-  function handleAddResource(event) {
+  function handleAddEvent(event) {
     event.preventDefault();
 
     console.log({
-      event_name: "placeholder",
-      start_event: "placeholder date",
-      organization_id: params.orgid,
+      event_name: eventName,
+      event_description: eventDescription,
+      start_event: eventDate,
+      organization_id: orgid,
     });
 
     setToggleModal(false);
@@ -31,63 +32,39 @@ function AddEventModal({ setToggleModal, orgid }) {
           <h2>Add Event</h2>
         </div>
         <div className="modal-body">
-          <form onSubmit={handleAddResource}>
-            <label htmlFor="resourceName">
-              Resource Name:
+          <form onSubmit={handleAddEvent}>
+            <label htmlFor="eventName">
+              Event Name:
               <input
                 type="text"
-                name="resourceName"
-                value={resourceName}
+                name="eventName"
+                value={eventName}
                 required
-                onChange={(event) => setResourceName(event.target.value)}
+                onChange={(event) => setEventName(event.target.value)}
               />
             </label>
-            <label htmlFor="resourceURL">
-              Resource URL:
+            <label htmlFor="eventDate">
+              Event Date:
               <input
-                type="text"
-                name="resourceURL"
-                value={resourceURL}
+                type="date"
+                name="eventDate"
+                value={eventDate}
                 required
-                onChange={(event) => setResourceURL(event.target.value)}
+                onChange={(event) => setEventDate(event.target.value)}
               />
             </label>
             <br />
-            <label htmlFor="radioFile">
-              <input
-                required
-                name="fileRadios"
-                id="radioFile"
-                type="radio"
-                value={0}
-                onChange={(event) => setResourceType(event.target.value)}
+            <label htmlFor="eventDescription">
+              Event Description:
+              <textarea
+                type="text"
+                name="eventDescription"
+                value={eventDescription}
+                onChange={(event) => setEventDescription(event.target.value)}
               />
-              File
-            </label>
-            <label htmlFor="radioLink">
-              <input
-                required
-                name="fileRadios"
-                id="radioLink"
-                type="radio"
-                value={1}
-                onChange={(event) => setResourceType(event.target.value)}
-              />
-              Link
-            </label>
-            <label htmlFor="radioImage">
-              <input
-                required
-                name="fileRadios"
-                id="radioImage"
-                type="radio"
-                value={2}
-                onChange={(event) => setResourceType(event.target.value)}
-              />
-              Image
             </label>
             <br />
-            <button type="submit">Add Resource</button>
+            <button type="submit">Add Event</button>
             <button type="button" onClick={() => setToggleModal(false)}>
               Cancel
             </button>

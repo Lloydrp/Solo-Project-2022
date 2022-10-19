@@ -56,7 +56,6 @@ router.post("/addresource", (req, res) => {
 });
 
 router.post("/addevent", (req, res) => {
-  console.log("req.body :>> ", req.body);
   const { event_name, event_description, start_event, organization_id } =
     req.body;
   const queryText = `INSERT INTO "events" ("event_name", "event_description", "start_event", "organization_id")
@@ -74,6 +73,25 @@ router.post("/addevent", (req, res) => {
     })
     .catch((error) => {
       console.log("error caught in POST add resource :>> ", error);
+    });
+});
+
+router.put("/events", (req, res) => {
+  console.log("req.body :>> ", req.body);
+  const { id, event_name, event_description, start_event } = req.body;
+  const queryText = `UPDATE "events"
+    SET "event_name" = $1,
+    "event_description" = $2,
+    "start_event" = $3
+    WHERE "id" = $4`;
+
+  pool
+    .query(queryText, [event_name, event_description, start_event, id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in POST update event :>> ", error);
     });
 });
 

@@ -149,6 +149,22 @@ router.put("/events", (req, res) => {
     });
 });
 
+router.put("/updateparticipant", (req, res) => {
+  const { event_id, user_id, event_duty } = req.body;
+  const queryText = `UPDATE "events_participants"
+    SET "event_duty" = $1
+    WHERE "event_id" = $2 AND "user_id" = $3;`;
+
+  pool
+    .query(queryText, [event_duty, event_id, user_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in POST update participant :>> ", error);
+    });
+});
+
 router.delete("/deleteevent/:eventid", (req, res) => {
   const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1;`;
 

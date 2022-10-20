@@ -13,6 +13,7 @@ function ScheduleCard({ eventItem, orgid }) {
     eventItem.event_description
   );
   const [eventDate, setEventDate] = useState(eventItem.start_event);
+  const [addParticipant, setAddParticipant] = useState("");
 
   function handleEdit(event) {
     event.preventDefault();
@@ -29,6 +30,16 @@ function ScheduleCard({ eventItem, orgid }) {
     });
 
     setToggleEdit(false);
+  }
+
+  function handleDelete(id) {
+    dispatch({
+      type: "DELETE_EVENT",
+      payload: {
+        id: id,
+        organization_id: orgid,
+      },
+    });
   }
 
   if (toggleEdit) {
@@ -56,6 +67,26 @@ function ScheduleCard({ eventItem, orgid }) {
           onChange={(event) => setEventDescription(event.target.value)}
         />
         <br />
+        <input
+          type="text"
+          name="addParticipant"
+          value={addParticipant}
+          onChange={(event) => setAddParticipant(event.target.value)}
+        />
+        <button>Add Participant</button>
+        {participants?.map(
+          (item, index) =>
+            Number(item.event_id) === Number(eventItem.id) && (
+              <li key={index}>
+                {item.participant_info[0].first_name}{" "}
+                {item.participant_info[0].last_name}(
+                {item.participant_info[0].title_name})
+                {item.participant_info[0].ep_event_duty}
+                <button>Update</button>
+                <button>Delete</button>
+              </li>
+            )
+        )}
         <button type="submit">Update Event</button>
         <button type="button" onClick={() => setToggleEdit(false)}>
           Cancel
@@ -72,11 +103,14 @@ function ScheduleCard({ eventItem, orgid }) {
             Number(item.event_id) === Number(eventItem.id) && (
               <li key={index}>
                 {item.participant_info[0].first_name}{" "}
-                {item.participant_info[0].last_name}
+                {item.participant_info[0].last_name}(
+                {item.participant_info[0].title_name})
+                {item.participant_info[0].ep_event_duty}
               </li>
             )
         )}
         <button onClick={() => setToggleEdit(true)}>Edit</button>
+        <button onClick={() => handleDelete(eventItem.id)}>Delete</button>
       </div>
     );
   }

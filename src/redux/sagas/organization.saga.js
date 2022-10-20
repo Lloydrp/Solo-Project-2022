@@ -135,6 +135,26 @@ function* fetchParticipants(action) {
   }
 }
 
+function* deleteEvent(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.delete(
+      `/api/organization/deleteevent/${action.payload.id}`,
+      config
+    );
+    yield put({
+      type: "FETCH_ORGANIZATION",
+      payload: { id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in deleteEvent :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -144,6 +164,7 @@ function* organizationSaga() {
   yield takeEvery("ADD_EVENT", addEvent);
   yield takeEvery("UPDATE_EVENT", updateEvent);
   yield takeEvery("FETCH_PARTICIPANTS", fetchParticipants);
+  yield takeEvery("DELETE_EVENT", deleteEvent);
 }
 
 export default organizationSaga;

@@ -1,3 +1,4 @@
+const { query } = require("express");
 const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
@@ -111,7 +112,6 @@ router.post("/addevent", (req, res) => {
 });
 
 router.put("/events", (req, res) => {
-  console.log("req.body :>> ", req.body);
   const { id, event_name, event_description, start_event } = req.body;
   const queryText = `UPDATE "events"
     SET "event_name" = $1,
@@ -129,4 +129,25 @@ router.put("/events", (req, res) => {
     });
 });
 
+router.delete("/deleteevent/:eventid", (req, res) => {
+  const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1;`;
+
+  pool
+    .query(queryText, [req.params.eventid])
+    .then((result) => {
+      const secondQueryText = `DELETE FROM "events" WHERE "id" = $1;`;
+
+      pool
+        .query(secondQueryText, [req.params.eventid])
+        .then((result) => {
+          res.sendStatus(200);
+        })
+        .catch((error) => {
+          console.log("error caught in second DELETE event query :>> ", error);
+        });
+    })
+    .catch((error) => {
+      console.log("error caught in first DELETE event query :>> ", error);
+    });
+});
 module.exports = router;

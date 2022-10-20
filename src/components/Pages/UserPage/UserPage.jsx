@@ -1,14 +1,17 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import LogOutButton from "../../LogOutButton/LogOutButton";
 import { useSelector } from "react-redux";
 import Nav from "../../Nav/Nav";
 import { useHistory, useParams } from "react-router-dom";
+import UserEdit from "../../UserEdit/UserEdit";
+import UserOrganizationEdit from "../../UserOrganizationEdit/UserOrganizationEdit";
 
 function UserPage() {
-  // this component doesn't do much to start, just renders some user reducer info to the DOM
   const user = useSelector((store) => store.user);
   const params = useParams();
   const history = useHistory();
+  const [toggleEditUser, setToggleEditUser] = useState(false);
+  const [toggleEditOrganization, setToggleEditOrganization] = useState(false);
 
   const organization = user.organization_array?.find(
     (item) => item.organization_id === params.orgid
@@ -42,10 +45,27 @@ function UserPage() {
       <Nav className="navLink" orgid={params.orgid} />
       <main className="container">
         <h2>Welcome, {user.username}!</h2>
-        <p>Your ID is: {user.id}</p>
         <section className="org-container">
-          <div>Edit User Info</div>
-          {organization.is_admin && <div>Edit Organization</div>}
+          <div onClick={() => setToggleEditUser(true)}>
+            {toggleEditUser ? (
+              <UserEdit
+                orgid={params.orgid}
+                setToggleEditUser={setToggleEditUser}
+              />
+            ) : (
+              "Edit User Information"
+            )}
+          </div>
+          <div onClick={() => setToggleEditOrganization(true)}>
+            {organization.is_admin && toggleEditOrganization ? (
+              <UserOrganizationEdit
+                orgid={params.orgid}
+                setToggleEditOrganization={setToggleEditOrganization}
+              />
+            ) : (
+              "Edit Organization Information"
+            )}
+          </div>
         </section>
         <button onClick={handleChangeOrganization}>Change Organization</button>
         <LogOutButton className="btn" />

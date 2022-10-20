@@ -23,6 +23,8 @@ import SchedulePage from "../Pages/SchedulePage/SchedulePage";
 import ChatPage from "../Pages/ChatPage/ChatPage";
 import socketIO from "socket.io-client";
 import CreateOrganization from "../Pages/CreateOrganization/CreateOrganization";
+import UserEdit from "../UserEdit/UserEdit";
+import UserOrganizationEdit from "../UserOrganizationEdit/UserOrganizationEdit";
 
 const socket = socketIO.connect("http://localhost:5000");
 

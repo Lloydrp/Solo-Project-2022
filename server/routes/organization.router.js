@@ -1,4 +1,3 @@
-const { query } = require("express");
 const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
@@ -19,7 +18,9 @@ router.get("/types", (req, res) => {
 router.get("/participants/:orgid", (req, res) => {
   const queryText = `SELECT
     "events_participants"."event_id",
-    json_agg(json_build_object(
+    json_agg(distinct jsonb_build_object(
+    'ep_event_id',
+    "events_participants"."event_id",
     'ep_user_id',
     "events_participants"."user_id",
     'ep_event_duty',
@@ -111,6 +112,24 @@ router.post("/addevent", (req, res) => {
     });
 });
 
+router.post("/addparticipant", (req, res) => {
+  const { username, event_duty, event_id } = req.body;
+  const queryText = `INSERT INTO "events_participants" ("event_id", "user_id", "event_duty")
+    SELECT $1, (SELECT "id" FROM "user" WHERE "username" = $2) , $3
+    WHERE NOT EXISTS (SELECT "event_id","user_id" FROM "events_participants" WHERE "events_participants"."event_id" = $1 AND "events_participants"."user_id" = (SELECT "id" FROM "user" WHERE "username" = $2))
+    RETURNING "id";`;
+
+  pool
+    .query(queryText, [event_id, username, event_duty])
+    .then((result) => {
+      res.send(result.rows).status(200);
+    })
+    .catch((error) => {
+      res.sendStatus(404);
+      console.log("error caught in POST add participant :>> ", error);
+    });
+});
+
 router.put("/events", (req, res) => {
   const { id, event_name, event_description, start_event } = req.body;
   const queryText = `UPDATE "events"
@@ -150,4 +169,18 @@ router.delete("/deleteevent/:eventid", (req, res) => {
       console.log("error caught in first DELETE event query :>> ", error);
     });
 });
+
+router.delete("/deleteparticipant/:eventid/:participantid", (req, res) => {
+  const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1 AND "user_id" = $2;`;
+
+  pool
+    .query(queryText, [req.params.eventid, req.params.participantid])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in DELETE event participant :>> ", error);
+    });
+});
+
 module.exports = router;

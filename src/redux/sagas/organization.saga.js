@@ -155,6 +155,52 @@ function* deleteEvent(action) {
   }
 }
 
+function* deleteEventParticipant(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.delete(
+      `/api/organization/deleteparticipant/${action.payload.event_id}/${action.payload.user_id}`,
+      config
+    );
+    yield put({
+      type: "FETCH_PARTICIPANTS",
+      payload: { id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in deleteEventParticipant :>> ", error);
+  }
+}
+
+function* addEventParticipant(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    const results = yield axios.post(
+      "/api/organization/addparticipant",
+      action.payload,
+      config
+    );
+    yield console.log("results :>> ", results.data);
+    if (results.data[0]?.id) {
+      yield put({
+        type: "FETCH_PARTICIPANTS",
+        payload: { id: action.payload.organization_id },
+      });
+    } else {
+      alert("User already a participant!");
+    }
+  } catch (error) {
+    console.log("error caught in addEventParticipant :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -165,6 +211,8 @@ function* organizationSaga() {
   yield takeEvery("UPDATE_EVENT", updateEvent);
   yield takeEvery("FETCH_PARTICIPANTS", fetchParticipants);
   yield takeEvery("DELETE_EVENT", deleteEvent);
+  yield takeEvery("DELETE_EVENT_PARTICIPANT", deleteEventParticipant);
+  yield takeEvery("ADD_EVENT_PARTICIPANT", addEventParticipant);
 }
 
 export default organizationSaga;

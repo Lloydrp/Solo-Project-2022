@@ -14,6 +14,7 @@ function ScheduleCard({ eventItem, orgid }) {
   );
   const [eventDate, setEventDate] = useState(eventItem.start_event);
   const [addParticipant, setAddParticipant] = useState("");
+  const [newDuty, setNewDuty] = useState("");
 
   function handleEdit(event) {
     event.preventDefault();
@@ -32,7 +33,7 @@ function ScheduleCard({ eventItem, orgid }) {
     setToggleEdit(false);
   }
 
-  function handleDelete(id) {
+  function handleDeleteEvent(id) {
     dispatch({
       type: "DELETE_EVENT",
       payload: {
@@ -40,6 +41,31 @@ function ScheduleCard({ eventItem, orgid }) {
         organization_id: orgid,
       },
     });
+  }
+
+  function handleDeleteParticipant(id) {
+    dispatch({
+      type: "DELETE_EVENT_PARTICIPANT",
+      payload: {
+        organization_id: orgid,
+        event_id: eventItem.id,
+        user_id: id,
+      },
+    });
+  }
+
+  function handleAddParticipant() {
+    dispatch({
+      type: "ADD_EVENT_PARTICIPANT",
+      payload: {
+        organization_id: orgid,
+        event_id: eventItem.id,
+        username: addParticipant,
+        event_duty: newDuty,
+      },
+    });
+    setAddParticipant("");
+    setNewDuty("");
   }
 
   if (toggleEdit) {
@@ -68,23 +94,43 @@ function ScheduleCard({ eventItem, orgid }) {
         />
         <br />
         <input
+          placeholder="Username to add"
           type="text"
           name="addParticipant"
           value={addParticipant}
           onChange={(event) => setAddParticipant(event.target.value)}
         />
-        <button>Add Participant</button>
+        <input
+          placeholder="Participant Duty"
+          type="text"
+          name="newDuty"
+          value={newDuty}
+          onChange={(event) => setNewDuty(event.target.value)}
+        />
+        <button type="button" onClick={handleAddParticipant}>
+          Add Participant
+        </button>
         {participants?.map(
-          (item, index) =>
-            Number(item.event_id) === Number(eventItem.id) && (
-              <li key={index}>
-                {item.participant_info[0].first_name}{" "}
-                {item.participant_info[0].last_name}(
-                {item.participant_info[0].title_name})
-                {item.participant_info[0].ep_event_duty}
-                <button>Update</button>
-                <button>Delete</button>
-              </li>
+          (eventParticipants) =>
+            Number(eventParticipants.event_id) === Number(eventItem.id) &&
+            eventParticipants.participant_info.map(
+              (eventParticipant, index) =>
+                Number(eventParticipants.event_id) === Number(eventItem.id) && (
+                  <li key={index}>
+                    {eventParticipant.first_name} {eventParticipant.last_name}(
+                    {eventParticipant.title_name})
+                    {eventParticipant.ep_event_duty}
+                    <button type="button">Update</button>
+                    <button
+                      type="button"
+                      onClick={() =>
+                        handleDeleteParticipant(eventParticipant.ep_user_id)
+                      }
+                    >
+                      Delete
+                    </button>
+                  </li>
+                )
             )
         )}
         <button type="submit">Update Event</button>
@@ -99,18 +145,19 @@ function ScheduleCard({ eventItem, orgid }) {
         {`${eventItem.event_name} ${eventItem.event_description} ${eventItem.start_event}`}
         <br />
         {participants?.map(
-          (item, index) =>
-            Number(item.event_id) === Number(eventItem.id) && (
-              <li key={index}>
-                {item.participant_info[0].first_name}{" "}
-                {item.participant_info[0].last_name}(
-                {item.participant_info[0].title_name})
-                {item.participant_info[0].ep_event_duty}
-              </li>
+          (eventParticipants) =>
+            Number(eventParticipants.event_id) === Number(eventItem.id) &&
+            eventParticipants.participant_info.map(
+              (eventParticipant, index) => (
+                <li key={index}>
+                  {eventParticipant.first_name} {eventParticipant.last_name}(
+                  {eventParticipant.title_name}){eventParticipant.ep_event_duty}
+                </li>
+              )
             )
         )}
         <button onClick={() => setToggleEdit(true)}>Edit</button>
-        <button onClick={() => handleDelete(eventItem.id)}>Delete</button>
+        <button onClick={() => handleDeleteEvent(eventItem.id)}>Delete</button>
       </div>
     );
   }

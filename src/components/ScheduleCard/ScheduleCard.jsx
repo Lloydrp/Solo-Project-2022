@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import ScheduleUpdateParticipant from "../ScheduleUpdateParticipant/ScheduleUpdateParticipant";
 
 function ScheduleCard({ eventItem, orgid }) {
   const dispatch = useDispatch();
@@ -39,17 +40,6 @@ function ScheduleCard({ eventItem, orgid }) {
       payload: {
         id: id,
         organization_id: orgid,
-      },
-    });
-  }
-
-  function handleDeleteParticipant(id) {
-    dispatch({
-      type: "DELETE_EVENT_PARTICIPANT",
-      payload: {
-        organization_id: orgid,
-        event_id: eventItem.id,
-        user_id: id,
       },
     });
   }
@@ -116,20 +106,12 @@ function ScheduleCard({ eventItem, orgid }) {
             eventParticipants.participant_info.map(
               (eventParticipant, index) =>
                 Number(eventParticipants.event_id) === Number(eventItem.id) && (
-                  <li key={index}>
-                    {eventParticipant.first_name} {eventParticipant.last_name}(
-                    {eventParticipant.title_name})
-                    {eventParticipant.ep_event_duty}
-                    <button type="button">Update</button>
-                    <button
-                      type="button"
-                      onClick={() =>
-                        handleDeleteParticipant(eventParticipant.ep_user_id)
-                      }
-                    >
-                      Delete
-                    </button>
-                  </li>
+                  <ScheduleUpdateParticipant
+                    eventItem={eventItem}
+                    orgid={orgid}
+                    key={index}
+                    eventParticipant={eventParticipant}
+                  />
                 )
             )
         )}

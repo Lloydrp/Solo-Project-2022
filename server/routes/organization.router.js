@@ -116,7 +116,8 @@ router.post("/addparticipant", (req, res) => {
   const { username, event_duty, event_id } = req.body;
   const queryText = `INSERT INTO "events_participants" ("event_id", "user_id", "event_duty")
     SELECT $1, (SELECT "id" FROM "user" WHERE "username" = $2) , $3
-    WHERE NOT EXISTS (SELECT "event_id","user_id" FROM "events_participants" WHERE "events_participants"."event_id" = $1 AND "events_participants"."user_id" = (SELECT "id" FROM "user" WHERE "username" = $2))
+    WHERE NOT EXISTS (SELECT "event_id","user_id" FROM "events_participants"
+    WHERE "events_participants"."event_id" = $1 AND "events_participants"."user_id" = (SELECT "id" FROM "user" WHERE "username" = $2))
     RETURNING "id";`;
 
   pool

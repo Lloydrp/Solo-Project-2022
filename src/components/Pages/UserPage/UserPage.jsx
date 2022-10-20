@@ -17,15 +17,6 @@ function UserPage() {
     (item) => item.organization_id === params.orgid
   );
 
-  console.log("user :>> ", user);
-  console.log("organization :>> ", organization.is_admin);
-
-  console.log(
-    user.organization_array.find(
-      (item) => item.organization_id === params.orgid
-    )
-  );
-
   function handleChangeOrganization() {
     history.push("/choose");
   }
@@ -53,7 +44,7 @@ function UserPage() {
                 setToggleEditUser={setToggleEditUser}
               />
             ) : (
-              "Edit User Information"
+              !toggleEditOrganization && "Edit User Information"
             )}
           </div>
           <div onClick={() => setToggleEditOrganization(true)}>
@@ -63,7 +54,7 @@ function UserPage() {
                 setToggleEditOrganization={setToggleEditOrganization}
               />
             ) : (
-              "Edit Organization Information"
+              !toggleEditUser && "Edit Organization Information"
             )}
           </div>
         </section>
@@ -74,5 +65,4 @@ function UserPage() {
   );
 }
 
-// this allows us to use <App /> in index.js
 export default UserPage;

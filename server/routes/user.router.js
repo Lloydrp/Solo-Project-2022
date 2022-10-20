@@ -95,8 +95,8 @@ router.get("/choose/users/:orgid", rejectUnauthenticated, (req, res) => {
     'first_name',"user"."first_name",
     'last_name',"user"."last_name",
     'title', "user_account"."title_id")) AS "users"
-    FROM "organizations" 
-    JOIN "user_account" ON "organizations"."id" = "user_account"."organization_id" 
+    FROM "organizations"
+    JOIN "user_account" ON "organizations"."id" = "user_account"."organization_id"
     JOIN "user" ON "user"."id" = "user_account"."user_id"
     WHERE "organizations"."id" = $1
     GROUP BY "organizations"."id";`;
@@ -108,6 +108,32 @@ router.get("/choose/users/:orgid", rejectUnauthenticated, (req, res) => {
     })
     .catch((error) => {
       console.log("error caught in GET org users :>> ", error);
+    });
+});
+
+router.get("/checkusername/:newUsername", rejectUnauthenticated, (req, res) => {
+  const queryText = `SELECT "username" FROM "user" WHERE "username" = $1;`;
+
+  pool
+    .query(queryText, [req.params.newUsername])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("error caught in GET available username :>> ", error);
+    });
+});
+
+router.get("/checkemail/:newEmail", rejectUnauthenticated, (req, res) => {
+  const queryText = `SELECT "email" FROM "user" WHERE "email" = $1;`;
+
+  pool
+    .query(queryText, [req.params.newEmail])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("error caught in GET available email :>> ", error);
     });
 });
 

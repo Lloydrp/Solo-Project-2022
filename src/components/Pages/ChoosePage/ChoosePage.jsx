@@ -12,7 +12,7 @@ function ChoosePage() {
   function handleOrgSelect(orgid) {
     //Send GET for all info from organization or at least events
     dispatch({ type: "FETCH_ORGANIZATION", payload: { id: orgid } });
-    history.push(`/resources/${orgid}`);
+    history.push(`/schedule/${orgid}`);
   }
 
   function handleCreateOrg() {

@@ -1,8 +1,12 @@
 const express = require("express");
 const pool = require("../modules/pool");
 const router = express.Router();
+const {
+  rejectUnauthenticated,
+} = require("../modules/authentication-middleware");
+const { rejectNonAdmin } = require("../modules/authentication-admin");
 
-router.get("/types", (req, res) => {
+router.get("/types", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT * FROM "organizations_types";`;
 
   pool
@@ -15,7 +19,7 @@ router.get("/types", (req, res) => {
     });
 });
 
-router.get("/titles/:orgid", (req, res) => {
+router.get("/titles/:orgid", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT * FROM "titles" WHERE "organization_id" = $1;`;
 
   pool
@@ -28,7 +32,7 @@ router.get("/titles/:orgid", (req, res) => {
     });
 });
 
-router.get("/checkorgname/:newname", (req, res) => {
+router.get("/checkorgname/:newname", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT "name" FROM "organizations" WHERE "name" = $1;`;
 
   pool
@@ -41,7 +45,7 @@ router.get("/checkorgname/:newname", (req, res) => {
     });
 });
 
-router.get("/participants/:orgid", (req, res) => {
+router.get("/participants/:orgid", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT
     "events_participants"."event_id",
     json_agg(distinct jsonb_build_object(
@@ -77,7 +81,7 @@ router.get("/participants/:orgid", (req, res) => {
     });
 });
 
-router.post("/", (req, res) => {
+router.post("/", rejectUnauthenticated, (req, res) => {
   const queryText = `INSERT INTO "organizations" ("name", "type_id")
   VALUES ($1, $2) RETURNING "id";`;
 
@@ -102,7 +106,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.post("/addresource", (req, res) => {
+router.post("/addresource", rejectUnauthenticated, (req, res) => {
   const { file_name, file_url, type_id, user_id, organization_id } = req.body;
   const queryText = `INSERT INTO "resources" ("file_name", "file_url", "file_type", "user_id", "organization_id")
   VALUES ($1, $2, $3, $4, $5);`;
@@ -117,7 +121,7 @@ router.post("/addresource", (req, res) => {
     });
 });
 
-router.post("/addevent", (req, res) => {
+router.post("/addevent", rejectUnauthenticated, (req, res) => {
   const { event_name, event_description, start_event, organization_id } =
     req.body;
   const queryText = `INSERT INTO "events" ("event_name", "event_description", "start_event", "organization_id")
@@ -138,7 +142,7 @@ router.post("/addevent", (req, res) => {
     });
 });
 
-router.post("/addparticipant", (req, res) => {
+router.post("/addparticipant", rejectUnauthenticated, (req, res) => {
   const { username, event_duty, event_id } = req.body;
   const queryText = `INSERT INTO "events_participants" ("event_id", "user_id", "event_duty")
     SELECT $1, (SELECT "id" FROM "user" WHERE "username" = $2) , $3
@@ -157,7 +161,7 @@ router.post("/addparticipant", (req, res) => {
     });
 });
 
-router.post("/addtoorg", (req, res) => {
+router.post("/addtoorg", rejectUnauthenticated, (req, res) => {
   const { organization_id, title_id, newUser } = req.body;
   const queryText = `INSERT INTO "user_account" ("user_id", "organization_id", "title_id")
   VALUES ((SELECT "id" FROM "user" WHERE "username" = $1), $2, $3)
@@ -173,7 +177,7 @@ router.post("/addtoorg", (req, res) => {
     });
 });
 
-router.post("/addtitle", (req, res) => {
+router.post("/addtitle", rejectUnauthenticated, (req, res) => {
   const { newTitle, organization_id } = req.body;
   const queryText = `INSERT INTO "titles" ("title_name", "organization_id")
   VALUES ($1, $2);`;
@@ -188,7 +192,7 @@ router.post("/addtitle", (req, res) => {
     });
 });
 
-router.put("/events", (req, res) => {
+router.put("/events", rejectUnauthenticated, (req, res) => {
   const { id, event_name, event_description, start_event } = req.body;
   const queryText = `UPDATE "events"
     SET "event_name" = $1,
@@ -206,7 +210,7 @@ router.put("/events", (req, res) => {
     });
 });
 
-router.put("/updateparticipant", (req, res) => {
+router.put("/updateparticipant", rejectUnauthenticated, (req, res) => {
   const { event_id, user_id, event_duty } = req.body;
   const queryText = `UPDATE "events_participants"
     SET "event_duty" = $1
@@ -222,7 +226,7 @@ router.put("/updateparticipant", (req, res) => {
     });
 });
 
-router.delete("/deleteevent/:eventid", (req, res) => {
+router.delete("/deleteevent/:eventid", rejectUnauthenticated, (req, res) => {
   const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1;`;
 
   pool
@@ -244,46 +248,59 @@ router.delete("/deleteevent/:eventid", (req, res) => {
     });
 });
 
-router.delete("/deleteparticipant/:eventid/:participantid", (req, res) => {
-  const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1 AND "user_id" = $2;`;
+router.delete(
+  "/deleteparticipant/:eventid/:participantid",
+  rejectUnauthenticated,
+  (req, res) => {
+    const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1 AND "user_id" = $2;`;
 
-  pool
-    .query(queryText, [req.params.eventid, req.params.participantid])
-    .then((result) => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      console.log("error caught in DELETE event participant :>> ", error);
-    });
-});
+    pool
+      .query(queryText, [req.params.eventid, req.params.participantid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error caught in DELETE event participant :>> ", error);
+      });
+  }
+);
 
-router.delete("/removeuser/:orgid/:userid", (req, res) => {
-  const queryText = `DELETE FROM "user_account" WHERE "organization_id" = $1 AND "user_id" = $2;`;
+router.delete(
+  "/removeuser/:orgid/:userid",
+  rejectUnauthenticated,
+  (req, res) => {
+    const queryText = `DELETE FROM "user_account" WHERE "organization_id" = $1 AND "user_id" = $2;`;
 
-  pool
-    .query(queryText, [req.params.orgid, req.params.userid])
-    .then((result) => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      console.log("error caught in DELETE user from org :>> ", error);
-    });
-});
+    pool
+      .query(queryText, [req.params.orgid, req.params.userid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error caught in DELETE user from org :>> ", error);
+      });
+  }
+);
 
-router.delete("/removetitle/:titleid", (req, res) => {
-  const queryText = `DELETE FROM "titles" WHERE "id" = $1;`;
+router.delete(
+  "/removetitle/:orgid/:titleid",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const queryText = `DELETE FROM "titles" WHERE "id" = $1;`;
 
-  pool
-    .query(queryText, [req.params.titleid])
-    .then((result) => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      console.log("error caught in DELETE title :>> ", error);
-    });
-});
+    pool
+      .query(queryText, [req.params.titleid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error caught in DELETE title :>> ", error);
+      });
+  }
+);
 
-router.put("/changeorgname", (req, res) => {
+router.put("/changeorgname", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "organizations" SET "name" = $1 WHERE "id" = $2;`;
 
   pool
@@ -296,20 +313,25 @@ router.put("/changeorgname", (req, res) => {
     });
 });
 
-router.put("/changeorgtype", (req, res) => {
-  const queryText = `UPDATE "organizations" SET "type_id" = $1 WHERE "id" = $2;`;
+router.put(
+  "/changeorgtype",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const queryText = `UPDATE "organizations" SET "type_id" = $1 WHERE "id" = $2;`;
 
-  pool
-    .query(queryText, [req.body.newType, req.body.organization_id])
-    .then((result) => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      console.log("error caught in changeorgtype :>> ", error);
-    });
-});
+    pool
+      .query(queryText, [req.body.newType, req.body.organization_id])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error caught in changeorgtype :>> ", error);
+      });
+  }
+);
 
-router.put("/addadmin", (req, res) => {
+router.put("/addadmin", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "user_account" SET "is_admin" = 'true' WHERE "user_id" = (SELECT "id" FROM "user" WHERE "username" = $1) AND "organization_id" = $2;`;
 
   pool
@@ -322,7 +344,7 @@ router.put("/addadmin", (req, res) => {
     });
 });
 
-router.put("/removeadmin", (req, res) => {
+router.put("/removeadmin", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "user_account" SET "is_admin" = 'false' WHERE "user_id" = (SELECT "id" FROM "user" WHERE "username" = $1) AND "organization_id" = $2;`;
 
   pool

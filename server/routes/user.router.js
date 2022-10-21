@@ -114,7 +114,7 @@ router.get("/choose/users/:orgid", rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.get("/checkusername/:newUsername", rejectUnauthenticated, (req, res) => {
+router.get("/checkusername/:newUsername", (req, res) => {
   const queryText = `SELECT "username" FROM "user" WHERE "username" = $1;`;
 
   pool
@@ -127,7 +127,7 @@ router.get("/checkusername/:newUsername", rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.get("/checkemail/:newEmail", rejectUnauthenticated, (req, res) => {
+router.get("/checkemail/:newEmail", (req, res) => {
   const queryText = `SELECT "email" FROM "user" WHERE "email" = $1;`;
 
   pool
@@ -147,7 +147,7 @@ router.post("/logout", (req, res) => {
   res.sendStatus(200);
 });
 
-router.put("/changeusername", (req, res) => {
+router.put("/changeusername", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "user" SET "username" = $1 WHERE "id" = $2;`;
 
   pool
@@ -160,7 +160,7 @@ router.put("/changeusername", (req, res) => {
     });
 });
 
-router.put("/changeemail", (req, res) => {
+router.put("/changeemail", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "user" SET "email" = $1 WHERE "id" = $2;`;
 
   pool
@@ -173,7 +173,7 @@ router.put("/changeemail", (req, res) => {
     });
 });
 
-router.put("/changepassword", (req, res) => {
+router.put("/changepassword", rejectUnauthenticated, (req, res) => {
   const newPassword = encryptLib.encryptPassword(req.body.newPassword);
   const queryText = `UPDATE "user" SET "password" = $1 WHERE "id" = $2;`;
 

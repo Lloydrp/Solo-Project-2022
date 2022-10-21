@@ -354,7 +354,7 @@ function* removeTitle(action) {
     };
 
     yield axios.delete(
-      `/api/organization/removetitle/${action.payload.title_id}`,
+      `/api/organization/removetitle/${action.payload.organization_id}/${action.payload.title_id}`,
       config
     );
     yield put({

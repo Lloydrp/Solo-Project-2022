@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 function RegisterForm() {
@@ -7,6 +8,8 @@ function RegisterForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
+  const [usernameAvailable, setUsernameAvailable] = useState(false);
+  const [emailAvailable, setEmailAvailable] = useState(false);
   const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
 
@@ -24,6 +27,44 @@ function RegisterForm() {
       },
     });
   }; // end registerUser
+
+  useEffect(() => {
+    if (username) {
+      const delayDebounceFn = setTimeout(() => {
+        axios
+          .get(`/api/user/checkusername/${username}`)
+          .then((result) => {
+            result.data.length === 0
+              ? setUsernameAvailable(true)
+              : setUsernameAvailable(false);
+          })
+          .catch((error) => {
+            console.log("error caught in check username :>> ", error);
+          });
+      }, 500);
+
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [username]);
+
+  useEffect(() => {
+    if (email) {
+      const delayDebounceFn = setTimeout(() => {
+        axios
+          .get(`/api/user/checkemail/${email}`)
+          .then((result) => {
+            result.data.length === 0
+              ? setEmailAvailable(true)
+              : setEmailAvailable(false);
+          })
+          .catch((error) => {
+            console.log("error caught in check email :>> ", error);
+          });
+      }, 500);
+
+      return () => clearTimeout(delayDebounceFn);
+    }
+  }, [email]);
 
   return (
     <form className="formPanel" onSubmit={registerUser}>
@@ -43,6 +84,7 @@ function RegisterForm() {
           onChange={(event) => setUsername(event.target.value)}
         />
       </label>
+      {usernameAvailable ? "✔️ Available" : "❌ Unavailable"}
       <div>
         <label htmlFor="firstName">
           First Name:
@@ -78,6 +120,7 @@ function RegisterForm() {
             onChange={(event) => setEmail(event.target.value)}
           />
         </label>
+        {emailAvailable ? "✔️ Available" : "❌ Unavailable"}
       </div>
       <div>
         <label htmlFor="password">

@@ -6,7 +6,9 @@ import { useSelector } from "react-redux";
 function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   const dispatch = useDispatch();
   const orgTypes = useSelector((store) => store.organization.orgTypes);
+  const orgTitles = useSelector((store) => store.organization.orgTitles);
   const [changeOrganizationName, setChangeOrganizationName] = useState("");
+  const [addNewUser, setAddNewUser] = useState("");
   const [toggleOrganizationName, setToggleOrganizationName] = useState(false);
   const [toggleOrganizationType, setToggleOrganizationType] = useState(false);
   const [orgNameAvailable, setOrgNameAvailable] = useState(false);
@@ -50,6 +52,11 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   function handleOrgTypeCancel(event) {
     event.preventDefault();
     setToggleOrganizationType(false);
+  }
+
+  function handleAddUser(event) {
+    event.preventDefault();
+    //POST TO DB
   }
 
   useEffect(() => {
@@ -110,7 +117,9 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             <label htmlFor="changeOrgType">
               Change Organization Type:
               <select name="changeOrgType" id="changeOrgType">
-                <option value="1">Choose Organization Type</option>
+                <option value={organization.organization_type_id}>
+                  Choose Organization Type
+                </option>
                 {orgTypes.map((type, index) => (
                   <option key={index} value={type.id}>
                     {type.name}
@@ -126,6 +135,30 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             Change Organization Type
           </div>
         )}
+        Add User to Organization:
+        <form onSubmit={(event) => handleAddUser(event)}>
+          <label htmlFor="addNewUser">
+            Username to Add:
+            <input
+              type="text"
+              name="addNewUser"
+              value={addNewUser}
+              onChange={(event) => setAddNewUser(event.target.value)}
+            />
+          </label>
+          <label htmlFor="addNewTitle">
+            Add User Title:
+            <select name="addNewTitle" id="addNewTitle">
+              <option value={""}>Choose Title</option>
+              {orgTitles.map((type, index) => (
+                <option key={index} value={type.id}>
+                  {type.title_name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button>Add</button>
+        </form>
         <button onClick={() => setToggleEditOrganization(false)}>Cancel</button>
       </div>
     </>

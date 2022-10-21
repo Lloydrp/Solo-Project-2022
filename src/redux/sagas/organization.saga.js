@@ -52,6 +52,24 @@ function* fetchTypes(action) {
   }
 }
 
+function* fetchTitles(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    const results = yield axios.get(
+      `/api/organization/titles/${action.payload.organization_id}`,
+      config
+    );
+
+    yield put({ type: "SET_TITLES", payload: results.data });
+  } catch (error) {
+    console.log("error caught in fetchTitles:>> ", error);
+  }
+}
+
 function* createOrg(action) {
   try {
     const config = {
@@ -262,6 +280,7 @@ function* organizationSaga() {
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
   yield takeEvery("CREATE_ORGANIZATION", createOrg);
   yield takeEvery("FETCH_TYPES", fetchTypes);
+  yield takeEvery("FETCH_TITLES", fetchTitles);
   yield takeEvery("ADD_RESOURCE", addResource);
   yield takeEvery("ADD_EVENT", addEvent);
   yield takeEvery("UPDATE_EVENT", updateEvent);

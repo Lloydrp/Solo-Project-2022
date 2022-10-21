@@ -34,6 +34,12 @@ function UserPage() {
     }
 
     dispatch({ type: "FETCH_TYPES" });
+    dispatch({
+      type: "FETCH_TITLES",
+      payload: {
+        organization_id: organization.organization_id,
+      },
+    });
   }, []);
 
   return (

@@ -15,6 +15,19 @@ router.get("/types", (req, res) => {
     });
 });
 
+router.get("/titles/:orgid", (req, res) => {
+  const queryText = `SELECT * FROM "titles" WHERE "organization_id" = $1;`;
+
+  pool
+    .query(queryText, [req.params.orgid])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("error caught in GET titles :>> ", error);
+    });
+});
+
 router.get("/checkorgname/:newname", (req, res) => {
   const queryText = `SELECT "name" FROM "organizations" WHERE "name" = $1;`;
 

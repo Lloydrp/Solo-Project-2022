@@ -173,6 +173,21 @@ router.post("/addtoorg", (req, res) => {
     });
 });
 
+router.post("/addtitle", (req, res) => {
+  const { newTitle, organization_id } = req.body;
+  const queryText = `INSERT INTO "titles" ("title_name", "organization_id")
+  VALUES ($1, $2);`;
+
+  pool
+    .query(queryText, [newTitle, organization_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in POST add title :>> ", error);
+    });
+});
+
 router.put("/events", (req, res) => {
   const { id, event_name, event_description, start_event } = req.body;
   const queryText = `UPDATE "events"
@@ -252,6 +267,19 @@ router.delete("/removeuser/:orgid/:userid", (req, res) => {
     })
     .catch((error) => {
       console.log("error caught in DELETE user from org :>> ", error);
+    });
+});
+
+router.delete("/removetitle/:titleid", (req, res) => {
+  const queryText = `DELETE FROM "titles" WHERE "id" = $1;`;
+
+  pool
+    .query(queryText, [req.params.titleid])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in DELETE title :>> ", error);
     });
 });
 

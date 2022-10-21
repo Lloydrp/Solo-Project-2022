@@ -14,8 +14,11 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   const [changeOrganizationName, setChangeOrganizationName] = useState("");
   const [addNewUser, setAddNewUser] = useState("");
   const [addAdminStatus, setAddAdminStatus] = useState("");
+  const [addTitle, setAddTitle] = useState("");
   const [toggleOrganizationName, setToggleOrganizationName] = useState(false);
   const [toggleOrganizationType, setToggleOrganizationType] = useState(false);
+  const [toggleAddTitle, setToggleAddTitle] = useState(false);
+  const [toggleRemoveTitle, setToggleRemoveTitle] = useState(false);
   const [orgNameAvailable, setOrgNameAvailable] = useState(false);
 
   function handleOrgNameSubmit(event) {
@@ -115,6 +118,36 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
     });
   }
 
+  function handleAddTitleCancel(event) {
+    event.preventDefault();
+    setToggleAddTitle(false);
+  }
+
+  function handleAddTitle(event) {
+    event.preventDefault();
+
+    dispatch({
+      type: "ADD_TITLE",
+      payload: {
+        organization_id: organization.organization_id,
+        newTitle: addTitle,
+      },
+    });
+
+    setAddTitle("");
+    setToggleAddTitle(false);
+  }
+
+  function handleRemoveTitle(id) {
+    dispatch({
+      type: "REMOVE_TITLE",
+      payload: {
+        organization_id: organization.organization_id,
+        title_id: id,
+      },
+    });
+  }
+
   useEffect(() => {
     if (changeOrganizationName) {
       const delayDebounceFn = setTimeout(() => {
@@ -189,6 +222,46 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         ) : (
           <div onClick={() => setToggleOrganizationType(true)}>
             Change Organization Type
+          </div>
+        )}
+        {toggleAddTitle ? (
+          <form onSubmit={(event) => handleAddTitle(event)}>
+            <label htmlFor="addTitle">
+              Add Title:
+              <input
+                type="text"
+                name="addTitle"
+                value={addTitle}
+                onChange={(event) => setAddTitle(event.target.value)}
+              />
+            </label>
+            <button>Save</button>
+            <button onClick={handleAddTitleCancel}>Cancel</button>
+          </form>
+        ) : (
+          <div onClick={() => setToggleAddTitle(true)}>
+            Add Organization Title
+          </div>
+        )}
+        {toggleRemoveTitle ? (
+          <>
+            <ul>
+              {orgTitles.map((title, index) => (
+                <li key={index}>
+                  {title.title_name}
+                  <button onClick={() => handleRemoveTitle(title.id)}>
+                    Remove
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button type="button" onClick={() => setToggleRemoveTitle(false)}>
+              Done
+            </button>
+          </>
+        ) : (
+          <div onClick={() => setToggleRemoveTitle(true)}>
+            Remove Organization Title
           </div>
         )}
         Add User to Organization:

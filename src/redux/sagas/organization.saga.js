@@ -346,6 +346,43 @@ function* removeFromOrg(action) {
   }
 }
 
+function* removeTitle(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.delete(
+      `/api/organization/removetitle/${action.payload.title_id}`,
+      config
+    );
+    yield put({
+      type: "FETCH_TITLES",
+      payload: { organization_id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in removeTitle :>> ", error);
+  }
+}
+
+function* addTitle(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.post(`/api/organization/addtitle`, action.payload, config);
+    yield put({
+      type: "FETCH_TITLES",
+      payload: { organization_id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in addTitle :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -366,6 +403,8 @@ function* organizationSaga() {
   yield takeEvery("ADD_ADMIN_STATUS", addAdminStatus);
   yield takeEvery("REMOVE_ADMIN_STATUS", removeAdminStatus);
   yield takeEvery("REMOVE_FROM_ORG", removeFromOrg);
+  yield takeEvery("REMOVE_TITLE", removeTitle);
+  yield takeEvery("ADD_TITLE", addTitle);
 }
 
 export default organizationSaga;

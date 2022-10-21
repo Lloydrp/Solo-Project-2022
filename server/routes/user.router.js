@@ -170,4 +170,18 @@ router.put("/changeemail", (req, res) => {
     });
 });
 
+router.put("/changepassword", (req, res) => {
+  const newPassword = encryptLib.encryptPassword(req.body.newPassword);
+  const queryText = `UPDATE "user" SET "password" = $1 WHERE "id" = $2;`;
+
+  pool
+    .query(queryText, [newPassword, req.user.id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in PUT changepassword :>> ", error);
+    });
+});
+
 module.exports = router;

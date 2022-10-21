@@ -149,6 +149,7 @@ function UserEdit({ orgid, setToggleEditUser }) {
             <label htmlFor="changePassword">
               Change Password:
               <input
+                autoComplete="off"
                 type="text"
                 name="changePassword"
                 value={changePassword}

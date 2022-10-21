@@ -226,4 +226,17 @@ router.put("/changeorgname", (req, res) => {
     });
 });
 
+router.put("/changeorgtype", (req, res) => {
+  const queryText = `UPDATE "organizations" SET "type_id" = $1 WHERE "id" = $2;`;
+
+  pool
+    .query(queryText, [req.body.newType, req.body.organization_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in changeorgtype :>> ", error);
+    });
+});
+
 module.exports = router;

@@ -27,6 +27,14 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
 
   function handleOrgTypeSubmit(event) {
     event.preventDefault();
+
+    dispatch({
+      type: "CHANGE_ORGANIZATION_TYPE",
+      payload: {
+        newType: changeOrgType.value,
+        organization_id: organization.organization_id,
+      },
+    });
   }
 
   function handleOrganizationNameInput(event) {

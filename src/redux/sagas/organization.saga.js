@@ -241,6 +241,22 @@ function* changeOrganizationName(action) {
   }
 }
 
+function* changeOrganizationType(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.put("/api/organization/changeorgtype", action.payload, config);
+    yield put({
+      type: "FETCH_USER",
+    });
+  } catch (error) {
+    console.log("error caught in changeOrganizationType :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -255,6 +271,7 @@ function* organizationSaga() {
   yield takeEvery("ADD_EVENT_PARTICIPANT", addEventParticipant);
   yield takeEvery("UPDATE_PARTICIPANT", updateParticipant);
   yield takeEvery("CHANGE_ORGANIZATION_NAME", changeOrganizationName);
+  yield takeEvery("CHANGE_ORGANIZATION_TYPE", changeOrganizationType);
 }
 
 export default organizationSaga;

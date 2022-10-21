@@ -161,7 +161,7 @@ function* deleteEvent(action) {
     };
 
     yield axios.delete(
-      `/api/organization/deleteevent/${action.payload.id}`,
+      `/api/organization/deleteevent/${action.payload.organization_id}/${action.payload.id}`,
       config
     );
     yield put({
@@ -181,7 +181,7 @@ function* deleteEventParticipant(action) {
     };
 
     yield axios.delete(
-      `/api/organization/deleteparticipant/${action.payload.event_id}/${action.payload.user_id}`,
+      `/api/organization/deleteparticipant/${action.payload.organization_id}/${action.payload.event_id}/${action.payload.user_id}`,
       config
     );
     yield put({

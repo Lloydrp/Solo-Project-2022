@@ -1,6 +1,7 @@
 const pool = require("../modules/pool");
 
 const rejectNonAdmin = (req, res, next) => {
+  //Requires body.organization_id or params.orgid on all admin routes
   async function checkAdmin(body) {
     let adminAccess = false;
     if (Object.keys(body.body).length > 0) {

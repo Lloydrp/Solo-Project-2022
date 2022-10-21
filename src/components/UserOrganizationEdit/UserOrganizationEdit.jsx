@@ -70,6 +70,8 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         organization_id: organization.organization_id,
       },
     });
+
+    setAddNewUser("");
   }
 
   function handleAddAdmin(event) {
@@ -81,7 +83,23 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
     });
 
     if (event.nativeEvent.submitter.value === "add") {
+      dispatch({
+        type: "ADD_ADMIN_STATUS",
+        payload: {
+          newAdmin: addAdminStatus,
+          organization_id: organization.organization_id,
+        },
+      });
+      setAddAdminStatus("");
     } else if (event.nativeEvent.submitter.value === "remove") {
+      dispatch({
+        type: "REMOVE_ADMIN_STATUS",
+        payload: {
+          newAdmin: addAdminStatus,
+          organization_id: organization.organization_id,
+        },
+      });
+      setAddAdminStatus("");
     } else {
       console.log("Error in add/remove admin submission");
     }

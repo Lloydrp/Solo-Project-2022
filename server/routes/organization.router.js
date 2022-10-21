@@ -267,4 +267,30 @@ router.put("/changeorgtype", (req, res) => {
     });
 });
 
+router.put("/addadmin", (req, res) => {
+  const queryText = `UPDATE "user_account" SET "is_admin" = 'true' WHERE "user_id" = (SELECT "id" FROM "user" WHERE "username" = $1) AND "organization_id" = $2;`;
+
+  pool
+    .query(queryText, [req.body.newAdmin, req.body.organization_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in addAdmin :>> ", error);
+    });
+});
+
+router.put("/removeadmin", (req, res) => {
+  const queryText = `UPDATE "user_account" SET "is_admin" = 'false' WHERE "user_id" = (SELECT "id" FROM "user" WHERE "username" = $1) AND "organization_id" = $2;`;
+
+  pool
+    .query(queryText, [req.body.newAdmin, req.body.organization_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in addAdmin :>> ", error);
+    });
+});
+
 module.exports = router;

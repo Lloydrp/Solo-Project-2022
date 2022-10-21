@@ -292,6 +292,40 @@ function* addToOrganization(action) {
   }
 }
 
+function* addAdminStatus(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.put("/api/organization/addadmin", action.payload, config);
+    yield put({
+      type: "FETCH_ORG_USERS",
+      payload: { id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in updateAdmin :>> ", error);
+  }
+}
+
+function* removeAdminStatus(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.put("/api/organization/removeadmin", action.payload, config);
+    yield put({
+      type: "FETCH_ORG_USERS",
+      payload: { id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in removeAdmin :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -309,6 +343,8 @@ function* organizationSaga() {
   yield takeEvery("CHANGE_ORGANIZATION_NAME", changeOrganizationName);
   yield takeEvery("CHANGE_ORGANIZATION_TYPE", changeOrganizationType);
   yield takeEvery("ADD_TO_ORGANIZATION", addToOrganization);
+  yield takeEvery("ADD_ADMIN_STATUS", addAdminStatus);
+  yield takeEvery("REMOVE_ADMIN_STATUS", removeAdminStatus);
 }
 
 export default organizationSaga;

@@ -5,8 +5,10 @@ import Nav from "../../Nav/Nav";
 import { useHistory, useParams } from "react-router-dom";
 import UserEdit from "../../UserEdit/UserEdit";
 import UserOrganizationEdit from "../../UserOrganizationEdit/UserOrganizationEdit";
+import { useDispatch } from "react-redux";
 
 function UserPage() {
+  const dispatch = useDispatch();
   const user = useSelector((store) => store.user);
   const params = useParams();
   const history = useHistory();
@@ -16,6 +18,7 @@ function UserPage() {
   const organization = user.organization_array?.find(
     (item) => item.organization_id === params.orgid
   );
+  console.log("organization :>> ", organization);
 
   function handleChangeOrganization() {
     history.push("/choose");
@@ -29,6 +32,8 @@ function UserPage() {
     ) {
       history.replace("/choose");
     }
+
+    dispatch({ type: "FETCH_TYPES" });
   }, []);
 
   return (
@@ -47,11 +52,13 @@ function UserPage() {
           <div onClick={() => setToggleEditOrganization(true)}>
             {organization.is_admin && toggleEditOrganization ? (
               <UserOrganizationEdit
-                orgid={params.orgid}
+                organization={organization}
                 setToggleEditOrganization={setToggleEditOrganization}
               />
             ) : (
-              !toggleEditUser && "Edit Organization Information"
+              organization.is_admin &&
+              !toggleEditUser &&
+              "Edit Organization Information"
             )}
           </div>
         </section>

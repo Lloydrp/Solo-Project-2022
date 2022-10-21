@@ -15,6 +15,19 @@ router.get("/types", (req, res) => {
     });
 });
 
+router.get("/checkorgname/:newname", (req, res) => {
+  const queryText = `SELECT "name" FROM "organizations" WHERE "name" = $1;`;
+
+  pool
+    .query(queryText, [req.params.newname])
+    .then((result) => {
+      res.send(result.rows);
+    })
+    .catch((error) => {
+      console.log("error caught in GET checkorgname :>> ", error);
+    });
+});
+
 router.get("/participants/:orgid", (req, res) => {
   const queryText = `SELECT
     "events_participants"."event_id",
@@ -197,6 +210,19 @@ router.delete("/deleteparticipant/:eventid/:participantid", (req, res) => {
     })
     .catch((error) => {
       console.log("error caught in DELETE event participant :>> ", error);
+    });
+});
+
+router.put("/changeorgname", (req, res) => {
+  const queryText = `UPDATE "organizations" SET "name" = $1 WHERE "id" = $2;`;
+
+  pool
+    .query(queryText, [req.body.newName, req.body.organization_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in changeorgname :>> ", error);
     });
 });
 

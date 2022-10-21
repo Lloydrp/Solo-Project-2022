@@ -10,10 +10,10 @@ const router = express.Router();
 
 // Handles Ajax request for user information if user is authenticated
 router.get("/", rejectUnauthenticated, (req, res) => {
-  const queryText = `SELECT "user_account".* AS "id", "organizations"."name" AS "organization_name" from "user"
-    JOIN "user_account" ON "user"."id" = "user_account"."user_id"
-    JOIN "organizations" ON "organizations"."id" = "user_account"."organization_id" WHERE "user"."id" = $1
-    GROUP BY "organizations"."name", "user_account"."id";`;
+  const queryText = `SELECT "user_account".*, "organizations"."name" AS "organization_name", "organizations"."type_id" AS "organization_type_id" FROM "user"
+  JOIN "user_account" ON "user"."id" = "user_account"."user_id"
+  JOIN "organizations" ON "organizations"."id" = "user_account"."organization_id" WHERE "user"."id" = $1
+  GROUP BY "organizations"."name", "user_account"."id", "organizations"."type_id";`;
 
   pool
     .query(queryText, [req.user.id])

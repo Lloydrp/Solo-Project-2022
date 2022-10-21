@@ -7,8 +7,13 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   const dispatch = useDispatch();
   const orgTypes = useSelector((store) => store.organization.orgTypes);
   const orgTitles = useSelector((store) => store.organization.orgTitles);
+  const unsortedOrgUsers = useSelector((store) => store.organization.orgUsers);
+  const orgUsers = unsortedOrgUsers.sort((userOne, userTwo) =>
+    userOne.is_admin === userTwo.is_admin ? 0 : userOne.is_admin ? -1 : 1
+  );
   const [changeOrganizationName, setChangeOrganizationName] = useState("");
   const [addNewUser, setAddNewUser] = useState("");
+  const [addAdminStatus, setAddAdminStatus] = useState("");
   const [toggleOrganizationName, setToggleOrganizationName] = useState(false);
   const [toggleOrganizationType, setToggleOrganizationType] = useState(false);
   const [orgNameAvailable, setOrgNameAvailable] = useState(false);
@@ -56,7 +61,30 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
 
   function handleAddUser(event) {
     event.preventDefault();
-    //POST TO DB
+
+    dispatch({
+      type: "ADD_TO_ORGANIZATION",
+      payload: {
+        newUser: addNewUser,
+        title_id: addNewTitle.value === "null" ? null : addNewTitle.value,
+        organization_id: organization.organization_id,
+      },
+    });
+  }
+
+  function handleAddAdmin(event) {
+    event.preventDefault();
+
+    console.log({
+      newAdmin: addAdminStatus,
+      organization_id: organization.organization_id,
+    });
+
+    if (event.nativeEvent.submitter.value === "add") {
+    } else if (event.nativeEvent.submitter.value === "remove") {
+    } else {
+      console.log("Error in add/remove admin submission");
+    }
   }
 
   useEffect(() => {
@@ -149,7 +177,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           <label htmlFor="addNewTitle">
             Add User Title:
             <select name="addNewTitle" id="addNewTitle">
-              <option value={""}>Choose Title</option>
+              <option value="null">Choose Title</option>
               {orgTitles.map((type, index) => (
                 <option key={index} value={type.id}>
                   {type.title_name}
@@ -159,6 +187,35 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           </label>
           <button>Add</button>
         </form>
+        <form onSubmit={(event) => handleAddAdmin(event)}>
+          <label htmlFor="addAdminStatus">
+            Admin Access:
+            <input
+              placeholder="Enter username"
+              type="text"
+              name="addAdminStatus"
+              value={addAdminStatus}
+              onChange={(event) => setAddAdminStatus(event.target.value)}
+            />
+          </label>
+          <button value="add" name="addAdmin">
+            Add
+          </button>
+          <button value="remove" name="removeAdmin">
+            Remove
+          </button>
+        </form>
+        <div>
+          <p>Organization users:</p>
+          {orgUsers.map((user, index) => (
+            <li key={index}>
+              {user.first_name} {user.last_name}{" "}
+              {user.title ? user.title : "No Title"}{" "}
+              {user.is_admin ? "Admin" : ""}
+              <button>Remove</button>
+            </li>
+          ))}
+        </div>
         <button onClick={() => setToggleEditOrganization(false)}>Cancel</button>
       </div>
     </>

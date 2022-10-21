@@ -157,6 +157,21 @@ router.post("/addparticipant", (req, res) => {
     });
 });
 
+router.post("/addtoorg", (req, res) => {
+  const { organization_id, title_id, newUser } = req.body;
+  const queryText = `INSERT INTO "user_account" ("user_id", "organization_id", "title_id")
+  VALUES ((SELECT "id" FROM "user" WHERE "username" = $1), $2, $3);`;
+
+  pool
+    .query(queryText, [newUser, organization_id, title_id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in POST add user to org :>> ", error);
+    });
+});
+
 router.put("/events", (req, res) => {
   const { id, event_name, event_description, start_event } = req.body;
   const queryText = `UPDATE "events"

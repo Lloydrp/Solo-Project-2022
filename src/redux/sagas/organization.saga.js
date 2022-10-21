@@ -275,6 +275,23 @@ function* changeOrganizationType(action) {
   }
 }
 
+function* addToOrganization(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.post("/api/organization/addtoorg", action.payload, config);
+    yield put({
+      type: "FETCH_ORG_USERS",
+      payload: { id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in addToOrg :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -291,6 +308,7 @@ function* organizationSaga() {
   yield takeEvery("UPDATE_PARTICIPANT", updateParticipant);
   yield takeEvery("CHANGE_ORGANIZATION_NAME", changeOrganizationName);
   yield takeEvery("CHANGE_ORGANIZATION_TYPE", changeOrganizationType);
+  yield takeEvery("ADD_TO_ORGANIZATION", addToOrganization);
 }
 
 export default organizationSaga;

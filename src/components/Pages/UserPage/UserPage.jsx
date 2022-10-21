@@ -40,6 +40,10 @@ function UserPage() {
         organization_id: organization.organization_id,
       },
     });
+    dispatch({
+      type: "FETCH_ORG_USERS",
+      payload: { id: organization.organization_id },
+    });
   }, []);
 
   return (

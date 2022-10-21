@@ -160,7 +160,8 @@ router.post("/addparticipant", (req, res) => {
 router.post("/addtoorg", (req, res) => {
   const { organization_id, title_id, newUser } = req.body;
   const queryText = `INSERT INTO "user_account" ("user_id", "organization_id", "title_id")
-  VALUES ((SELECT "id" FROM "user" WHERE "username" = $1), $2, $3);`;
+  VALUES ((SELECT "id" FROM "user" WHERE "username" = $1), $2, $3)
+  ON CONFLICT ("user_id", "organization_id") DO NOTHING;`;
 
   pool
     .query(queryText, [newUser, organization_id, title_id])

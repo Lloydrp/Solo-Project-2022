@@ -3,7 +3,6 @@ function UserOrganizationEdit({ orgid, setToggleEditOrganization }) {
     <>
       <div onClick={(event) => event.stopPropagation()}>
         <h2>Organization Edit Screen</h2>
-        <button>Save</button>
         <button onClick={() => setToggleEditOrganization(false)}>Cancel</button>
       </div>
     </>

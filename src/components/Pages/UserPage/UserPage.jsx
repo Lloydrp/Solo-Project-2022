@@ -39,10 +39,7 @@ function UserPage() {
         <section className="org-container">
           <div onClick={() => setToggleEditUser(true)}>
             {toggleEditUser ? (
-              <UserEdit
-                orgid={params.orgid}
-                setToggleEditUser={setToggleEditUser}
-              />
+              <UserEdit setToggleEditUser={setToggleEditUser} />
             ) : (
               !toggleEditOrganization && "Edit User Information"
             )}

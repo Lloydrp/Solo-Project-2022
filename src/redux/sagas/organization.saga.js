@@ -197,6 +197,9 @@ function* addEventParticipant(action) {
       alert("User already a participant!");
     }
   } catch (error) {
+    alert(
+      "Error adding participant. Please verify the user is a part of the organization."
+    );
     console.log("error caught in addEventParticipant :>> ", error);
   }
 }

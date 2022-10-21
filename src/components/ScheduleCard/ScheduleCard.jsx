@@ -11,7 +11,7 @@ function ScheduleCard({ eventItem, orgid }) {
   const [toggleEdit, setToggleEdit] = useState(false);
   const [eventName, setEventName] = useState(eventItem.event_name);
   const [eventDescription, setEventDescription] = useState(
-    eventItem.event_description
+    eventItem.event_description || ""
   );
   const [eventDate, setEventDate] = useState(eventItem.start_event);
   const [addParticipant, setAddParticipant] = useState("");

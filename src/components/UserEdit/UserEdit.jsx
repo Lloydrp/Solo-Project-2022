@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
-function UserEdit({ orgid, setToggleEditUser }) {
+function UserEdit({ setToggleEditUser }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [toggleUsername, setToggleUsername] = useState(false);

@@ -106,20 +106,31 @@ router.post("/", rejectUnauthenticated, (req, res) => {
     });
 });
 
-router.post("/addresource", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
-  const { file_name, file_url, type_id, user_id, organization_id } = req.body;
-  const queryText = `INSERT INTO "resources" ("file_name", "file_url", "file_type", "user_id", "organization_id")
+router.post(
+  "/addresource",
+  rejectNonAdmin,
+  rejectUnauthenticated,
+  (req, res) => {
+    const { file_name, file_url, type_id, user_id, organization_id } = req.body;
+    const queryText = `INSERT INTO "resources" ("file_name", "file_url", "file_type", "user_id", "organization_id")
   VALUES ($1, $2, $3, $4, $5);`;
 
-  pool
-    .query(queryText, [file_name, file_url, type_id, user_id, organization_id])
-    .then((result) => {
-      res.sendStatus(200);
-    })
-    .catch((error) => {
-      console.log("error caught in POST add resource :>> ", error);
-    });
-});
+    pool
+      .query(queryText, [
+        file_name,
+        file_url,
+        type_id,
+        user_id,
+        organization_id,
+      ])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error caught in POST add resource :>> ", error);
+      });
+  }
+);
 
 router.post("/addevent", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
   const { event_name, event_description, start_event, organization_id } =
@@ -142,24 +153,29 @@ router.post("/addevent", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
     });
 });
 
-router.post("/addparticipant", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
-  const { username, event_duty, event_id } = req.body;
-  const queryText = `INSERT INTO "events_participants" ("event_id", "user_id", "event_duty")
+router.post(
+  "/addparticipant",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const { username, event_duty, event_id } = req.body;
+    const queryText = `INSERT INTO "events_participants" ("event_id", "user_id", "event_duty")
     SELECT $1, (SELECT "id" FROM "user" WHERE "username" = $2) , $3
     WHERE NOT EXISTS (SELECT "event_id","user_id" FROM "events_participants"
     WHERE "events_participants"."event_id" = $1 AND "events_participants"."user_id" = (SELECT "id" FROM "user" WHERE "username" = $2))
     RETURNING "id";`;
 
-  pool
-    .query(queryText, [event_id, username, event_duty])
-    .then((result) => {
-      res.send(result.rows).status(200);
-    })
-    .catch((error) => {
-      res.sendStatus(404);
-      console.log("error caught in POST add participant :>> ", error);
-    });
-});
+    pool
+      .query(queryText, [event_id, username, event_duty])
+      .then((result) => {
+        res.send(result.rows).status(200);
+      })
+      .catch((error) => {
+        res.sendStatus(404);
+        console.log("error caught in POST add participant :>> ", error);
+      });
+  }
+);
 
 router.post("/addtoorg", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
   const { organization_id, title_id, newUser } = req.body;

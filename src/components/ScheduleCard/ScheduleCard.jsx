@@ -8,6 +8,10 @@ function ScheduleCard({ eventItem, orgid }) {
   const participants = useSelector(
     (store) => store.organization.eventParticipants
   );
+  const user = useSelector((store) => store.user);
+  const userOrganization = user.organization_array?.find(
+    (item) => item.organization_id === orgid
+  );
   const [toggleEdit, setToggleEdit] = useState(false);
   const [eventName, setEventName] = useState(eventItem.event_name);
   const [eventDescription, setEventDescription] = useState(
@@ -138,8 +142,14 @@ function ScheduleCard({ eventItem, orgid }) {
               )
             )
         )}
-        <button onClick={() => setToggleEdit(true)}>Edit</button>
-        <button onClick={() => handleDeleteEvent(eventItem.id)}>Delete</button>
+        {userOrganization.is_admin && (
+          <>
+            <button onClick={() => setToggleEdit(true)}>Edit</button>
+            <button onClick={() => handleDeleteEvent(eventItem.id)}>
+              Delete
+            </button>
+          </>
+        )}
       </div>
     );
   }

@@ -10,6 +10,9 @@ function SchedulePage() {
   const organization = useSelector((store) => store.organization);
   const user = useSelector((store) => store.user);
   const params = useParams();
+  const userOrganization = user.organization_array?.find(
+    (item) => item.organization_id === params.orgid
+  );
   const history = useHistory();
   const dispatch = useDispatch();
   const [toggleModal, setToggleModal] = useState(false);
@@ -57,7 +60,9 @@ function SchedulePage() {
           </ul>
         </nav>
         <div className="org-sub-container">
-          <button onClick={handleAddEvent}>Add Event</button>
+          {userOrganization.is_admin && (
+            <button onClick={handleAddEvent}>Add Event</button>
+          )}
           <nav>
             <ul className="org-nav">{"Optional Nav for Filtering"}</ul>
           </nav>

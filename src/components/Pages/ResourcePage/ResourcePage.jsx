@@ -7,8 +7,11 @@ import Nav from "../../Nav/Nav";
 
 function ResourcePage() {
   const organization = useSelector((store) => store.organization);
-  const user = useSelector((store) => store.user);
   const params = useParams();
+  const user = useSelector((store) => store.user);
+  const userOrganization = user.organization_array?.find(
+    (item) => item.organization_id === params.orgid
+  );
   const history = useHistory();
   const dispatch = useDispatch();
   // File_types are 0 for file, 1 for links, and 2 for images. 3 is default for all files
@@ -49,7 +52,10 @@ function ResourcePage() {
       <Nav orgid={params.orgid} />
       <section className="org-container">
         <nav>
-          <button onClick={handleAddResource}>Add Resource</button>
+          {userOrganization.is_admin && (
+            <button onClick={handleAddResource}>Add Resource</button>
+          )}
+
           <br />
           <input type="text" placeholder="Search" />
           <ul>

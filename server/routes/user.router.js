@@ -144,4 +144,17 @@ router.post("/logout", (req, res) => {
   res.sendStatus(200);
 });
 
+router.put("/changeusername", (req, res) => {
+  const queryText = `UPDATE "user" SET "username" = $1 WHERE "id" = $2;`;
+
+  pool
+    .query(queryText, [req.body.newUsername, req.user.id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in PUT changeusername :>> ", error);
+    });
+});
+
 module.exports = router;

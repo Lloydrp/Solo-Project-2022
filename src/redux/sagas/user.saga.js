@@ -24,8 +24,23 @@ function* fetchUser() {
   }
 }
 
+function* changeUsername(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.put("/api/user/changeusername", action.payload, config);
+    yield put({ type: "FETCH_USER" });
+  } catch (error) {
+    console.log("error caught in changeUsername :>> ", error);
+  }
+}
+
 function* userSaga() {
   yield takeLatest("FETCH_USER", fetchUser);
+  yield takeEvery("CHANGE_USERNAME", changeUsername);
 }
 
 export default userSaga;

@@ -15,6 +15,15 @@ function UserEdit({ orgid, setToggleEditUser }) {
 
   function handleSubmitUsername(event) {
     event.preventDefault();
+
+    dispatch({
+      type: "CHANGE_USERNAME",
+      payload: {
+        newUsername: changeUsername,
+      },
+    });
+
+    setChangeUsername("");
   }
   function handleSubmitPassword(event) {
     event.preventDefault();
@@ -27,56 +36,64 @@ function UserEdit({ orgid, setToggleEditUser }) {
     setChangeUsername(event.target.value);
     setUsernameAvailable(false);
   }
+
   function handleEmailInput(event) {
     setChangeEmail(event.target.value);
     setEmailAvailable(false);
   }
 
-  function handleUsernameCancel() {
+  function handleUsernameCancel(event) {
+    event.preventDefault();
     setToggleUsername(false);
     setChangeUsername("");
   }
-  function handlePasswordCancel() {
+  function handlePasswordCancel(event) {
+    event.preventDefault();
     setTogglePassword(false);
     setChangePassword("");
   }
-  function handleEmailCancel() {
+  function handleEmailCancel(event) {
+    event.preventDefault();
     setToggleEmail(false);
     setChangeEmail("");
   }
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      axios
-        .get(`/api/user/checkusername/${changeUsername}`)
-        .then((result) => {
-          result.data.length === 0
-            ? setUsernameAvailable(true)
-            : setUsernameAvailable(false);
-        })
-        .catch((error) => {
-          console.log("error caught in check username :>> ", error);
-        });
-    }, 500);
+    if (changeUsername) {
+      const delayDebounceFn = setTimeout(() => {
+        axios
+          .get(`/api/user/checkusername/${changeUsername}`)
+          .then((result) => {
+            result.data.length === 0
+              ? setUsernameAvailable(true)
+              : setUsernameAvailable(false);
+          })
+          .catch((error) => {
+            console.log("error caught in check username :>> ", error);
+          });
+      }, 500);
 
-    return () => clearTimeout(delayDebounceFn);
+      return () => clearTimeout(delayDebounceFn);
+    }
   }, [changeUsername]);
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      axios
-        .get(`/api/user/checkemail/${changeEmail}`)
-        .then((result) => {
-          result.data.length === 0
-            ? setEmailAvailable(true)
-            : setEmailAvailable(false);
-        })
-        .catch((error) => {
-          console.log("error caught in check username :>> ", error);
-        });
-    }, 500);
+    if (changeEmail) {
+      const delayDebounceFn = setTimeout(() => {
+        axios
+          .get(`/api/user/checkemail/${changeEmail}`)
+          .then((result) => {
+            result.data.length === 0
+              ? setEmailAvailable(true)
+              : setEmailAvailable(false);
+          })
+          .catch((error) => {
+            console.log("error caught in check username :>> ", error);
+          });
+      }, 500);
 
-    return () => clearTimeout(delayDebounceFn);
+      return () => clearTimeout(delayDebounceFn);
+    }
   }, [changeEmail]);
 
   return (

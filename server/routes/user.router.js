@@ -157,4 +157,17 @@ router.put("/changeusername", (req, res) => {
     });
 });
 
+router.put("/changeemail", (req, res) => {
+  const queryText = `UPDATE "user" SET "email" = $1 WHERE "id" = $2;`;
+
+  pool
+    .query(queryText, [req.body.newEmail, req.user.id])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in PUT changeemail :>> ", error);
+    });
+});
+
 module.exports = router;

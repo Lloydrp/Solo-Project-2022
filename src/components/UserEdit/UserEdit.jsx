@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 function UserEdit({ orgid, setToggleEditUser }) {
+  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [toggleUsername, setToggleUsername] = useState(false);
   const [togglePassword, setTogglePassword] = useState(false);
@@ -25,11 +27,31 @@ function UserEdit({ orgid, setToggleEditUser }) {
 
     setChangeUsername("");
   }
+
   function handleSubmitPassword(event) {
     event.preventDefault();
+
+    dispatch({
+      type: "CHANGE_PASSWORD",
+      payload: {
+        newPassword: changePassword,
+      },
+    });
+
+    setChangePassword("");
   }
+
   function handleSubmitEmail(event) {
     event.preventDefault();
+
+    dispatch({
+      type: "CHANGE_EMAIL",
+      payload: {
+        newEmail: changeEmail,
+      },
+    });
+
+    setChangeEmail("");
   }
 
   function handleUsernameInput(event) {
@@ -100,6 +122,7 @@ function UserEdit({ orgid, setToggleEditUser }) {
     <>
       <div onClick={(event) => event.stopPropagation()}>
         <h2>User Edit Screen</h2>
+        Current Username: {user.username}
         {toggleUsername ? (
           <form onSubmit={handleSubmitUsername}>
             <label htmlFor="changeUsername">
@@ -139,6 +162,7 @@ function UserEdit({ orgid, setToggleEditUser }) {
           <div onClick={() => setTogglePassword(true)}>Change Password</div>
         )}
         <br />
+        Current Email: {user.email}
         {toggleEmail ? (
           <form onSubmit={handleSubmitEmail}>
             <label htmlFor="changeEmail">

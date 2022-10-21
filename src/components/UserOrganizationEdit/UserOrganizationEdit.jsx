@@ -311,7 +311,11 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           {orgUsers.map((user, index) => (
             <li key={index}>
               {user.first_name} {user.last_name} {user.username}
-              {user.title ? user.title : "No Title"}{" "}
+              {user.title
+                ? orgTitles[
+                    orgTitles.findIndex((title) => title.id === user.title)
+                  ]?.title_name
+                : "No Title"}
               {user.is_admin ? "Admin" : ""}
               <button onClick={() => handleRemoveFromOrg(user.user_id)}>
                 Remove

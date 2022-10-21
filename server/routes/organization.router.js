@@ -241,6 +241,19 @@ router.delete("/deleteparticipant/:eventid/:participantid", (req, res) => {
     });
 });
 
+router.delete("/removeuser/:orgid/:userid", (req, res) => {
+  const queryText = `DELETE FROM "user_account" WHERE "organization_id" = $1 AND "user_id" = $2;`;
+
+  pool
+    .query(queryText, [req.params.orgid, req.params.userid])
+    .then((result) => {
+      res.sendStatus(200);
+    })
+    .catch((error) => {
+      console.log("error caught in DELETE user from org :>> ", error);
+    });
+});
+
 router.put("/changeorgname", (req, res) => {
   const queryText = `UPDATE "organizations" SET "name" = $1 WHERE "id" = $2;`;
 

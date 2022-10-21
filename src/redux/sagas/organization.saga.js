@@ -326,6 +326,26 @@ function* removeAdminStatus(action) {
   }
 }
 
+function* removeFromOrg(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.delete(
+      `/api/organization/removeuser/${action.payload.organization_id}/${action.payload.user_id}`,
+      config
+    );
+    yield put({
+      type: "FETCH_ORG_USERS",
+      payload: { id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in removeUser :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -345,6 +365,7 @@ function* organizationSaga() {
   yield takeEvery("ADD_TO_ORGANIZATION", addToOrganization);
   yield takeEvery("ADD_ADMIN_STATUS", addAdminStatus);
   yield takeEvery("REMOVE_ADMIN_STATUS", removeAdminStatus);
+  yield takeEvery("REMOVE_FROM_ORG", removeFromOrg);
 }
 
 export default organizationSaga;

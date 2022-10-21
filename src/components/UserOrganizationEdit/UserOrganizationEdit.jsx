@@ -105,6 +105,16 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
     }
   }
 
+  function handleRemoveFromOrg(id) {
+    dispatch({
+      type: "REMOVE_FROM_ORG",
+      payload: {
+        user_id: id,
+        organization_id: organization.organization_id,
+      },
+    });
+  }
+
   useEffect(() => {
     if (changeOrganizationName) {
       const delayDebounceFn = setTimeout(() => {
@@ -227,10 +237,12 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           <p>Organization users:</p>
           {orgUsers.map((user, index) => (
             <li key={index}>
-              {user.first_name} {user.last_name}{" "}
+              {user.first_name} {user.last_name} {user.username}
               {user.title ? user.title : "No Title"}{" "}
               {user.is_admin ? "Admin" : ""}
-              <button>Remove</button>
+              <button onClick={() => handleRemoveFromOrg(user.user_id)}>
+                Remove
+              </button>
             </li>
           ))}
         </div>

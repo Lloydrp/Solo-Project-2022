@@ -95,7 +95,9 @@ router.get("/choose/users/:orgid", rejectUnauthenticated, (req, res) => {
     'first_name',"user"."first_name",
     'last_name',"user"."last_name",
     'title', "user_account"."title_id",
-    'is_admin', "user_account"."is_admin")) AS "users"
+    'is_admin', "user_account"."is_admin",
+    'username', "user"."username",
+    'user_id', "user_account"."user_id")) AS "users"
     FROM "organizations"
     JOIN "user_account" ON "organizations"."id" = "user_account"."organization_id"
     JOIN "user" ON "user"."id" = "user_account"."user_id"

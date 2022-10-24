@@ -50,7 +50,9 @@ function CreateOrganization() {
         </select>
         <br />
         <button>Create</button>
-        <button>Cancel</button>
+        <button type="button" onClick={() => history.replace("/choose")}>
+          Cancel
+        </button>
       </form>
     </main>
   );

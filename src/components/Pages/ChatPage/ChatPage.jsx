@@ -6,7 +6,6 @@ import Nav from "../../Nav/Nav";
 import ChatWrapper from "../../ChatComponents/ChatWrapper";
 
 function ChatPage({ socket }) {
-  const organization = useSelector((store) => store.organization);
   const user = useSelector((store) => store.user);
   const params = useParams();
   const history = useHistory();
@@ -22,6 +21,13 @@ function ChatPage({ socket }) {
     }
 
     dispatch({ type: "FETCH_ORGANIZATION", payload: { id: params.orgid } });
+
+    socket.emit("newUser", {
+      user: user.id,
+      full_name: `${user.first_name} ${user.last_name}`,
+      organization_id: params.orgid,
+      socketID: socket.id,
+    });
   }, []);
 
   return (

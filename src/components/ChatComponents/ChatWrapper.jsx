@@ -11,8 +11,6 @@ function ChatPage({ socket, orgid }) {
   const [typingStatus, setTypingStatus] = useState("");
   const lastMessageRef = useRef(null);
 
-  console.log("messages :>> ", messages);
-
   useEffect(() => {
     dispatch({
       type: "FETCH_MESSAGES",

@@ -48,6 +48,7 @@ socketIO.on("connection", (socket) => {
   //Listens when a new user joins the server
   socket.on("newUser", (data) => {
     //Adds the new user to the list of users
+    console.log("data :>> ", data);
     chatUsers.push(data);
     // console.log(chatUsers);
     //Sends the list of users to the client

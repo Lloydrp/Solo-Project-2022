@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
-  const history = useHistory();
   const user = useSelector((store) => store.user);
 
   return (

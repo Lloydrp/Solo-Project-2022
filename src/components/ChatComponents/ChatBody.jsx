@@ -1,38 +1,31 @@
 import React from "react";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
   const history = useHistory();
-
-  const handleLeaveChat = () => {
-    localStorage.removeItem("userName");
-    history.push("/");
-    window.location.reload();
-  };
+  const user = useSelector((store) => store.user);
 
   return (
     <>
       <header className="chat__mainHeader">
-        <p>Hangout with Colleagues</p>
-        <button className="leaveChat__btn" onClick={handleLeaveChat}>
-          LEAVE CHAT
-        </button>
+        <p>Organization Chat</p>
       </header>
 
       <div className="message__container">
         {messages.map((message) =>
-          message.name === localStorage.getItem("userName") ? (
+          Number(message.user_sent_id) === Number(user.id) ? (
             <div className="message__chats" key={message.id}>
               <p className="sender__name">You</p>
               <div className="message__sender">
-                <p>{message.text}</p>
+                <p>{message.message}</p>
               </div>
             </div>
           ) : (
             <div className="message__chats" key={message.id}>
               <p>{message.name}</p>
               <div className="message__recipient">
-                <p>{message.text}</p>
+                <p>{message.message}</p>
               </div>
             </div>
           )

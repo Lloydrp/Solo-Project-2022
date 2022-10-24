@@ -1,12 +1,26 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import ChatBar from "../ChatComponents/ChatBar";
 import ChatBody from "../ChatComponents/ChatBody";
 import ChatFooter from "../ChatComponents/ChatFooter";
 
-function ChatPage({ socket }) {
-  const [messages, setMessages] = useState([]);
+function ChatPage({ socket, orgid }) {
+  const dispatch = useDispatch();
+  const messages = useSelector((store) => store.messages);
   const [typingStatus, setTypingStatus] = useState("");
   const lastMessageRef = useRef(null);
+
+  console.log("messages :>> ", messages);
+
+  useEffect(() => {
+    dispatch({
+      type: "FETCH_MESSAGES",
+      payload: {
+        organization_id: orgid,
+      },
+    });
+  }, []);
 
   useEffect(() => {
     socket.on("messageResponse", (data) => setMessages([...messages, data]));

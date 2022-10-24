@@ -27,7 +27,7 @@ function ChatPage({ socket }) {
   return (
     <>
       <Nav orgid={params.orgid} />
-      <ChatWrapper socket={socket} />
+      <ChatWrapper socket={socket} orgid={params.orgid} />
     </>
   );
 }

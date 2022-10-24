@@ -1,17 +1,20 @@
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
-const ChatFooter = ({ socket }) => {
+const ChatFooter = ({ socket, orgid }) => {
+  const user = useSelector((store) => store.user);
   const [message, setMessage] = useState("");
 
   const handleTyping = () =>
-    socket.emit("typing", `${localStorage.getItem("userName")} is typing`);
+    socket.emit("typing", `${user.first_name} ${user.last_name} is typing`);
 
-  const handleSendMessage = (e) => {
-    e.preventDefault();
-    if (message.trim() && localStorage.getItem("userName")) {
+  const handleSendMessage = (event) => {
+    event.preventDefault();
+    if (message.trim() && user.id) {
       socket.emit("message", {
-        text: message,
-        name: localStorage.getItem("userName"),
+        message: message,
+        user_sent_id: user.id,
+        organization_id: orgid,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,
       });

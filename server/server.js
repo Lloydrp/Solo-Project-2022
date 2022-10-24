@@ -40,6 +40,7 @@ socketIO.on("connection", (socket) => {
 
   //Listens and logs the message to the console
   socket.on("message", (data) => {
+    //FIGURE OUT HOW TO SEND TO DB HERE?
     socketIO.emit("messageResponse", data);
   });
 

@@ -21,7 +21,14 @@ function ChatPage({ socket, orgid }) {
   }, []);
 
   useEffect(() => {
-    socket.on("messageResponse", (data) => setMessages([...messages, data]));
+    socket.on("messageResponse", () =>
+      dispatch({
+        type: "FETCH_MESSAGES",
+        payload: {
+          organization_id: orgid,
+        },
+      })
+    );
   }, [socket, messages]);
 
   useEffect(() => {
@@ -42,7 +49,7 @@ function ChatPage({ socket, orgid }) {
           typingStatus={typingStatus}
           lastMessageRef={lastMessageRef}
         />
-        <ChatFooter socket={socket} />
+        <ChatFooter socket={socket} orgid={orgid} />
       </div>
     </div>
   );

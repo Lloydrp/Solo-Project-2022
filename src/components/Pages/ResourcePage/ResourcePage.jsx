@@ -28,6 +28,16 @@ function ResourcePage() {
     setToggleModal(true);
   }
 
+  function handleDeleteResource(id) {
+    dispatch({
+      type: "DELETE_RESOURCE",
+      payload: {
+        organization_id: params.orgid,
+        id: id,
+      },
+    });
+  }
+
   useEffect(() => {
     if (
       !user.organization_array.some(
@@ -61,7 +71,12 @@ function ResourcePage() {
           <ul>
             {resourceArray.length > 0
               ? resourceArray.map((item, index) => (
-                  <li key={index}>{item?.file_name}</li>
+                  <li key={index}>
+                    {item?.file_name}{" "}
+                    <button onClick={() => handleDeleteResource(item.id)}>
+                      Delete
+                    </button>
+                  </li>
                 ))
               : "No files found"}
           </ul>

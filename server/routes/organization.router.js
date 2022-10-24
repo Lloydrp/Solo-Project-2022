@@ -278,6 +278,24 @@ router.delete(
 );
 
 router.delete(
+  "/deleteresource/:orgid/:resourceid",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const queryText = `DELETE FROM "resources" WHERE "id" = $1;`;
+
+    pool
+      .query(queryText, [req.params.resourceid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        console.log("error caught in first DELETE resource :>> ", error);
+      });
+  }
+);
+
+router.delete(
   "/deleteparticipant/:orgid/:eventid/:participantid",
   rejectUnauthenticated,
   rejectNonAdmin,

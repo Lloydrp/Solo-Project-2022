@@ -383,6 +383,26 @@ function* addTitle(action) {
   }
 }
 
+function* deleteResource(action) {
+  try {
+    const config = {
+      headers: { "Content-Type": "application/json" },
+      withCredentials: true,
+    };
+
+    yield axios.delete(
+      `/api/organization/deleteresource/${action.payload.organization_id}/${action.payload.id}`,
+      config
+    );
+    yield put({
+      type: "FETCH_ORGANIZATION",
+      payload: { id: action.payload.organization_id },
+    });
+  } catch (error) {
+    console.log("error caught in deleteResource :>> ", error);
+  }
+}
+
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
@@ -405,6 +425,7 @@ function* organizationSaga() {
   yield takeEvery("REMOVE_FROM_ORG", removeFromOrg);
   yield takeEvery("REMOVE_TITLE", removeTitle);
   yield takeEvery("ADD_TITLE", addTitle);
+  yield takeEvery("DELETE_RESOURCE", deleteResource);
 }
 
 export default organizationSaga;

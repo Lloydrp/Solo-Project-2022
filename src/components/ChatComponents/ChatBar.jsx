@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 const ChatBar = ({ socket }) => {
   const [users, setUsers] = useState([]);
-  console.log("users :>> ", users);
 
   useEffect(() => {
     socket.on("newUserResponse", (data) => setUsers(data));
@@ -15,8 +14,8 @@ const ChatBar = ({ socket }) => {
       <div>
         <h4 className="chat__header">ACTIVE USERS</h4>
         <div className="chat__users">
-          {users.map((user) => (
-            <p key={user.socketID}>{user.full_name}</p>
+          {users.map((user, index) => (
+            <p key={index}>{user.full_name}</p>
           ))}
         </div>
       </div>

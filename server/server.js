@@ -48,7 +48,6 @@ socketIO.on("connection", (socket) => {
   //Listens when a new user joins the server
   socket.on("newUser", (data) => {
     //Adds the new user to the list of users
-    console.log("data :>> ", data);
     chatUsers.push(data);
     // console.log(chatUsers);
     //Sends the list of users to the client
@@ -57,6 +56,16 @@ socketIO.on("connection", (socket) => {
 
   socket.on("disconnect", () => {
     console.log("🔥: A user disconnected");
+    //Updates the list of users when a user disconnects from the server
+    chatUsers = chatUsers.filter((user) => user.socketID !== socket.id);
+    // console.log(users);
+    //Sends the list of users to the client
+    socketIO.emit("newUserResponse", chatUsers);
+    socket.disconnect();
+  });
+
+  socket.on("leftChat", () => {
+    console.log("🔥: A user left chat page");
     //Updates the list of users when a user disconnects from the server
     chatUsers = chatUsers.filter((user) => user.socketID !== socket.id);
     // console.log(users);

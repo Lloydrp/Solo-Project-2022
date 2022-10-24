@@ -1,15 +1,27 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
+import socketIO from "socket.io-client";
 import { useHistory, useParams } from "react-router-dom";
 import Nav from "../../Nav/Nav";
 import ChatWrapper from "../../ChatComponents/ChatWrapper";
 
-function ChatPage({ socket }) {
+function ChatPage() {
   const user = useSelector((store) => store.user);
   const params = useParams();
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const socket = socketIO.connect("http://localhost:5000");
+
+  socket.on("connect", () =>
+    socket.emit("newUser", {
+      user: user.id,
+      full_name: `${user.first_name} ${user.last_name}`,
+      organization_id: params.orgid,
+      socketID: socket.id,
+    })
+  );
 
   useEffect(() => {
     if (
@@ -21,14 +33,11 @@ function ChatPage({ socket }) {
     }
 
     dispatch({ type: "FETCH_ORGANIZATION", payload: { id: params.orgid } });
-
-    socket.emit("newUser", {
-      user: user.id,
-      full_name: `${user.first_name} ${user.last_name}`,
-      organization_id: params.orgid,
-      socketID: socket.id,
-    });
   }, []);
+
+  useEffect(() => {
+    return () => socket.emit("leftChat");
+  }, [socket]);
 
   return (
     <>

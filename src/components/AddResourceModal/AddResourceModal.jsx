@@ -7,7 +7,6 @@ function AddResourceModal({ setToggleModal, orgid }) {
   const dispatch = useDispatch();
   const [resourceName, setResourceName] = useState("");
   const [resourceURL, setResourceURL] = useState("");
-  const [resourceType, setResourceType] = useState(3);
 
   function handleAddResource(event) {
     event.preventDefault();
@@ -17,7 +16,7 @@ function AddResourceModal({ setToggleModal, orgid }) {
       payload: {
         file_name: resourceName,
         file_url: resourceURL,
-        type_id: resourceType,
+        type_id: 0,
         organization_id: orgid,
         user_id: user.id,
       },
@@ -56,40 +55,6 @@ function AddResourceModal({ setToggleModal, orgid }) {
                 required
                 onChange={(event) => setResourceURL(event.target.value)}
               />
-            </label>
-            <br />
-            <label htmlFor="radioFile">
-              <input
-                required
-                name="fileRadios"
-                id="radioFile"
-                type="radio"
-                value={0}
-                onChange={(event) => setResourceType(event.target.value)}
-              />
-              File
-            </label>
-            <label htmlFor="radioLink">
-              <input
-                required
-                name="fileRadios"
-                id="radioLink"
-                type="radio"
-                value={1}
-                onChange={(event) => setResourceType(event.target.value)}
-              />
-              Link
-            </label>
-            <label htmlFor="radioImage">
-              <input
-                required
-                name="fileRadios"
-                id="radioImage"
-                type="radio"
-                value={2}
-                onChange={(event) => setResourceType(event.target.value)}
-              />
-              Image
             </label>
             <br />
             <button type="submit">Add Resource</button>

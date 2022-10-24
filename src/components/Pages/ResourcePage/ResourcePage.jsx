@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
+import AddImageModal from "../../AddImageModal/AddImageModal";
 import AddResourceModal from "../../AddResourceModal/AddResourceModal";
 import Nav from "../../Nav/Nav";
 
@@ -14,19 +15,24 @@ function ResourcePage() {
   );
   const history = useHistory();
   const dispatch = useDispatch();
-  // File_types are 0 for file, 1 for links, and 2 for images. 3 is default for all files
-  const [currentResource, setCurrentResource] = useState(3);
+  // File_types are 0 for file links, 1 for images. 2 is default for all files
+  const [currentResource, setCurrentResource] = useState(2);
   const [toggleModal, setToggleModal] = useState(false);
+  const [toggleImageModal, setToggleImageModal] = useState(false);
   const [searchText, setSearchText] = useState("");
 
   const resourceArray = organization.orgResources.filter(
     (item) =>
-      (currentResource === 3 && item !== null) ||
+      (currentResource === 2 && item !== null) ||
       Number(item?.file_type) === Number(currentResource)
   );
 
   function handleAddResource() {
     setToggleModal(true);
+  }
+
+  function handleAddImage() {
+    setToggleImageModal(true);
   }
 
   function handleSearch(current, search) {
@@ -68,11 +74,21 @@ function ResourcePage() {
           shouldCloseOnOverlayClick={true}
         />
       )}
+      {toggleImageModal && (
+        <AddImageModal
+          setToggleImageModal={setToggleImageModal}
+          shouldCloseOnOverlayClick={true}
+          orgid={params.orgid}
+        />
+      )}
       <Nav orgid={params.orgid} />
       <section className="org-container">
         <nav>
           {userOrganization.is_admin && (
-            <button onClick={handleAddResource}>Add Resource</button>
+            <>
+              <button onClick={handleAddResource}>Add Link</button>
+              <button onClick={handleAddImage}>Add Image</button>
+            </>
           )}
 
           <br />
@@ -86,7 +102,10 @@ function ResourcePage() {
           <ul>
             {handleSearch(resourceArray, searchText).map((item, index) => (
               <li key={index}>
-                {item?.file_name}{" "}
+                {<a href={item?.file_url}>{item?.file_name}</a>}
+                {item?.file_type === 1 && (
+                  <img className="image-preview" src={item?.file_url} />
+                )}
                 <button onClick={() => handleDeleteResource(item.id)}>
                   Delete
                 </button>
@@ -97,10 +116,9 @@ function ResourcePage() {
         <div className="org-sub-container">
           <nav>
             <ul className="org-nav">
-              <li onClick={() => setCurrentResource(3)}>All</li>
-              <li onClick={() => setCurrentResource(0)}>Files</li>
-              <li onClick={() => setCurrentResource(1)}>Links</li>
-              <li onClick={() => setCurrentResource(2)}>Images</li>
+              <li onClick={() => setCurrentResource(2)}>All</li>
+              <li onClick={() => setCurrentResource(0)}>Links</li>
+              <li onClick={() => setCurrentResource(1)}>Images</li>
             </ul>
           </nav>
           <div>File Preview Section</div>

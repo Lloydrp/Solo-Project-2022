@@ -111,9 +111,16 @@ router.post(
   rejectNonAdmin,
   rejectUnauthenticated,
   (req, res) => {
-    const { file_name, file_url, type_id, user_id, organization_id } = req.body;
-    const queryText = `INSERT INTO "resources" ("file_name", "file_url", "file_type", "user_id", "organization_id")
-  VALUES ($1, $2, $3, $4, $5);`;
+    const {
+      file_name,
+      file_url,
+      type_id,
+      user_id,
+      organization_id,
+      file_description,
+    } = req.body;
+    const queryText = `INSERT INTO "resources" ("file_name", "file_url", "file_type", "user_id", "organization_id", "file_description")
+  VALUES ($1, $2, $3, $4, $5, $6);`;
 
     pool
       .query(queryText, [
@@ -122,6 +129,7 @@ router.post(
         type_id,
         user_id,
         organization_id,
+        file_description,
       ])
       .then((result) => {
         res.sendStatus(200);

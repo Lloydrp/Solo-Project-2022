@@ -304,3 +304,8 @@ code {
   background-color: #00acb0;
   z-index: 1;
 }
+
+.image-preview {
+  width: 200px;
+  height: auto;
+}

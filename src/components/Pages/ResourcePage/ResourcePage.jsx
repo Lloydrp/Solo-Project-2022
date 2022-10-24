@@ -17,6 +17,7 @@ function ResourcePage() {
   // File_types are 0 for file, 1 for links, and 2 for images. 3 is default for all files
   const [currentResource, setCurrentResource] = useState(3);
   const [toggleModal, setToggleModal] = useState(false);
+  const [searchText, setSearchText] = useState("");
 
   const resourceArray = organization.orgResources.filter(
     (item) =>
@@ -26,6 +27,14 @@ function ResourcePage() {
 
   function handleAddResource() {
     setToggleModal(true);
+  }
+
+  function handleSearch(current, search) {
+    if (search.length > 0) {
+      return current.filter((resource) => resource.file_name.includes(search));
+    } else {
+      return current;
+    }
   }
 
   function handleDeleteResource(id) {
@@ -67,18 +76,22 @@ function ResourcePage() {
           )}
 
           <br />
-          <input type="text" placeholder="Search" />
+          <input
+            value={searchText}
+            onChange={(event) => setSearchText(event.target.value)}
+            type="text"
+            placeholder="Search"
+          />
+          <button onClick={handleSearch}>Search</button>
           <ul>
-            {resourceArray.length > 0
-              ? resourceArray.map((item, index) => (
-                  <li key={index}>
-                    {item?.file_name}{" "}
-                    <button onClick={() => handleDeleteResource(item.id)}>
-                      Delete
-                    </button>
-                  </li>
-                ))
-              : "No files found"}
+            {handleSearch(resourceArray, searchText).map((item, index) => (
+              <li key={index}>
+                {item?.file_name}{" "}
+                <button onClick={() => handleDeleteResource(item.id)}>
+                  Delete
+                </button>
+              </li>
+            ))}
           </ul>
         </nav>
         <div className="org-sub-container">

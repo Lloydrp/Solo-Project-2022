@@ -9,7 +9,6 @@ function ChatPage({ socket, orgid }) {
   const dispatch = useDispatch();
   const messages = useSelector((store) => store.messages);
   const [typingStatus, setTypingStatus] = useState("");
-  const [displayMessages, setDisplayMessages] = useState([]);
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
@@ -22,15 +21,19 @@ function ChatPage({ socket, orgid }) {
   }, []);
 
   useEffect(() => {
-    socket.on("messageResponse", (data) => {
-      return setDisplayMessages([...messages, data]);
-    });
+    socket.on("messageResponse", (data) =>
+      dispatch({
+        type: "FETCH_MESSAGES",
+        payload: {
+          organization_id: orgid,
+        },
+      })
+    );
   }, [socket, messages]);
 
   useEffect(() => {
     // 👇️ scroll to bottom every time messages change
     lastMessageRef.current?.scrollIntoView({ behavior: "smooth" });
-    setDisplayMessages(messages);
   }, [messages]);
 
   useEffect(() => {
@@ -42,7 +45,7 @@ function ChatPage({ socket, orgid }) {
       <ChatBar socket={socket} />
       <div className="chat__main">
         <ChatBody
-          messages={displayMessages}
+          messages={messages}
           typingStatus={typingStatus}
           lastMessageRef={lastMessageRef}
         />

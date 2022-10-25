@@ -3,7 +3,7 @@ const pool = require("../modules/pool");
 const router = express.Router();
 
 router.get("/:orgid", (req, res) => {
-  const queryText = `SELECT * FROM "messages" WHERE "organization_id" = $1;`;
+  const queryText = `SELECT * FROM "messages" WHERE "organization_id" = $1 ORDER BY "id";`;
   pool
     .query(queryText, [req.params.orgid])
     .then((result) => {

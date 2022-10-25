@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const pool = require("./modules/pool");
 require("dotenv").config();
 
 const app = express();
@@ -22,6 +23,7 @@ const passport = require("./strategies/user.strategy");
 const userRouter = require("./routes/user.router");
 const orgRouter = require("./routes/organization.router");
 const messageRouter = require("./routes/messages.router");
+const { query } = require("express");
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -35,13 +37,26 @@ app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());
 
+/* Routes */
+app.use("/api/user", userRouter);
+app.use("/api/organization", orgRouter);
+app.use("/api/messages", messageRouter);
+
 socketIO.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 
   //Listens and logs the message to the console
   socket.on("message", (data) => {
-    //FIGURE OUT HOW TO SEND TO DB HERE?
-    socketIO.emit("messageResponse", data);
+    const queryText = `INSERT INTO "messages" ("message", "user_sent_id", "organization_id")
+    VALUES ($1, $2, $3);`;
+    pool
+      .query(queryText, [data.message, data.user_sent_id, data.organization_id])
+      .then((result) => {
+        socketIO.emit("messageResponse", data);
+      })
+      .catch((error) => {
+        console.log("error caught in post messages :>> ", error);
+      });
   });
 
   socket.on("typing", (data) => socket.broadcast.emit("typingResponse", data));
@@ -75,11 +90,6 @@ socketIO.on("connection", (socket) => {
     socket.disconnect();
   });
 });
-
-/* Routes */
-app.use("/api/user", userRouter);
-app.use("/api/organization", orgRouter);
-app.use("/api/messages", messageRouter);
 
 // Serve static files
 app.use(express.static("build"));

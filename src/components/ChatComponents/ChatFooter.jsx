@@ -5,10 +5,14 @@ const ChatFooter = ({ socket, orgid }) => {
   const user = useSelector((store) => store.user);
   const [message, setMessage] = useState("");
 
-  const handleTyping = () =>
-    socket.emit("typing", `${user.first_name} ${user.last_name} is typing`);
+  function handleTyping() {
+    return socket.emit(
+      "typing",
+      `${user.first_name} ${user.last_name} is typing`
+    );
+  }
 
-  const handleSendMessage = (event) => {
+  function handleSendMessage(event) {
     event.preventDefault();
     if (message.trim() && user.id) {
       socket.emit("message", {
@@ -20,7 +24,8 @@ const ChatFooter = ({ socket, orgid }) => {
       });
     }
     setMessage("");
-  };
+  }
+
   return (
     <div className="chat__footer">
       <form className="form" onSubmit={handleSendMessage}>
@@ -29,7 +34,7 @@ const ChatFooter = ({ socket, orgid }) => {
           placeholder="Write message"
           className="message"
           value={message}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={(event) => setMessage(event.target.value)}
           onKeyDown={handleTyping}
         />
         <button className="sendBtn">SEND</button>

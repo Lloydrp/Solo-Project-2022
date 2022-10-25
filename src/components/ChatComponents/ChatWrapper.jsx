@@ -37,7 +37,7 @@ function ChatPage({ socket, orgid }) {
   }, [messages]);
 
   useEffect(() => {
-    socket.on("typingResponse", (data) => setTypingStatus(data));
+    socket.on("typingResponse", (data) => setTypingStatus(data.message));
   }, [socket]);
 
   return (

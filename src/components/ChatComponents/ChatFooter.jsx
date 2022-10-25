@@ -6,10 +6,10 @@ const ChatFooter = ({ socket, orgid }) => {
   const [message, setMessage] = useState("");
 
   function handleTyping() {
-    return socket.emit(
-      "typing",
-      `${user.first_name} ${user.last_name} is typing`
-    );
+    return socket.emit("typing", {
+      organization_id: orgid,
+      message: `${user.first_name} ${user.last_name} is typing`,
+    });
   }
 
   function handleSendMessage(event) {

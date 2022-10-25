@@ -14,7 +14,7 @@ const socketIO = require("socket.io")(http, {
   },
 });
 
-let chatUsers = [];
+let chatUsers = {};
 
 const sessionMiddleware = require("./modules/session-middleware");
 const passport = require("./strategies/user.strategy");
@@ -23,7 +23,6 @@ const passport = require("./strategies/user.strategy");
 const userRouter = require("./routes/user.router");
 const orgRouter = require("./routes/organization.router");
 const messageRouter = require("./routes/messages.router");
-const { query } = require("express");
 
 // Body parser middleware
 app.use(bodyParser.json());
@@ -57,37 +56,72 @@ socketIO.on("connection", (socket) => {
       .catch((error) => {
         console.log("error caught in post messages :>> ", error);
       });
+    //NEED TO TEST
+    socket.to(data.organization_id).emit("typingResponse", "");
   });
 
-  socket.on("typing", (data) => socket.broadcast.emit("typingResponse", data));
+  //FIX GLOBAL SHOWING OF PERSON TYPING
+  socket.on("typing", (data) =>
+    socket.to(data.organization_id).emit("typingResponse", data)
+  );
 
   //Listens when a new user joins the server
   socket.on("newUser", (data) => {
+    socket.join(data.organization_id);
+
     //Adds the new user to the list of users
-    chatUsers.push(data);
-    // console.log(chatUsers);
-    //Sends the list of users to the client
-    socketIO.emit("newUserResponse", chatUsers);
+    if (chatUsers[data.organization_id] === undefined) {
+      chatUsers[data.organization_id] = [data];
+    } else {
+      chatUsers[data.organization_id].push(data);
+    }
+    // // console.log(chatUsers);
+    // //Sends the list of users to the client
+    socketIO
+      .to(data.organization_id)
+      .emit("newUserResponse", chatUsers[data.organization_id]);
   });
 
   socket.on("disconnect", () => {
     console.log("🔥: A user disconnected");
     //Updates the list of users when a user disconnects from the server
-    chatUsers = chatUsers.filter((user) => user.socketID !== socket.id);
-    // console.log(users);
+    let foundOrg = "";
+    const allOrgs = Object.keys(chatUsers);
+    for (let i = 0; i < allOrgs.length; i++) {
+      if (chatUsers[allOrgs[i]].some((user) => user.socketID === socket.id)) {
+        foundOrg = allOrgs[i];
+      }
+    }
+    if (foundOrg) {
+      chatUsers[foundOrg] = chatUsers[foundOrg].filter(
+        (user) => user.socketID !== socket.id
+      );
+    }
+    // console.log(chatUsers);
     //Sends the list of users to the client
-    socketIO.emit("newUserResponse", chatUsers);
-    socket.disconnect();
+    socketIO.to(foundOrg).emit("newUserResponse", chatUsers[foundOrg]);
+    socket.leave(foundOrg);
   });
 
   socket.on("leftChat", () => {
     console.log("🔥: A user left chat page");
     //Updates the list of users when a user disconnects from the server
-    chatUsers = chatUsers.filter((user) => user.socketID !== socket.id);
-    // console.log(users);
+    let foundOrg = "";
+    const allOrgs = Object.keys(chatUsers);
+    for (let i = 0; i < allOrgs.length; i++) {
+      if (chatUsers[allOrgs[i]].some((user) => user.socketID === socket.id)) {
+        foundOrg = allOrgs[i];
+      }
+    }
+    if (foundOrg) {
+      chatUsers[foundOrg] = chatUsers[foundOrg].filter(
+        (user) => user.socketID !== socket.id
+      );
+    }
+    // console.log(chatUsers);
     //Sends the list of users to the client
-    socketIO.emit("newUserResponse", chatUsers);
-    socket.disconnect();
+    socketIO.to(foundOrg).emit("newUserResponse", chatUsers[foundOrg]);
+    socket.leave(foundOrg);
   });
 });
 

@@ -18,7 +18,7 @@ function LoginPage() {
         width: `100vw`,
       }}
     >
-      <div className="bg-light w-50 h-50 rounded-4 d-flex flex-column justify-content-center align-items-center">
+      <div className="os__bg bg-light w-50 h-50 rounded-4 d-flex flex-column justify-content-center align-items-center">
         <LoginForm />
 
         <center>

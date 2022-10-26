@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProtectedRoute from "../ProtectedRoute/ProtectedRoute";
 
 import "bootstrap/dist/css/bootstrap.sandstone.min.css";
+import "./App.css";
 
 import UserPage from "../Pages/UserPage/UserPage";
 import LandingPage from "../Pages/LandingPage/LandingPage";

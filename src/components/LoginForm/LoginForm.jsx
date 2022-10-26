@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -11,29 +10,26 @@ function LoginForm() {
   const [password, setPassword] = useState("");
 
   // Setup redux variables
-  const errors = useSelector((store) => store.errors);
   const dispatch = useDispatch();
 
   // Setup router variables
   const history = useHistory();
 
+  // Begin function to handle login
   function handleLogin(event) {
     // Prevent form refresh
     event.preventDefault();
 
-    // Data validation for an entered username and password
-    if (username && password) {
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          username: username,
-          password: password,
-        },
-      });
-      history.push("/choose");
-    } else {
-      dispatch({ type: "LOGIN_INPUT_ERROR" });
-    }
+    // Dispatch to login user
+    dispatch({
+      type: "LOGIN",
+      payload: {
+        username: username,
+        password: password,
+      },
+    });
+
+    history.push("/choose");
   } // End handleLogin
 
   return (

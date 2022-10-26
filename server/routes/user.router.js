@@ -83,9 +83,10 @@ router.get("/choose/:orgid", rejectUnauthenticated, (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
+      res.status(500).send("Error in GET user_account");
       console.log("error caught in GET org by id :>> ", error);
     });
-});
+}); // End GET to retrieve user_account
 
 // Handles selection of organization and getting all user_account
 router.get("/choose/users/:orgid", rejectUnauthenticated, (req, res) => {
@@ -110,10 +111,12 @@ router.get("/choose/users/:orgid", rejectUnauthenticated, (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
+      res.status(500).send("Error in users of organization");
       console.log("error caught in GET org users :>> ", error);
     });
-});
+}); // End GET to retrieve organization users
 
+// Begin GET to check if username is available
 router.get("/checkusername/:newUsername", (req, res) => {
   const queryText = `SELECT "username" FROM "user" WHERE "username" = $1;`;
 
@@ -123,10 +126,12 @@ router.get("/checkusername/:newUsername", (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
+      res.status(500).send("Error in GET to check username");
       console.log("error caught in GET available username :>> ", error);
     });
-});
+}); // End GET to check is username is available
 
+// Begin GET to check if email is available
 router.get("/checkemail/:newEmail", (req, res) => {
   const queryText = `SELECT "email" FROM "user" WHERE "email" = $1;`;
 
@@ -136,6 +141,7 @@ router.get("/checkemail/:newEmail", (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
+      res.status(500).send("Error in GET to check if email is available");
       console.log("error caught in GET available email :>> ", error);
     });
 });
@@ -145,8 +151,9 @@ router.post("/logout", (req, res) => {
   // Use passport's built-in method to log out the user
   req.logout();
   res.sendStatus(200);
-});
+}); // End GET to check if email is available
 
+// Begin PUT to change username
 router.put("/changeusername", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "user" SET "username" = $1 WHERE "id" = $2;`;
 
@@ -156,10 +163,12 @@ router.put("/changeusername", rejectUnauthenticated, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
+      res.status(500).send("Error in PUT to change user name");
       console.log("error caught in PUT changeusername :>> ", error);
     });
-});
+}); // End PUT to change username
 
+// Begin PUT to change email
 router.put("/changeemail", rejectUnauthenticated, (req, res) => {
   const queryText = `UPDATE "user" SET "email" = $1 WHERE "id" = $2;`;
 
@@ -169,10 +178,12 @@ router.put("/changeemail", rejectUnauthenticated, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
+      res.status(500).send("Error in PUT to change email");
       console.log("error caught in PUT changeemail :>> ", error);
     });
-});
+}); // End PUT to change email
 
+// Begin PUT to change password
 router.put("/changepassword", rejectUnauthenticated, (req, res) => {
   const newPassword = encryptLib.encryptPassword(req.body.newPassword);
   const queryText = `UPDATE "user" SET "password" = $1 WHERE "id" = $2;`;
@@ -183,8 +194,9 @@ router.put("/changepassword", rejectUnauthenticated, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
+      res.status(500).send("Error in PUT to change password");
       console.log("error caught in PUT changepassword :>> ", error);
     });
-});
+}); // End PUT to change password
 
 module.exports = router;

@@ -6,6 +6,7 @@ const {
 } = require("../modules/authentication-middleware");
 const { rejectNonAdmin } = require("../modules/authentication-admin");
 
+// Begin GET to retrieve organization types
 router.get("/types", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT * FROM "organizations_types";`;
 
@@ -15,10 +16,12 @@ router.get("/types", rejectUnauthenticated, (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
+      res.status(500).send("Error in GET organization types");
       console.log("error caught in GET types :>> ", error);
     });
-});
+}); // End GET for types
 
+// Begin GET to retrieve organization titles
 router.get("/titles/:orgid", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT * FROM "titles" WHERE "organization_id" = $1;`;
 
@@ -28,10 +31,12 @@ router.get("/titles/:orgid", rejectUnauthenticated, (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
+      res.status(500).send("Error in GET organization titles");
       console.log("error caught in GET titles :>> ", error);
     });
-});
+}); // End GET for titles
 
+// Begin GET to check if org name is in use
 router.get("/checkorgname/:newname", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT "name" FROM "organizations" WHERE "name" = $1;`;
 
@@ -41,10 +46,12 @@ router.get("/checkorgname/:newname", rejectUnauthenticated, (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
+      res.status(500).send("Error in check for Org name in use");
       console.log("error caught in GET checkorgname :>> ", error);
     });
-});
+}); // End GET for org name check
 
+// Begin GET event participants
 router.get("/participants/:orgid", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT
     "events_participants"."event_id",
@@ -77,10 +84,12 @@ router.get("/participants/:orgid", rejectUnauthenticated, (req, res) => {
       res.send(result.rows);
     })
     .catch((error) => {
-      console.log("error caught in GET participants :>> ", error);
+      res.status(500).send("Error in GET event participants");
+      console.log("error caught in GET event participants :>> ", error);
     });
-});
+}); // End GET for event participants
 
+// Begin POST to create organization
 router.post("/", rejectUnauthenticated, (req, res) => {
   const queryText = `INSERT INTO "organizations" ("name", "type_id")
   VALUES ($1, $2) RETURNING "id";`;
@@ -88,6 +97,7 @@ router.post("/", rejectUnauthenticated, (req, res) => {
   pool
     .query(queryText, [req.body.name, req.body.type_id])
     .then((result) => {
+      // Begin secondary query to add user_account attaching to that organization with default admin status
       const newOrg = result.rows[0].id;
       const secondQueryText = `INSERT INTO "user_account" ("user_id", "organization_id", "is_admin")
       VALUES ($1, $2, 'true');`;
@@ -98,14 +108,19 @@ router.post("/", rejectUnauthenticated, (req, res) => {
           res.sendStatus(200);
         })
         .catch((error) => {
+          res
+            .status(500)
+            .send("Error in POST new user_account while creating organization");
           console.log("error caught in second Query :>> ", error);
         });
     })
     .catch((error) => {
+      res.status(500).send("Error in POST to create new organization");
       console.log("error caught in POST organization :>> ", error);
     });
-});
+}); // End POST create organization
 
+// Begin POST to add new resource for organization
 router.post(
   "/addresource",
   rejectNonAdmin,
@@ -135,11 +150,13 @@ router.post(
         res.sendStatus(200);
       })
       .catch((error) => {
+        res.status(500).send("Error in POST to add resource");
         console.log("error caught in POST add resource :>> ", error);
       });
   }
-);
+); // End POST to add resource
 
+// Begin POST to add event
 router.post("/addevent", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
   const { event_name, event_description, start_event, organization_id } =
     req.body;
@@ -157,10 +174,12 @@ router.post("/addevent", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
-      console.log("error caught in POST add resource :>> ", error);
+      res.status(500).send("Error in POST new event");
+      console.log("error caught in POST add event :>> ", error);
     });
-});
+}); // End POST to add event
 
+// Begin POST to add participant to event
 router.post(
   "/addparticipant",
   rejectUnauthenticated,
@@ -179,12 +198,13 @@ router.post(
         res.send(result.rows).status(200);
       })
       .catch((error) => {
-        res.sendStatus(404);
+        res.status(500).send("Error in POST to add participant");
         console.log("error caught in POST add participant :>> ", error);
       });
   }
-);
+); // End POST to add participant to event
 
+// Begin POST to add user to organization
 router.post("/addtoorg", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
   const { organization_id, title_id, newUser } = req.body;
   const queryText = `INSERT INTO "user_account" ("user_id", "organization_id", "title_id")
@@ -197,10 +217,12 @@ router.post("/addtoorg", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
+      res.status(500).send("Error in POST to add user to org");
       console.log("error caught in POST add user to org :>> ", error);
     });
-});
+}); // End POST to add user to organization
 
+// Begin POST to add new title
 router.post("/addtitle", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
   const { newTitle, organization_id } = req.body;
   const queryText = `INSERT INTO "titles" ("title_name", "organization_id")
@@ -212,10 +234,12 @@ router.post("/addtitle", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
+      res.status(500).send("Error in POST new title");
       console.log("error caught in POST add title :>> ", error);
     });
-});
+}); // End POST to add new title
 
+// Begin PUT to update event
 router.put("/events", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
   const { id, event_name, event_description, start_event } = req.body;
   const queryText = `UPDATE "events"
@@ -230,10 +254,12 @@ router.put("/events", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
-      console.log("error caught in POST update event :>> ", error);
+      res.status(500).send("Error in PUT for event");
+      console.log("error caught in PUT update event :>> ", error);
     });
-});
+}); // End PUT to update event
 
+// Begin PUT to update event participants
 router.put(
   "/updateparticipant",
   rejectUnauthenticated,
@@ -250,113 +276,13 @@ router.put(
         res.sendStatus(200);
       })
       .catch((error) => {
-        console.log("error caught in POST update participant :>> ", error);
+        res.status(500).send("Error in PUT for event participants");
+        console.log("error caught in PUT update participant :>> ", error);
       });
   }
-);
+); // End PUT to update event participants
 
-router.delete(
-  "/deleteevent/:orgid/:eventid",
-  rejectUnauthenticated,
-  rejectNonAdmin,
-  (req, res) => {
-    const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1;`;
-
-    pool
-      .query(queryText, [req.params.eventid])
-      .then((result) => {
-        const secondQueryText = `DELETE FROM "events" WHERE "id" = $1;`;
-
-        pool
-          .query(secondQueryText, [req.params.eventid])
-          .then((result) => {
-            res.sendStatus(200);
-          })
-          .catch((error) => {
-            console.log(
-              "error caught in second DELETE event query :>> ",
-              error
-            );
-          });
-      })
-      .catch((error) => {
-        console.log("error caught in first DELETE event query :>> ", error);
-      });
-  }
-);
-
-router.delete(
-  "/deleteresource/:orgid/:resourceid",
-  rejectUnauthenticated,
-  rejectNonAdmin,
-  (req, res) => {
-    const queryText = `DELETE FROM "resources" WHERE "id" = $1;`;
-
-    pool
-      .query(queryText, [req.params.resourceid])
-      .then((result) => {
-        res.sendStatus(200);
-      })
-      .catch((error) => {
-        console.log("error caught in first DELETE resource :>> ", error);
-      });
-  }
-);
-
-router.delete(
-  "/deleteparticipant/:orgid/:eventid/:participantid",
-  rejectUnauthenticated,
-  rejectNonAdmin,
-  (req, res) => {
-    const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1 AND "user_id" = $2;`;
-
-    pool
-      .query(queryText, [req.params.eventid, req.params.participantid])
-      .then((result) => {
-        res.sendStatus(200);
-      })
-      .catch((error) => {
-        console.log("error caught in DELETE event participant :>> ", error);
-      });
-  }
-);
-
-router.delete(
-  "/removeuser/:orgid/:userid",
-  rejectUnauthenticated,
-  rejectNonAdmin,
-  (req, res) => {
-    const queryText = `DELETE FROM "user_account" WHERE "organization_id" = $1 AND "user_id" = $2;`;
-
-    pool
-      .query(queryText, [req.params.orgid, req.params.userid])
-      .then((result) => {
-        res.sendStatus(200);
-      })
-      .catch((error) => {
-        console.log("error caught in DELETE user from org :>> ", error);
-      });
-  }
-);
-
-router.delete(
-  "/removetitle/:orgid/:titleid",
-  rejectUnauthenticated,
-  rejectNonAdmin,
-  (req, res) => {
-    const queryText = `DELETE FROM "titles" WHERE "id" = $1;`;
-
-    pool
-      .query(queryText, [req.params.titleid])
-      .then((result) => {
-        res.sendStatus(200);
-      })
-      .catch((error) => {
-        console.log("error caught in DELETE title :>> ", error);
-      });
-  }
-);
-
+// Begin PUT to change organization name
 router.put(
   "/changeorgname",
   rejectUnauthenticated,
@@ -370,11 +296,13 @@ router.put(
         res.sendStatus(200);
       })
       .catch((error) => {
+        res.status(500).send("Error in PUT to change organization name");
         console.log("error caught in changeorgname :>> ", error);
       });
   }
-);
+); // End PUT to change organization name
 
+// Begin PUT to change organization type
 router.put(
   "/changeorgtype",
   rejectUnauthenticated,
@@ -388,11 +316,13 @@ router.put(
         res.sendStatus(200);
       })
       .catch((error) => {
+        res.status(500).send("Error in change organization type");
         console.log("error caught in changeorgtype :>> ", error);
       });
   }
-);
+); // End PUT to change organization type
 
+// Begin PUT to add admin access
 router.put("/addadmin", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
   const queryText = `UPDATE "user_account" SET "is_admin" = 'true' WHERE "user_id" = (SELECT "id" FROM "user" WHERE "username" = $1) AND "organization_id" = $2;`;
 
@@ -402,10 +332,12 @@ router.put("/addadmin", rejectUnauthenticated, rejectNonAdmin, (req, res) => {
       res.sendStatus(200);
     })
     .catch((error) => {
+      res.status(500).send("Error in PUT to update admin access");
       console.log("error caught in addAdmin :>> ", error);
     });
-});
+}); // End PUT to add admin access
 
+// Begin PUT to remove admin access
 router.put(
   "/removeadmin",
   rejectUnauthenticated,
@@ -419,9 +351,131 @@ router.put(
         res.sendStatus(200);
       })
       .catch((error) => {
+        res.status(500).send("Error in PUT to remove admin access");
         console.log("error caught in addAdmin :>> ", error);
       });
   }
-);
+); // End PUT to remove admin access
+
+// Begin DELETE to remove event
+router.delete(
+  "/deleteevent/:orgid/:eventid",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    // Begin initial query to remove participants to avoid foreign key errors
+    const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1;`;
+
+    pool
+      .query(queryText, [req.params.eventid])
+      .then((result) => {
+        // Begin secondary query to remove event
+        const secondQueryText = `DELETE FROM "events" WHERE "id" = $1;`;
+
+        pool
+          .query(secondQueryText, [req.params.eventid])
+          .then((result) => {
+            res.sendStatus(200);
+          })
+          .catch((error) => {
+            res.status(500).send("Error in secondary query removing event");
+            console.log(
+              "error caught in second DELETE event query :>> ",
+              error
+            );
+          });
+      })
+      .catch((error) => {
+        res
+          .status(500)
+          .send(
+            "Error in initial query removing participants before event removal"
+          );
+        console.log("error caught in first DELETE event query :>> ", error);
+      });
+  }
+); // End DELETE for event
+
+// Begin DELETE to remove resource
+router.delete(
+  "/deleteresource/:orgid/:resourceid",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const queryText = `DELETE FROM "resources" WHERE "id" = $1;`;
+
+    pool
+      .query(queryText, [req.params.resourceid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        res.status(500).send("Error in DELETE to remove resource");
+        console.log("error caught in first DELETE resource :>> ", error);
+      });
+  }
+); // End DELETE to remove resource
+
+// Begin DELETE to remove single event participant
+router.delete(
+  "/deleteparticipant/:orgid/:eventid/:participantid",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const queryText = `DELETE FROM "events_participants" WHERE "event_id" = $1 AND "user_id" = $2;`;
+
+    pool
+      .query(queryText, [req.params.eventid, req.params.participantid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        res.status(500).send("Error in DELETE to remove single participant");
+        console.log("error caught in DELETE event participant :>> ", error);
+      });
+  }
+); // End DELETE to remove event participant
+
+// Begin DELETE to remove user from organization
+router.delete(
+  "/removeuser/:orgid/:userid",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const queryText = `DELETE FROM "user_account" WHERE "organization_id" = $1 AND "user_id" = $2;`;
+
+    pool
+      .query(queryText, [req.params.orgid, req.params.userid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        res
+          .status(500)
+          .send("Error in DELETE to remove user from organization");
+        console.log("error caught in DELETE user from org :>> ", error);
+      });
+  }
+); // End DELETE to remove user from organization
+
+// Begin DELETE remove title from organization
+router.delete(
+  "/removetitle/:orgid/:titleid",
+  rejectUnauthenticated,
+  rejectNonAdmin,
+  (req, res) => {
+    const queryText = `DELETE FROM "titles" WHERE "id" = $1;`;
+
+    pool
+      .query(queryText, [req.params.titleid])
+      .then((result) => {
+        res.sendStatus(200);
+      })
+      .catch((error) => {
+        res.status(500).send("Error in DELETE to remove title");
+        console.log("error caught in DELETE title :>> ", error);
+      });
+  }
+); // End DELETE to remove title from organization
 
 module.exports = router;

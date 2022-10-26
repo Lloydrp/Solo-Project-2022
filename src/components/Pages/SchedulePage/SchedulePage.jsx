@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
-import Nav from "../../Nav/Nav";
+import NavbarComponent from "../../NavbarComponent/NavbarComponent";
 import AddEventModal from "../../AddEventModal/AddEventModal";
 import ScheduleCard from "../../ScheduleCard/ScheduleCard";
 
@@ -50,7 +50,7 @@ function SchedulePage() {
           shouldCloseOnOverlayClick={true}
         />
       )}
-      <Nav orgid={params.orgid} />
+      <NavbarComponent orgid={params.orgid} />
       <section className="org-container">
         <nav>
           <ul>

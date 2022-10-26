@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import LogOutButton from "../../LogOutButton/LogOutButton";
 import { useSelector } from "react-redux";
-import Nav from "../../Nav/Nav";
+import NavbarComponent from "../../NavbarComponent/NavbarComponent";
 import { useHistory, useParams } from "react-router-dom";
 import UserEdit from "../../UserEdit/UserEdit";
 import UserOrganizationEdit from "../../UserOrganizationEdit/UserOrganizationEdit";
@@ -48,7 +48,7 @@ function UserPage() {
 
   return (
     <>
-      <Nav className="navLink" orgid={params.orgid} />
+      <NavbarComponent className="navLink" orgid={params.orgid} />
       <main className="container">
         <h2>Welcome, {user.username}!</h2>
         <section className="org-container">

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import AddImageModal from "../../AddImageModal/AddImageModal";
 import AddResourceModal from "../../AddResourceModal/AddResourceModal";
-import Nav from "../../Nav/Nav";
+import NavbarComponent from "../../NavbarComponent/NavbarComponent";
 
 function ResourcePage() {
   const organization = useSelector((store) => store.organization);
@@ -81,7 +81,7 @@ function ResourcePage() {
           orgid={params.orgid}
         />
       )}
-      <Nav orgid={params.orgid} />
+      <NavbarComponent orgid={params.orgid} />
       <section className="org-container">
         <nav>
           {userOrganization.is_admin && (

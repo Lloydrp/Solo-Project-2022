@@ -16,7 +16,6 @@ import LandingPage from "../Pages/LandingPage/LandingPage";
 import LoginPage from "../Pages/LoginPage/LoginPage";
 import RegisterPage from "../Pages/RegisterPage/RegisterPage";
 
-import "./App.css";
 import ChoosePage from "../Pages/ChoosePage/ChoosePage";
 import ResourcePage from "../Pages/ResourcePage/ResourcePage";
 import SchedulePage from "../Pages/SchedulePage/SchedulePage";

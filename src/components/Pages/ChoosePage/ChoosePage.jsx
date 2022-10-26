@@ -2,7 +2,6 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import LogOutButton from "../../LogOutButton/LogOutButton";
-import "./ChoosePage.css";
 
 function ChoosePage() {
   const user = useSelector((store) => store.user);

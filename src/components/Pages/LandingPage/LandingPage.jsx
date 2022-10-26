@@ -1,6 +1,5 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import "./LandingPage.css";
 
 function LandingPage() {
   const history = useHistory();

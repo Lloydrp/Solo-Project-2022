@@ -1,13 +1,13 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
+
+// Import local image
 const image = require("../../../images/organization-station-background.png");
 
 function LandingPage() {
+  // Setup router variables
   const history = useHistory();
 
-  function getStartHandler() {
-    history.push("/registration");
-  }
   return (
     <main
       className="bg-image d-flex flex-column align-items-center vh-100 justify-content-center"
@@ -22,7 +22,9 @@ function LandingPage() {
         <button
           type="button"
           className="btn btn-primary mb-3"
-          onClick={getStartHandler}
+          onClick={() => {
+            history.push("/registration");
+          }}
         >
           Get Started
         </button>
@@ -31,7 +33,7 @@ function LandingPage() {
         </a>
       </div>
     </main>
-  );
-}
+  ); // End return
+} // End LandingPage
 
 export default LandingPage;

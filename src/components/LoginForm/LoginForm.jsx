@@ -34,13 +34,13 @@ function LoginForm() {
 
   return (
     <main>
-      <h2 className="text-center">Login</h2>
+      <h2 className="text-center text-primary mb-3">Login</h2>
       <Form
         onSubmit={handleLogin}
         className="d-flex flex-column justify-content-center align-items-center"
       >
-        <Form.Group className="mb-3" controlId="formLoginUsername">
-          <Form.Label>Username</Form.Label>
+        <Form.Group className="mb-3">
+          <Form.Label className="text-primary">Username</Form.Label>
           <Form.Control
             type="text"
             name="username"
@@ -48,11 +48,9 @@ function LoginForm() {
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter username"
+            className="mb-3"
           />
-        </Form.Group>
-
-        <Form.Group className="mb-3" controlId="formLoginPassword">
-          <Form.Label>Password</Form.Label>
+          <Form.Label className="text-primary">Password</Form.Label>
           <Form.Control
             type="password"
             name="password"
@@ -63,7 +61,7 @@ function LoginForm() {
           />
         </Form.Group>
         <Button className="mb-3" variant="primary" type="submit">
-          Submit
+          Login
         </Button>
       </Form>
     </main>

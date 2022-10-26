@@ -79,19 +79,19 @@ function RegisterForm() {
 
   return (
     <main>
-      <h2 className="text-center">Register</h2>
+      <h2 className="text-center text-primary my-3">Register</h2>
       <Form
         onSubmit={handleRegistration}
         className="d-flex flex-column justify-content-center align-items-center"
       >
         <Form.Group className="d-flex flex-column mb-3">
-          <Form.Label className="text-center">Username</Form.Label>
+          <Form.Label className="text-primary">Username</Form.Label>
           <Form.Control
             // If username available and not blank then mark valid
             className={
               usernameAvailable && usernameAvailable !== ""
-                ? "is-valid"
-                : "is-invalid"
+                ? "is-valid mb-3"
+                : "is-invalid mb-3"
             }
             type="text"
             name="username"
@@ -100,7 +100,7 @@ function RegisterForm() {
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter username"
           />
-          <Form.Label className="text-center">First Name</Form.Label>
+          <Form.Label className="text-primary">First Name</Form.Label>
           <Form.Control
             type="text"
             name="firstName"
@@ -108,8 +108,9 @@ function RegisterForm() {
             value={firstName}
             onChange={(event) => setFirstName(event.target.value)}
             placeholder="Enter first name"
+            className="mb-3"
           />
-          <Form.Label className="text-center">Last Name</Form.Label>
+          <Form.Label className="text-primary">Last Name</Form.Label>
           <Form.Control
             type="text"
             name="lastName"
@@ -117,14 +118,15 @@ function RegisterForm() {
             value={lastName}
             onChange={(event) => setLastName(event.target.value)}
             placeholder="Enter last name"
+            className="mb-3"
           />
-          <Form.Label className="text-center">Email</Form.Label>
+          <Form.Label className="text-primary">Email</Form.Label>
           <Form.Control
             // If email is available and not blank than mark valid
             className={
               emailAvailable && emailAvailable !== ""
-                ? "is-valid"
-                : "is-invalid"
+                ? "is-valid mb-3"
+                : "is-invalid mb-3"
             }
             type="text"
             name="email"
@@ -133,7 +135,7 @@ function RegisterForm() {
             onChange={(event) => setEmail(event.target.value)}
             placeholder="Enter email"
           />
-          <Form.Label className="text-center">Password</Form.Label>
+          <Form.Label className="text-primary">Password</Form.Label>
           <Form.Control
             type="password"
             name="password"
@@ -141,9 +143,10 @@ function RegisterForm() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Enter Password"
+            className="mb-3"
           />
         </Form.Group>
-        <Button className="mb-" variant="primary" type="submit">
+        <Button className="mb-3" variant="primary" type="submit">
           Submit
         </Button>
       </Form>

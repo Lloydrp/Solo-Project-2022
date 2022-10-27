@@ -62,7 +62,10 @@ function UserUpdateUsernameForm({ setToggleUsername }) {
   }, [changeUsername]); // End username availability
 
   return (
-    <Form onSubmit={handleSubmitUsername}>
+    <Form
+      onSubmit={handleSubmitUsername}
+      className="d-flex flex-column align-items-center flex-lg-row justify-content-lg-center"
+    >
       <Form.Group className="mb-3" controlId="changeUsername">
         <Form.Control
           // If username is available show valid input
@@ -71,16 +74,20 @@ function UserUpdateUsernameForm({ setToggleUsername }) {
           value={changeUsername}
           onChange={(event) => handleUsernameInput(event)}
           type="text"
-          placeholder="Enter new username"
+          placeholder="New username"
         />
       </Form.Group>
 
-      <Button className="mb-3" variant="primary" type="submit">
-        Save Username
+      <Button
+        className="mb-1 ms-lg-1 mb-lg-3 shadow"
+        variant="primary"
+        type="submit"
+      >
+        Save
       </Button>
       <Button
         onClick={handleUsernameCancel}
-        className="ms-1 mb-3"
+        className="ms-1 mb-3 shadow"
         variant="secondary"
         type="button"
       >

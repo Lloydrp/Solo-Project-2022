@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import Card from "react-bootstrap/Card";
 import UserOrgNameChange from "../UserOrgNameChange/UserOrgNameChange";
@@ -8,10 +7,10 @@ import UserOrgAddTitle from "../UserOrgAddTitle/UserOrgAddTitle";
 import UserOrgRemoveTitle from "../UserOrgRemoveTitle/UserOrgRemoveTitle";
 import UserOrgAddUser from "../UserOrgAddUser/UserOrgAddUser";
 import UserOrgAdminStatus from "../UserOrgAdminStatus/UserOrgerAdminStatus";
+import UserOrgShowUsers from "../UserOrgShowUsers/UserOrgShowUsers";
 
 function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   // Setup redux variables
-  const dispatch = useDispatch();
   const orgTypes = useSelector((store) => store.organization.orgTypes);
   const orgTitles = useSelector((store) => store.organization.orgTitles);
   const unsortedOrgUsers = useSelector((store) => store.organization.orgUsers);
@@ -26,23 +25,13 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   const [toggleRemoveTitle, setToggleRemoveTitle] = useState(false);
   const [toggleShowUsers, setToggleShowUsers] = useState(false);
 
-  // Begin function to remove user from organization
-  function handleRemoveFromOrg(id) {
-    // Dispatch to saga to remove user from organization
-    dispatch({
-      type: "REMOVE_FROM_ORG",
-      payload: {
-        user_id: id,
-        organization_id: organization.organization_id,
-      },
-    });
-  } // End handleRemoveFromOrg
-
   return (
-    <>
-      <Card body className="w-100" onClick={(event) => event.stopPropagation()}>
+    <section className="d-flex flex-column w-100">
+      <Card className="w-100 p-0 shadow">
+        <h2 className="text-center border-bottom">Edit Organization Info</h2>
+
         {/* Begin change organization name area */}
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border-bottom w-100">
           Current Name: {organization.organization_name}
           {toggleOrganizationName ? (
             <UserOrgNameChange
@@ -50,7 +39,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             />
           ) : (
             <button
-              className="btn btn-info mb-3"
+              className="btn btn-sm btn-info shadow mb-3"
               onClick={() => setToggleOrganizationName(true)}
             >
               Change Organization Name
@@ -59,7 +48,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         </div>
 
         {/* Begin change organization type area */}
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
           Current Type:{" "}
           {
             orgTypes[
@@ -74,7 +63,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             />
           ) : (
             <div
-              className="btn btn-info mb-3"
+              className="btn btn-sm btn-info shadow mb-3"
               onClick={() => setToggleOrganizationType(true)}
             >
               Change Organization Type
@@ -83,12 +72,12 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         </div>
 
         {/* Begin adding organization title area */}
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
           {toggleAddTitle ? (
             <UserOrgAddTitle setToggleAddTitle={setToggleAddTitle} />
           ) : (
             <div
-              className="btn btn-info mb-3"
+              className="btn btn-sm btn-info shadow mb-3"
               onClick={() => setToggleAddTitle(true)}
             >
               Add Organization Title
@@ -97,7 +86,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         </div>
 
         {/* Begin removing organization title area */}
-        <div className="d-flex flex-column align-items-center">
+        <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
           {toggleRemoveTitle ? (
             <UserOrgRemoveTitle
               orgTitles={orgTitles}
@@ -105,7 +94,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             />
           ) : (
             <div
-              className="btn btn-info mb-3"
+              className="btn btn-sm btn-info shadow mb-3"
               onClick={() => setToggleRemoveTitle(true)}
             >
               Remove Organization Title
@@ -113,7 +102,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           )}
         </div>
 
-        <div className="d-flex flex-column flex-lg-row justify-content-around">
+        <div className="d-flex flex-column flex-lg-row justify-content-around border-bottom w-100 mt-3">
           <div className="d-flex flex-column align-items-center">
             {/* Begin adding user to organization area */}
             <span>Add User to Organization:</span>
@@ -128,51 +117,37 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
 
         {/* Begin Organization user list area */}
         <div className="d-flex flex-column align-items-center">
-          <h5>Organization users:</h5>
+          <span className="mt-3">Organization users:</span>
           {toggleShowUsers ? (
-            <>
-              {orgUsers.map((user, index) => (
-                <li key={index}>
-                  {user.first_name} {user.last_name} {user.username}
-                  {user.title
-                    ? orgTitles[
-                        orgTitles.findIndex((title) => title.id === user.title)
-                      ]?.title_name
-                    : "No Title"}
-                  {user.is_admin ? "Admin" : ""}
-                  <button onClick={() => handleRemoveFromOrg(user.user_id)}>
-                    Remove
-                  </button>
-                </li>
-              ))}
-              <button
-                className="btn btn-info mt-1"
-                onClick={() => setToggleShowUsers(false)}
-              >
-                Hide users
-              </button>
-            </>
+            <UserOrgShowUsers
+              orgTitles={orgTitles}
+              orgUsers={orgUsers}
+              setToggleShowUsers={setToggleShowUsers}
+            />
           ) : (
             <button
-              className="btn btn-info mb-3"
+              className="btn btn-sm btn-info shadow mb-3"
               onClick={() => setToggleShowUsers(true)}
             >
               Show all users
             </button>
           )}
         </div>
-
-        <div className="d-flex flex-column align-items-center">
-          <button
-            type="button"
-            className="mt-3 btn btn-outline-secondary"
-            onClick={() => setToggleEditOrganization(false)}
-          >
-            Back to Profile
-          </button>
-        </div>
       </Card>
-    </>
+
+      <div
+        className="d-flex flex-column align-items-center"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="mt-3 mb-3 btn btn-outline-secondary shadow"
+          onClick={() => setToggleEditOrganization(false)}
+        >
+          Back to Profile
+        </button>
+      </div>
+    </section>
   );
 }
 

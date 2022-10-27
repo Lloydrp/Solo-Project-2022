@@ -56,7 +56,7 @@ function UserOrgAdminStatus() {
         <Button
           value="add"
           name="addAdmin"
-          className="mb-3"
+          className="mb-3 shadow"
           variant="primary"
           type="submit"
         >
@@ -65,7 +65,7 @@ function UserOrgAdminStatus() {
         <Button
           value="remove"
           name="removeAdmin"
-          className="ms-1 mb-3"
+          className="ms-1 mb-3 shadow"
           variant="danger"
           type="submit"
         >

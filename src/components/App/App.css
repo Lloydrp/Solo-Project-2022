@@ -6,3 +6,7 @@ main > .os__bg {
 div > .os__min_h {
   min-height: 200px;
 }
+
+*::placeholder {
+  text-align: center;
+}

@@ -37,8 +37,6 @@ function UserOrgAddUser({ orgTitles }) {
           type="text"
           placeholder="Username"
         />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="addNewTitle">
         <Form.Select name="addNewTitle" id="addNewTitle">
           {orgTitles.map((type, index) => (
             <option key={index} value={type.id}>
@@ -48,7 +46,7 @@ function UserOrgAddUser({ orgTitles }) {
         </Form.Select>
       </Form.Group>
       <div className="d-flex justify-content-center">
-        <Button className="mb-3" variant="primary" type="submit">
+        <Button className="mb-3 shadow" variant="primary" type="submit">
           Add User
         </Button>
       </div>

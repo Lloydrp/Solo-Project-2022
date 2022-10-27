@@ -63,7 +63,10 @@ function UserEmailUpdateForm({ setToggleEmail }) {
   }, [changeEmail]); // End email availability
 
   return (
-    <Form onSubmit={handleSubmitEmail}>
+    <Form
+      onSubmit={handleSubmitEmail}
+      className="d-flex flex-column align-items-center flex-lg-row justify-content-lg-center"
+    >
       <Form.Group className="mb-3" controlId="changeEmail">
         <Form.Control
           // If email is valid use valid class from CSS
@@ -72,16 +75,20 @@ function UserEmailUpdateForm({ setToggleEmail }) {
           name="changeEmail"
           value={changeEmail}
           onChange={(event) => handleEmailInput(event)}
-          placeholder="Enter new username"
+          placeholder="New email"
         />
       </Form.Group>
 
-      <Button className="mb-3" variant="primary" type="submit">
+      <Button
+        className="mb-1 mb-lg-3 ms-lg-1 shadow"
+        variant="primary"
+        type="submit"
+      >
         Save Username
       </Button>
       <Button
         onClick={handleEmailCancel}
-        className="ms-1 mb-3"
+        className="ms-1 mb-3 shadow"
         variant="secondary"
         type="button"
       >

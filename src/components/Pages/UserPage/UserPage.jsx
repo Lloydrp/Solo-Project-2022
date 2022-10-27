@@ -60,9 +60,9 @@ function UserPage() {
         <h2 className="text-primary text-center mt-3">
           Welcome, {user.username}!
         </h2>
-        <section className="d-flex flex-wrap vw-100 justify-content-center">
+        <section className="d-flex flex-column vw-100 align-items-center">
           <div
-            className="w-75 d-flex align-items-center"
+            className="col-9 col-lg-6 d-flex align-items-center"
             onClick={() => setToggleEditUser(true)}
           >
             {/* Conditional Render user edit page or button to access user edit page */}
@@ -70,7 +70,7 @@ function UserPage() {
               <UserEdit setToggleEditUser={setToggleEditUser} />
             ) : (
               !toggleEditOrganization && (
-                <button className="os__min_h mt-3 w-100 btn btn-outline-primary text-center">
+                <button className="os__min_h mt-3 w-100 btn btn-outline-primary text-center shadow">
                   Edit User Information
                 </button>
               )
@@ -78,7 +78,7 @@ function UserPage() {
           </div>
           <div
             onClick={() => setToggleEditOrganization(true)}
-            className="w-75 d-flex align-items-center"
+            className="col-9 col-lg-6 d-flex align-items-center"
           >
             {/* Conditional Render organization edit page if admin or button to access organization edit page */}
             {organization.is_admin && toggleEditOrganization ? (
@@ -89,21 +89,21 @@ function UserPage() {
             ) : (
               organization.is_admin &&
               !toggleEditUser && (
-                <button className="os__min_h mt-3 w-100 btn btn-outline-primary text-center">
+                <button className="os__min_h mt-3 w-100 btn btn-outline-primary text-center shadow">
                   Edit Organization Information
                 </button>
               )
             )}
           </div>
         </section>
-        <div className="vw-100 d-flex flex-wrap justify-content-center">
+        <div className="vw-100 d-flex flex-column align-items-center">
           <button
-            className="btn btn-primary w-75 text-center mt-3"
+            className="btn btn-primary col-9 col-lg-6 text-center mt-3 shadow"
             onClick={() => history.push("/choose")}
           >
             Change Organization
           </button>
-          <LogOutButton className="mt-3 btn btn-outline-secondary w-75" />
+          <LogOutButton className="mt-3 btn btn-outline-secondary col-9 col-lg-6 shadow" />
         </div>
       </main>
     </>

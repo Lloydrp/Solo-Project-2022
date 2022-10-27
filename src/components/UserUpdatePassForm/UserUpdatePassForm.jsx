@@ -32,7 +32,10 @@ function UserUpdatePassForm({ setTogglePassword }) {
   } // End handleSubmitPassword
 
   return (
-    <Form onSubmit={handleSubmitPassword}>
+    <Form
+      onSubmit={handleSubmitPassword}
+      className="d-flex flex-column align-items-center flex-lg-row justify-content-lg-center"
+    >
       <Form.Group className="mb-3" controlId="changePassword">
         <Form.Control
           autoComplete="off"
@@ -44,12 +47,16 @@ function UserUpdatePassForm({ setTogglePassword }) {
         />
       </Form.Group>
 
-      <Button className="mb-3" variant="primary" type="submit">
+      <Button
+        className="mb-1 mb-lg-3 ms-lg-1 shadow"
+        variant="primary"
+        type="submit"
+      >
         Save Password
       </Button>
       <Button
         onClick={handlePasswordCancel}
-        className="ms-1 mb-3"
+        className="ms-1 mb-3 shadow"
         variant="secondary"
         type="button"
       >

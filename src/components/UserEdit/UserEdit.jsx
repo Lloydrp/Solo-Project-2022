@@ -14,58 +14,64 @@ function UserEdit({ setToggleEditUser }) {
   const [toggleEmail, setToggleEmail] = useState(false);
 
   return (
-    <>
-      <Card body className="w-100" onClick={(event) => event.stopPropagation()}>
-        <h2 className="text-center">Edit Your Info</h2>
-        <div className="d-flex flex-column align-items-center">
+    <section className="d-flex flex-column w-100">
+      <Card
+        className="w-100 shadow"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <h2 className="text-center border-bottom">Edit Your Info</h2>
+        <div className="p-1 d-flex flex-column align-items-center border-bottom w-100">
           Username: {user.username}
           {toggleUsername ? (
             <UserUpdateUsernameForm setToggleUsername={setToggleUsername} />
           ) : (
             <button
-              className="btn btn-primary mb-3"
+              className="btn btn-sm shadow btn-info mb-3"
               onClick={() => setToggleUsername(true)}
             >
               Change Username
             </button>
           )}
         </div>
-        <div className="d-flex flex-column align-items-center">
+        <div className="p-1 d-flex flex-column align-items-center border-bottom w-100 mt-3">
           {togglePassword ? (
             <UserUpdatePassForm setTogglePassword={setTogglePassword} />
           ) : (
             <button
-              className="btn btn-primary mb-3"
+              className="btn btn-sm shadow btn-info mb-3"
               onClick={() => setTogglePassword(true)}
             >
               Change Password
             </button>
           )}
         </div>
-        <div className="d-flex flex-column align-items-center">
-          Email: {user.email}
+        <div className="p-1 d-flex flex-column align-items-center mt-3">
+          <div className="text-center">Email: {user.email}</div>
           {toggleEmail ? (
             <UserEmailUpdateForm setToggleEmail={setToggleEmail} />
           ) : (
             <div
-              className="btn btn-primary mb-3"
+              className="btn btn-sm shadow btn-info mb-3"
               onClick={() => setToggleEmail(true)}
             >
               Change Email
             </div>
           )}
         </div>
-        <div className="d-flex flex-column align-items-center">
-          <button
-            type="button"
-            className="btn btn-outline-secondary"
-            onClick={() => setToggleEditUser(false)}
-          >
-            Back to Profile
-          </button>
-        </div>
       </Card>
-    </>
+      <div
+        className="d-flex flex-column align-items-center"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="shadow btn btn-outline-secondary mt-3  mb-3"
+          onClick={() => setToggleEditUser(false)}
+        >
+          Back to Profile
+        </button>
+      </div>
+    </section>
   );
 }
 

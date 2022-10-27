@@ -19,11 +19,11 @@ function UserOrgRemoveTitle({ orgTitles, setToggleRemoveTitle }) {
   } // End handleRemoveTitle
   return (
     <>
-      <h5>Current Organization Titles:</h5>
+      <span>Current Organization Titles:</span>
       <ListGroup>
         {orgTitles.map((title, index) => (
           <ListGroup.Item key={index}>
-            {title.title_name}{" "}
+            <span className="me-3">{title.title_name}</span>
             <Button
               variant="danger"
               type="button"
@@ -36,7 +36,7 @@ function UserOrgRemoveTitle({ orgTitles, setToggleRemoveTitle }) {
       </ListGroup>
       <Button
         variant="info"
-        className="mt-1"
+        className="mt-1 mb-3"
         onClick={() => setToggleRemoveTitle(false)}
       >
         Close Titles

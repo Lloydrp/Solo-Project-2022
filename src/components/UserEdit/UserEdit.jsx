@@ -16,7 +16,7 @@ function UserEdit({ setToggleEditUser }) {
   return (
     <>
       <Card body className="w-100" onClick={(event) => event.stopPropagation()}>
-        <h2 className="text-center">User Edit Screen</h2>
+        <h2 className="text-center">Edit Your Info</h2>
         <div className="d-flex flex-column align-items-center">
           Username: {user.username}
           {toggleUsername ? (
@@ -61,7 +61,7 @@ function UserEdit({ setToggleEditUser }) {
             className="btn btn-outline-secondary"
             onClick={() => setToggleEditUser(false)}
           >
-            Cancel
+            Back to Profile
           </button>
         </div>
       </Card>

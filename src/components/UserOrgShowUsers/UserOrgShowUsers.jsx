@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 
-function UserOrgShowUsers({ orgTitles, orgUsers, setToggleShowUsers }) {
+function UserOrgShowUsers({ orgTitles, orgUsers, setToggleShowUsers, organization }) {
   // Setup redux variables
   const dispatch = useDispatch();
 

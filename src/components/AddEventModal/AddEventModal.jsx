@@ -1,9 +1,7 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 
 function AddEventModal({ setToggleModal, orgid }) {
-  const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");

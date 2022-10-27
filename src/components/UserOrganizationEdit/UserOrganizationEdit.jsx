@@ -106,7 +106,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           <div className="d-flex flex-column align-items-center">
             {/* Begin adding user to organization area */}
             <span>Add User to Organization:</span>
-            <UserOrgAddUser orgTitles={orgTitles} />
+            <UserOrgAddUser organization={organization} orgTitles={orgTitles} />
           </div>
           <div className="d-flex flex-column align-items-center">
             {/* Begin adding/removing admin status area */}
@@ -123,6 +123,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
               orgTitles={orgTitles}
               orgUsers={orgUsers}
               setToggleShowUsers={setToggleShowUsers}
+              organization={organization}
             />
           ) : (
             <button

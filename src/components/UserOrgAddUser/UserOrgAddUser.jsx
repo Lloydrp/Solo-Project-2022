@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function UserOrgAddUser({ orgTitles }) {
+function UserOrgAddUser({ orgTitles, organization }) {
   // Setup redux variables
   const dispatch = useDispatch();
   // Setup local state variables
@@ -38,6 +38,7 @@ function UserOrgAddUser({ orgTitles }) {
           placeholder="Username"
         />
         <Form.Select name="addNewTitle" id="addNewTitle">
+          <option value={"null"}>Select title</option>
           {orgTitles.map((type, index) => (
             <option key={index} value={type.id}>
               {type.title_name}

@@ -5,6 +5,7 @@ import Card from "react-bootstrap/Card";
 import UserOrgNameChange from "../UserOrgNameChange/UserOrgNameChange";
 import UserOrgTypeChange from "../UserOrgTypeChange/UserOrgTypeChange";
 import UserOrgAddTitle from "../UserOrgAddTitle/UserOrgAddTitle";
+import UserOrgRemoveTitle from "../UserOrgRemoveTitle/UserOrgRemoveTitle";
 
 function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   // Setup redux variables
@@ -85,18 +86,6 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
     });
   } // End handleRemoveFromOrg
 
-  // Begin function to remove a title from organization
-  function handleRemoveTitle(id) {
-    // Dispatch to saga to remove title from organization
-    dispatch({
-      type: "REMOVE_TITLE",
-      payload: {
-        organization_id: organization.organization_id,
-        title_id: id,
-      },
-    });
-  } // End handleRemoveTitle
-
   return (
     <>
       <Card body className="w-100" onClick={(event) => event.stopPropagation()}>
@@ -158,21 +147,10 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         {/* Begin removing organization title area */}
         <div className="d-flex flex-column align-items-center">
           {toggleRemoveTitle ? (
-            <>
-              <ul>
-                {orgTitles.map((title, index) => (
-                  <li key={index}>
-                    {title.title_name}
-                    <button onClick={() => handleRemoveTitle(title.id)}>
-                      Remove
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button type="button" onClick={() => setToggleRemoveTitle(false)}>
-                Done
-              </button>
-            </>
+            <UserOrgRemoveTitle
+              orgTitles={orgTitles}
+              setToggleRemoveTitle={setToggleRemoveTitle}
+            />
           ) : (
             <div
               className="btn btn-primary mb-3"

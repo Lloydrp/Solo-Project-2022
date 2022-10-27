@@ -12,14 +12,3 @@ div > .os__min_h {
 *::placeholder {
   text-align: center;
 }
-
-.admin__btns > .btn-danger {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-.admin__btns > .bg-info {
-  top: 0;
-  right: 0;
-}

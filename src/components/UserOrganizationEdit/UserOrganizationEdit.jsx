@@ -6,6 +6,7 @@ import UserOrgNameChange from "../UserOrgNameChange/UserOrgNameChange";
 import UserOrgTypeChange from "../UserOrgTypeChange/UserOrgTypeChange";
 import UserOrgAddTitle from "../UserOrgAddTitle/UserOrgAddTitle";
 import UserOrgRemoveTitle from "../UserOrgRemoveTitle/UserOrgRemoveTitle";
+import UserOrgAddUser from "../UserOrgAddUser/UserOrgAddUser";
 
 function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   // Setup redux variables
@@ -18,29 +19,11 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
     userOne.is_admin === userTwo.is_admin ? 0 : userOne.is_admin ? -1 : 1
   );
   // Setup local state for inputs, toggles, and available booleans
-  const [addNewUser, setAddNewUser] = useState("");
   const [addAdminStatus, setAddAdminStatus] = useState("");
   const [toggleOrganizationName, setToggleOrganizationName] = useState(false);
   const [toggleOrganizationType, setToggleOrganizationType] = useState(false);
   const [toggleAddTitle, setToggleAddTitle] = useState(false);
   const [toggleRemoveTitle, setToggleRemoveTitle] = useState(false);
-
-  function handleAddUser(event) {
-    // Prevent form refresh
-    event.preventDefault();
-    // Dispatch to saga to add new user
-    dispatch({
-      type: "ADD_TO_ORGANIZATION",
-      payload: {
-        newUser: addNewUser,
-        // If title is null send null otherwise send selected title
-        title_id: addNewTitle.value === "null" ? null : addNewTitle.value,
-        organization_id: organization.organization_id,
-      },
-    });
-    // Clear add user state
-    setAddNewUser("");
-  } // End handleAddUser
 
   function handleAddAdmin(event) {
     // Prevent form refresh
@@ -164,29 +147,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         {/* Begin adding user to organization area */}
         <div className="d-flex flex-column align-items-center">
           Add User to Organization:
-          <form onSubmit={(event) => handleAddUser(event)}>
-            <label htmlFor="addNewUser">
-              Username to Add:
-              <input
-                type="text"
-                name="addNewUser"
-                value={addNewUser}
-                onChange={(event) => setAddNewUser(event.target.value)}
-              />
-            </label>
-            <label htmlFor="addNewTitle">
-              Add User Title:
-              <select name="addNewTitle" id="addNewTitle">
-                <option value="null">Choose Title</option>
-                {orgTitles.map((type, index) => (
-                  <option key={index} value={type.id}>
-                    {type.title_name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button>Add</button>
-          </form>
+          <UserOrgAddUser orgTitles={orgTitles} />
         </div>
 
         {/* Begin adding/removing admin status area */}

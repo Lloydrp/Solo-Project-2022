@@ -35,17 +35,19 @@ function UserOrgTypeChange({ setToggleOrganizationType }) {
           ))}
         </Form.Select>
       </Form.Group>
-      <Button className="mb-3" variant="primary" type="submit">
-        Save
-      </Button>
-      <Button
-        className="mb-3"
-        onClick={() => setToggleOrganizationType(false)}
-        variant="secondary"
-        type="button"
-      >
-        Cancel
-      </Button>
+      <div className="d-flex justify-content-center">
+        <Button className="mb-3" variant="primary" type="submit">
+          Save
+        </Button>
+        <Button
+          className="ms-1 mb-3"
+          onClick={() => setToggleOrganizationType(false)}
+          variant="secondary"
+          type="button"
+        >
+          Cancel
+        </Button>
+      </div>
     </Form>
   );
 }

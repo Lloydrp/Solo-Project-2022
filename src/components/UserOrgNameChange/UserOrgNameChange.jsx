@@ -75,18 +75,19 @@ function UserOrgNameChange({ setToggleOrganizationName }) {
           placeholder="Enter new username"
         />
       </Form.Group>
-
-      <Button className="mb-3" variant="primary" type="submit">
-        Save Organization Name
-      </Button>
-      <Button
-        onClick={handleOrgNameCancel}
-        className="ms-1 mb-3"
-        variant="secondary"
-        type="button"
-      >
-        Cancel
-      </Button>
+      <div className="d-flex justify-content-center">
+        <Button className="mb-3" variant="primary" type="submit">
+          Save
+        </Button>
+        <Button
+          onClick={handleOrgNameCancel}
+          className="ms-1 mb-3"
+          variant="secondary"
+          type="button"
+        >
+          Cancel
+        </Button>
+      </div>
     </Form>
   );
 }

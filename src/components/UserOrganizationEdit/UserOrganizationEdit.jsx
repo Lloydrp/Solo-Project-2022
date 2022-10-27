@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import Card from "react-bootstrap/Card";
 import UserOrgNameChange from "../UserOrgNameChange/UserOrgNameChange";
 import UserOrgTypeChange from "../UserOrgTypeChange/UserOrgTypeChange";
+import UserOrgAddTitle from "../UserOrgAddTitle/UserOrgAddTitle";
 
 function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   // Setup redux variables
@@ -18,7 +19,6 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   // Setup local state for inputs, toggles, and available booleans
   const [addNewUser, setAddNewUser] = useState("");
   const [addAdminStatus, setAddAdminStatus] = useState("");
-  const [addTitle, setAddTitle] = useState("");
   const [toggleOrganizationName, setToggleOrganizationName] = useState(false);
   const [toggleOrganizationType, setToggleOrganizationType] = useState(false);
   const [toggleAddTitle, setToggleAddTitle] = useState(false);
@@ -85,27 +85,6 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
     });
   } // End handleRemoveFromOrg
 
-  function handleAddTitleCancel(event) {
-    event.preventDefault();
-    setToggleAddTitle(false);
-  } // End handleAddTitleCancel
-
-  function handleAddTitle(event) {
-    // Prevent form refresh
-    event.preventDefault();
-    // Dispatch to saga to add a new title to organization
-    dispatch({
-      type: "ADD_TITLE",
-      payload: {
-        organization_id: organization.organization_id,
-        newTitle: addTitle,
-      },
-    });
-    // Clear add title state and reset toggle to off
-    setAddTitle("");
-    setToggleAddTitle(false);
-  } // End handleAddTitle
-
   // Begin function to remove a title from organization
   function handleRemoveTitle(id) {
     // Dispatch to saga to remove title from organization
@@ -165,19 +144,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         {/* Begin adding organization title area */}
         <div className="d-flex flex-column align-items-center">
           {toggleAddTitle ? (
-            <form onSubmit={(event) => handleAddTitle(event)}>
-              <label htmlFor="addTitle">
-                Add Title:
-                <input
-                  type="text"
-                  name="addTitle"
-                  value={addTitle}
-                  onChange={(event) => setAddTitle(event.target.value)}
-                />
-              </label>
-              <button>Save</button>
-              <button onClick={handleAddTitleCancel}>Cancel</button>
-            </form>
+            <UserOrgAddTitle setToggleAddTitle={setToggleAddTitle} />
           ) : (
             <div
               className="btn btn-primary mb-3"

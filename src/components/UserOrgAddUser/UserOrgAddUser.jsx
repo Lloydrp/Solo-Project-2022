@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function UserOrgAddUser({orgTitles}) {
+function UserOrgAddUser({ orgTitles }) {
   // Setup redux variables
   const dispatch = useDispatch();
   // Setup local state variables
@@ -35,7 +35,7 @@ function UserOrgAddUser({orgTitles}) {
           value={addNewUser}
           onChange={(event) => setAddNewUser(event.target.value)}
           type="text"
-          placeholder="Enter Username"
+          placeholder="Username"
         />
       </Form.Group>
       <Form.Group className="mb-3" controlId="addNewTitle">
@@ -53,25 +53,6 @@ function UserOrgAddUser({orgTitles}) {
         </Button>
       </div>
     </Form>
-    // <form onSubmit={(event) => (event)}>
-    //   <label htmlFor="">
-    //     Username to Add:
-    //     <input
-    //       type="text"
-    //       name="addNewUser"
-    //       value={addNewUser}
-    //       onChange={(event) => setAddNewUser(event.target.value)}
-    //     />
-    //   </label>
-    //   <label htmlFor="">
-    //
-    //     <select name="addNewTitle" id="addNewTitle">
-    //       <option value="null">Choose Title</option>
-    //
-    //     </select>
-    //   </label>
-    //   <button>Add</button>
-    // </form>
   );
 }
 

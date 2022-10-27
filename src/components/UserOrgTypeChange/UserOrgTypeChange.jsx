@@ -24,9 +24,7 @@ function UserOrgTypeChange({ setToggleOrganizationType }) {
   return (
     <Form onSubmit={handleOrgTypeSubmit}>
       <Form.Group className="mb-3">
-        <Form.Label htmlFor="changeOrgType">
-          Change Organization Type:
-        </Form.Label>
+        <Form.Label htmlFor="changeOrgType">Change Type:</Form.Label>
         <Form.Select name="changeOrgType" id="changeOrgType">
           {orgTypes.map((type, index) => (
             <option key={index} value={type.id}>

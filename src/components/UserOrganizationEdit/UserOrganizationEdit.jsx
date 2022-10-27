@@ -7,6 +7,7 @@ import UserOrgTypeChange from "../UserOrgTypeChange/UserOrgTypeChange";
 import UserOrgAddTitle from "../UserOrgAddTitle/UserOrgAddTitle";
 import UserOrgRemoveTitle from "../UserOrgRemoveTitle/UserOrgRemoveTitle";
 import UserOrgAddUser from "../UserOrgAddUser/UserOrgAddUser";
+import UserOrgAdminStatus from "../UserOrgAdminStatus/UserOrgerAdminStatus";
 
 function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
   // Setup redux variables
@@ -19,43 +20,11 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
     userOne.is_admin === userTwo.is_admin ? 0 : userOne.is_admin ? -1 : 1
   );
   // Setup local state for inputs, toggles, and available booleans
-  const [addAdminStatus, setAddAdminStatus] = useState("");
   const [toggleOrganizationName, setToggleOrganizationName] = useState(false);
   const [toggleOrganizationType, setToggleOrganizationType] = useState(false);
   const [toggleAddTitle, setToggleAddTitle] = useState(false);
   const [toggleRemoveTitle, setToggleRemoveTitle] = useState(false);
-
-  function handleAddAdmin(event) {
-    // Prevent form refresh
-    event.preventDefault();
-    // Check if the Add or Remove admin button was clicked if add, add user to admin status
-    if (event.nativeEvent.submitter.value === "add") {
-      // Dispatch to saga to add admin status
-      dispatch({
-        type: "ADD_ADMIN_STATUS",
-        payload: {
-          newAdmin: addAdminStatus,
-          organization_id: organization.organization_id,
-        },
-      });
-      // Clear admin status state
-      setAddAdminStatus("");
-      // If not add then remove the user from admin status
-    } else if (event.nativeEvent.submitter.value === "remove") {
-      // Dispatch to saga to remove admin status
-      dispatch({
-        type: "REMOVE_ADMIN_STATUS",
-        payload: {
-          newAdmin: addAdminStatus,
-          organization_id: organization.organization_id,
-        },
-      });
-      // Clear admin status state
-      setAddAdminStatus("");
-    } else {
-      console.log("Error in add/remove admin submission");
-    }
-  } // End handleAddAdmin
+  const [toggleShowUsers, setToggleShowUsers] = useState(false);
 
   // Begin function to remove user from organization
   function handleRemoveFromOrg(id) {
@@ -74,14 +43,14 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
       <Card body className="w-100" onClick={(event) => event.stopPropagation()}>
         {/* Begin change organization name area */}
         <div className="d-flex flex-column align-items-center">
-          Current Organization Name: {organization.organization_name}
+          Current Name: {organization.organization_name}
           {toggleOrganizationName ? (
             <UserOrgNameChange
               setToggleOrganizationName={setToggleOrganizationName}
             />
           ) : (
             <button
-              className="btn btn-primary mb-3"
+              className="btn btn-info mb-3"
               onClick={() => setToggleOrganizationName(true)}
             >
               Change Organization Name
@@ -91,7 +60,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
 
         {/* Begin change organization type area */}
         <div className="d-flex flex-column align-items-center">
-          Current Organization Type:{" "}
+          Current Type:{" "}
           {
             orgTypes[
               orgTypes.findIndex(
@@ -105,7 +74,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             />
           ) : (
             <div
-              className="btn btn-primary mb-3"
+              className="btn btn-info mb-3"
               onClick={() => setToggleOrganizationType(true)}
             >
               Change Organization Type
@@ -119,7 +88,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             <UserOrgAddTitle setToggleAddTitle={setToggleAddTitle} />
           ) : (
             <div
-              className="btn btn-primary mb-3"
+              className="btn btn-info mb-3"
               onClick={() => setToggleAddTitle(true)}
             >
               Add Organization Title
@@ -136,7 +105,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
             />
           ) : (
             <div
-              className="btn btn-primary mb-3"
+              className="btn btn-info mb-3"
               onClick={() => setToggleRemoveTitle(true)}
             >
               Remove Organization Title
@@ -144,57 +113,59 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           )}
         </div>
 
-        {/* Begin adding user to organization area */}
-        <div className="d-flex flex-column align-items-center">
-          Add User to Organization:
-          <UserOrgAddUser orgTitles={orgTitles} />
-        </div>
-
-        {/* Begin adding/removing admin status area */}
-        <div className="d-flex flex-column align-items-center">
-          <form onSubmit={(event) => handleAddAdmin(event)}>
-            <label htmlFor="addAdminStatus">
-              Admin Access:
-              <input
-                placeholder="Enter username"
-                type="text"
-                name="addAdminStatus"
-                value={addAdminStatus}
-                onChange={(event) => setAddAdminStatus(event.target.value)}
-              />
-            </label>
-            <button value="add" name="addAdmin">
-              Add
-            </button>
-            <button value="remove" name="removeAdmin">
-              Remove
-            </button>
-          </form>
+        <div className="d-flex flex-column flex-lg-row justify-content-around">
+          <div className="d-flex flex-column align-items-center">
+            {/* Begin adding user to organization area */}
+            <span>Add User to Organization:</span>
+            <UserOrgAddUser orgTitles={orgTitles} />
+          </div>
+          <div className="d-flex flex-column align-items-center">
+            {/* Begin adding/removing admin status area */}
+            <span>Change Admin Status:</span>
+            <UserOrgAdminStatus />
+          </div>
         </div>
 
         {/* Begin Organization user list area */}
         <div className="d-flex flex-column align-items-center">
-          <p>Organization users:</p>
-          {orgUsers.map((user, index) => (
-            <li key={index}>
-              {user.first_name} {user.last_name} {user.username}
-              {user.title
-                ? orgTitles[
-                    orgTitles.findIndex((title) => title.id === user.title)
-                  ]?.title_name
-                : "No Title"}
-              {user.is_admin ? "Admin" : ""}
-              <button onClick={() => handleRemoveFromOrg(user.user_id)}>
-                Remove
+          <h5>Organization users:</h5>
+          {toggleShowUsers ? (
+            <>
+              {orgUsers.map((user, index) => (
+                <li key={index}>
+                  {user.first_name} {user.last_name} {user.username}
+                  {user.title
+                    ? orgTitles[
+                        orgTitles.findIndex((title) => title.id === user.title)
+                      ]?.title_name
+                    : "No Title"}
+                  {user.is_admin ? "Admin" : ""}
+                  <button onClick={() => handleRemoveFromOrg(user.user_id)}>
+                    Remove
+                  </button>
+                </li>
+              ))}
+              <button
+                className="btn btn-info mt-1"
+                onClick={() => setToggleShowUsers(false)}
+              >
+                Hide users
               </button>
-            </li>
-          ))}
+            </>
+          ) : (
+            <button
+              className="btn btn-info mb-3"
+              onClick={() => setToggleShowUsers(true)}
+            >
+              Show all users
+            </button>
+          )}
         </div>
 
         <div className="d-flex flex-column align-items-center">
           <button
             type="button"
-            className="btn btn-outline-secondary"
+            className="mt-3 btn btn-outline-secondary"
             onClick={() => setToggleEditOrganization(false)}
           >
             Back to Profile

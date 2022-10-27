@@ -72,7 +72,7 @@ function UserOrgNameChange({ setToggleOrganizationName }) {
           value={changeOrganizationName}
           onChange={(event) => handleOrganizationNameInput(event)}
           type="text"
-          placeholder="Enter new username"
+          placeholder="Enter new name"
         />
       </Form.Group>
       <div className="d-flex justify-content-center">

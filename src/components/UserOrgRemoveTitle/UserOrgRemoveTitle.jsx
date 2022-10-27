@@ -34,7 +34,11 @@ function UserOrgRemoveTitle({ orgTitles, setToggleRemoveTitle }) {
           </ListGroup.Item>
         ))}
       </ListGroup>
-      <Button className="mt-1" onClick={() => setToggleRemoveTitle(false)}>
+      <Button
+        variant="info"
+        className="mt-1"
+        onClick={() => setToggleRemoveTitle(false)}
+      >
         Close Titles
       </Button>
     </>

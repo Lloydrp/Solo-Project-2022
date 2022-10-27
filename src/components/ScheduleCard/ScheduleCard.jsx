@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import CardNonEdit from "../CardNonEdit/CardNonEdit";
 import ScheduleUpdateParticipant from "../ScheduleUpdateParticipant/ScheduleUpdateParticipant";
 
 function ScheduleCard({ eventItem, orgid }) {
+  // Setup redux variables
   const dispatch = useDispatch();
   const participants = useSelector(
     (store) => store.organization.eventParticipants
   );
-  const user = useSelector((store) => store.user);
-  const userOrganization = user.organization_array?.find(
-    (item) => item.organization_id === orgid
-  );
+  // Setup local states with defaults
   const [toggleEdit, setToggleEdit] = useState(false);
   const [eventName, setEventName] = useState(eventItem.event_name);
   const [eventDescription, setEventDescription] = useState(
@@ -21,9 +20,11 @@ function ScheduleCard({ eventItem, orgid }) {
   const [addParticipant, setAddParticipant] = useState("");
   const [newDuty, setNewDuty] = useState("");
 
+  // Begin function to handle edit submission
   function handleEdit(event) {
+    // Prevent form refresh
     event.preventDefault();
-
+    // Dispatch to saga to update the current event
     dispatch({
       type: "UPDATE_EVENT",
       payload: {
@@ -34,21 +35,13 @@ function ScheduleCard({ eventItem, orgid }) {
         organization_id: orgid,
       },
     });
-
+    // Reset Toggle
     setToggleEdit(false);
-  }
+  } // End handleEdit
 
-  function handleDeleteEvent(id) {
-    dispatch({
-      type: "DELETE_EVENT",
-      payload: {
-        id: id,
-        organization_id: orgid,
-      },
-    });
-  }
-
+  // Begin function to handle adding a participant to event
   function handleAddParticipant() {
+    // Dispatch to saga to add event participant
     dispatch({
       type: "ADD_EVENT_PARTICIPANT",
       payload: {
@@ -58,10 +51,12 @@ function ScheduleCard({ eventItem, orgid }) {
         event_duty: newDuty,
       },
     });
+    // Clear participant info
     setAddParticipant("");
     setNewDuty("");
-  }
+  } // End handleAddParticipant
 
+  // Begin edit mode
   if (toggleEdit) {
     return (
       <form onSubmit={handleEdit}>
@@ -124,35 +119,17 @@ function ScheduleCard({ eventItem, orgid }) {
           Cancel
         </button>
       </form>
-    );
+    ); // End edit return
+    // Begin non-edit mode
   } else {
     return (
-      <div>
-        {`${eventItem.event_name} ${eventItem.event_description} ${eventItem.start_event}`}
-        <br />
-        {participants?.map(
-          (eventParticipants) =>
-            Number(eventParticipants.event_id) === Number(eventItem.id) &&
-            eventParticipants.participant_info.map(
-              (eventParticipant, index) => (
-                <li key={index}>
-                  {eventParticipant.first_name} {eventParticipant.last_name}(
-                  {eventParticipant.title_name}){eventParticipant.ep_event_duty}
-                </li>
-              )
-            )
-        )}
-        {userOrganization.is_admin && (
-          <>
-            <button onClick={() => setToggleEdit(true)}>Edit</button>
-            <button onClick={() => handleDeleteEvent(eventItem.id)}>
-              Delete
-            </button>
-          </>
-        )}
-      </div>
+      <CardNonEdit
+        setToggleEdit={setToggleEdit}
+        orgid={orgid}
+        eventItem={eventItem}
+      />
     );
-  }
-}
+  } // End non-edit return
+} // End ScheduleCard
 
 export default ScheduleCard;

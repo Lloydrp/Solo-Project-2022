@@ -1,3 +1,5 @@
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
+
 main > .os__bg {
   max-width: 500px;
   min-width: 300px;
@@ -9,4 +11,15 @@ div > .os__min_h {
 
 *::placeholder {
   text-align: center;
+}
+
+.admin__btns > .btn-danger {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.admin__btns > .bg-info {
+  top: 0;
+  right: 0;
 }

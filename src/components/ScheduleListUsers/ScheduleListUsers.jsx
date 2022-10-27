@@ -8,8 +8,6 @@ function ScheduleListUsers({ organization, orgTitles }) {
           <div>
             {item.first_name} {item.last_name}
             <br />
-            {console.log("user :>> ", item)}
-            {console.log("orgTitles :>> ", orgTitles)}
             {item.title
               ? orgTitles[
                   orgTitles.findIndex((title) => title.id === item.title)

@@ -1,15 +1,18 @@
 import React from "react";
-import { useSelector } from "react-redux";
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 function NavbarComponent({ orgid }) {
-  const user = useSelector((store) => store.user);
-
   return (
     <>
-      <Navbar collapseOnSelect expand="sm" bg="primary" variant="dark">
+      <Navbar
+        collapseOnSelect
+        expand="sm"
+        bg="primary"
+        variant="dark"
+        className="vw-100"
+      >
         <Container fluid>
           <Navbar.Brand className="fs-2" href="#/home">
             Organization Station

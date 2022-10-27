@@ -72,10 +72,10 @@ function SchedulePage() {
         </div>
 
         {/* Begin schedule card section */}
-        <div className="col-7 col-lg-9">
+        <div className="col d-flex flex-column">
           {userOrganization.is_admin && (
             <button
-              className="btn btn-info btn-sm mt-1"
+              className="btn btn-success btn-sm mt-1"
               onClick={() => setToggleModal(true)}
             >
               Add Event
@@ -86,7 +86,7 @@ function SchedulePage() {
               {"All This week Next Week This Month Next Month"}
             </ul>
           </nav>
-          <div>
+          <div className="d-flex flex-wrap">
             {!organization.orgEvents.includes(null) &&
               organization.orgEvents.map((item, index) => (
                 <ScheduleCard

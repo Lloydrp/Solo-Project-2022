@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import LogOutButton from "../../LogOutButton/LogOutButton";
 import { useSelector } from "react-redux";
-import NavbarComponent from "../../NavbarComponent/NavbarComponent";
 import { useHistory, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import NavbarComponent from "../../NavbarComponent/NavbarComponent";
 import UserEdit from "../../UserEdit/UserEdit";
 import UserOrganizationEdit from "../../UserOrganizationEdit/UserOrganizationEdit";
-import { useDispatch } from "react-redux";
 
 function UserPage() {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ function UserPage() {
   return (
     <>
       <NavbarComponent className="navLink" orgid={params.orgid} />
-      <main className="container">
+      <main className="d-flex  flex-column">
         <h2>Welcome, {user.username}!</h2>
         <section className="org-container">
           <div onClick={() => setToggleEditUser(true)}>
@@ -72,11 +72,13 @@ function UserPage() {
             )}
           </div>
         </section>
-        <button onClick={handleChangeOrganization}>Change Organization</button>
-        <LogOutButton className="btn" />
+        <button className="btn btn-primary" onClick={handleChangeOrganization}>
+          Change Organization
+        </button>
+        <LogOutButton className="mt-3 btn btn-secondary" />
       </main>
     </>
-  );
-}
+  ); // End return
+} // End UserPage
 
 export default UserPage;

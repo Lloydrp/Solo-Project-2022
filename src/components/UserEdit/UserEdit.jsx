@@ -1,190 +1,70 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+import UserEmailUpdateForm from "../UserEmailUpdateForm/UserEmailUpdateForm";
+import UserUpdatePassForm from "../UserUpdatePassForm/UserUpdatePassForm";
+import UserUpdateUsernameForm from "../UserUpdateUsernameForm/UserUpdateUsernameForm";
+import Card from "react-bootstrap/Card";
 
 function UserEdit({ setToggleEditUser }) {
+  // Setup redux variables
   const user = useSelector((store) => store.user);
-  const dispatch = useDispatch();
+  // Setup local state for inputs, toggles, and check availability
   const [toggleUsername, setToggleUsername] = useState(false);
   const [togglePassword, setTogglePassword] = useState(false);
   const [toggleEmail, setToggleEmail] = useState(false);
-  const [changePassword, setChangePassword] = useState("");
-  const [changeUsername, setChangeUsername] = useState("");
-  const [changeEmail, setChangeEmail] = useState("");
-  const [usernameAvailable, setUsernameAvailable] = useState(false);
-  const [emailAvailable, setEmailAvailable] = useState(false);
-
-  function handleSubmitUsername(event) {
-    event.preventDefault();
-
-    dispatch({
-      type: "CHANGE_USERNAME",
-      payload: {
-        newUsername: changeUsername,
-      },
-    });
-
-    setChangeUsername("");
-  }
-
-  function handleSubmitPassword(event) {
-    event.preventDefault();
-
-    dispatch({
-      type: "CHANGE_PASSWORD",
-      payload: {
-        newPassword: changePassword,
-      },
-    });
-
-    setChangePassword("");
-  }
-
-  function handleSubmitEmail(event) {
-    event.preventDefault();
-
-    dispatch({
-      type: "CHANGE_EMAIL",
-      payload: {
-        newEmail: changeEmail,
-      },
-    });
-
-    setChangeEmail("");
-  }
-
-  function handleUsernameInput(event) {
-    setChangeUsername(event.target.value);
-    setUsernameAvailable(false);
-  }
-
-  function handleEmailInput(event) {
-    setChangeEmail(event.target.value);
-    setEmailAvailable(false);
-  }
-
-  function handleUsernameCancel(event) {
-    event.preventDefault();
-    setToggleUsername(false);
-    setChangeUsername("");
-  }
-  function handlePasswordCancel(event) {
-    event.preventDefault();
-    setTogglePassword(false);
-    setChangePassword("");
-  }
-  function handleEmailCancel(event) {
-    event.preventDefault();
-    setToggleEmail(false);
-    setChangeEmail("");
-  }
-
-  useEffect(() => {
-    if (changeUsername) {
-      const delayDebounceFn = setTimeout(() => {
-        axios
-          .get(`/api/user/checkusername/${changeUsername}`)
-          .then((result) => {
-            result.data.length === 0
-              ? setUsernameAvailable(true)
-              : setUsernameAvailable(false);
-          })
-          .catch((error) => {
-            console.log("error caught in check username :>> ", error);
-          });
-      }, 500);
-
-      return () => clearTimeout(delayDebounceFn);
-    }
-  }, [changeUsername]);
-
-  useEffect(() => {
-    if (changeEmail) {
-      const delayDebounceFn = setTimeout(() => {
-        axios
-          .get(`/api/user/checkemail/${changeEmail}`)
-          .then((result) => {
-            result.data.length === 0
-              ? setEmailAvailable(true)
-              : setEmailAvailable(false);
-          })
-          .catch((error) => {
-            console.log("error caught in check username :>> ", error);
-          });
-      }, 500);
-
-      return () => clearTimeout(delayDebounceFn);
-    }
-  }, [changeEmail]);
 
   return (
     <>
-      <div onClick={(event) => event.stopPropagation()}>
-        <h2>User Edit Screen</h2>
-        Current Username: {user.username}
-        {toggleUsername ? (
-          <form onSubmit={handleSubmitUsername}>
-            <label htmlFor="changeUsername">
-              Change Username:
-              <input
-                type="text"
-                name="changeUsername"
-                value={changeUsername}
-                onChange={(event) => handleUsernameInput(event)}
-              />
-            </label>
-            {usernameAvailable
-              ? "✔️ Username Available"
-              : "❌ Username Not Available"}
-            <button>Save Username</button>
-            <button onClick={handleUsernameCancel}>Cancel</button>
-          </form>
-        ) : (
-          <div onClick={() => setToggleUsername(true)}>Change Username</div>
-        )}
-        <br />
-        {togglePassword ? (
-          <form onSubmit={handleSubmitPassword}>
-            <label htmlFor="changePassword">
-              Change Password:
-              <input
-                autoComplete="off"
-                type="text"
-                name="changePassword"
-                value={changePassword}
-                onChange={(event) => setChangePassword(event.target.value)}
-              />
-            </label>
-            <button>Save Password</button>
-            <button onClick={handlePasswordCancel}>Cancel</button>
-          </form>
-        ) : (
-          <div onClick={() => setTogglePassword(true)}>Change Password</div>
-        )}
-        <br />
-        Current Email: {user.email}
-        {toggleEmail ? (
-          <form onSubmit={handleSubmitEmail}>
-            <label htmlFor="changeEmail">
-              Change Email:
-              <input
-                type="text"
-                name="changeEmail"
-                value={changeEmail}
-                onChange={(event) => handleEmailInput(event)}
-              />
-            </label>
-            {emailAvailable ? "✔️" : "❌"}
-            <button>Save Email</button>
-            <button onClick={handleEmailCancel}>Cancel</button>
-          </form>
-        ) : (
-          <div onClick={() => setToggleEmail(true)}>Change Email</div>
-        )}
-        <br />
-        <button onClick={() => setToggleEditUser(false)}>Cancel</button>
-      </div>
+      <Card body className="w-100" onClick={(event) => event.stopPropagation()}>
+        <h2 className="text-center">User Edit Screen</h2>
+        <div className="d-flex flex-column align-items-center">
+          Username: {user.username}
+          {toggleUsername ? (
+            <UserUpdateUsernameForm setToggleUsername={setToggleUsername} />
+          ) : (
+            <button
+              className="btn btn-primary mb-3"
+              onClick={() => setToggleUsername(true)}
+            >
+              Change Username
+            </button>
+          )}
+        </div>
+        <div className="d-flex flex-column align-items-center">
+          {togglePassword ? (
+            <UserUpdatePassForm setTogglePassword={setTogglePassword} />
+          ) : (
+            <button
+              className="btn btn-primary mb-3"
+              onClick={() => setTogglePassword(true)}
+            >
+              Change Password
+            </button>
+          )}
+        </div>
+        <div className="d-flex flex-column align-items-center">
+          Email: {user.email}
+          {toggleEmail ? (
+            <UserEmailUpdateForm setToggleEmail={setToggleEmail} />
+          ) : (
+            <div
+              className="btn btn-primary mb-3"
+              onClick={() => setToggleEmail(true)}
+            >
+              Change Email
+            </div>
+          )}
+        </div>
+        <div className="d-flex flex-column align-items-center">
+          <button
+            type="button"
+            className="btn btn-outline-secondary"
+            onClick={() => setToggleEditUser(false)}
+          >
+            Cancel
+          </button>
+        </div>
+      </Card>
     </>
   );
 }

@@ -2,3 +2,7 @@ main > .os__bg {
   max-width: 500px;
   min-width: 300px;
 }
+
+div > .os__min_h {
+  min-height: 200px;
+}

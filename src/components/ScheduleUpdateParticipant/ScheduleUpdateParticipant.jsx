@@ -1,9 +1,12 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import ListGroup from "react-bootstrap/ListGroup";
+import Form from "react-bootstrap/Form";
+import { useEffect } from "react";
 
 function ScheduleUpdateParticipant({ eventParticipant, orgid, eventItem }) {
   const dispatch = useDispatch();
-  const [newDuty, setNewDuty] = useState(eventParticipant.ep_event_duty);
+  const [newDuty, setNewDuty] = useState("");
 
   function handleDeleteParticipant(id) {
     dispatch({
@@ -28,33 +31,49 @@ function ScheduleUpdateParticipant({ eventParticipant, orgid, eventItem }) {
     });
   }
 
+  useEffect(() => {
+    setNewDuty(eventParticipant.ep_event_duty);
+  }, [eventParticipant]);
+
   return (
-    <li>
-      {eventParticipant.first_name} {eventParticipant.last_name}(
-      {eventParticipant.title_name})
-      {
-        <input
-          placeholder="Participant Duty"
-          type="text"
-          name="newDuty"
-          value={newDuty}
-          onChange={(event) => setNewDuty(event.target.value)}
-        />
+    <ListGroup.Item className="text-white bg-primary">
+      <div className="px-1">{`${eventParticipant.first_name} ${
+        eventParticipant.last_name
       }
-      {newDuty === eventParticipant.ep_event_duty ? "✔️" : "❌"}
-      <button
-        type="button"
-        onClick={() => handleUpdateParticipant(eventParticipant.ep_user_id)}
-      >
-        Update
-      </button>
-      <button
-        type="button"
-        onClick={() => handleDeleteParticipant(eventParticipant.ep_user_id)}
-      >
-        Delete
-      </button>
-    </li>
+      (${
+        eventParticipant.title_name ? eventParticipant.title_name : "No Title"
+      })`}</div>
+      <Form>
+        <Form.Group>
+          <Form.Control
+            className={
+              newDuty === eventParticipant.ep_event_duty
+                ? "is-valid"
+                : "is-invalid"
+            }
+            placeholder="Participant Duty"
+            type="text"
+            name="newDuty"
+            value={newDuty}
+            onChange={(event) => setNewDuty(event.target.value)}
+          />
+          <button
+            className="btn btn-sm btn-light"
+            type="button"
+            onClick={() => handleUpdateParticipant(eventParticipant.ep_user_id)}
+          >
+            Update
+          </button>
+          <button
+            className="btn btn-sm btn-danger ms-1 mt-1"
+            type="button"
+            onClick={() => handleDeleteParticipant(eventParticipant.ep_user_id)}
+          >
+            Remove
+          </button>
+        </Form.Group>
+      </Form>
+    </ListGroup.Item>
   );
 }
 

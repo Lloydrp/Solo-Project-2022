@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import socketIO from "socket.io-client";
 import { useHistory, useParams } from "react-router-dom";
-import Nav from "../../Nav/Nav";
+import NavbarComponent from "../../NavbarComponent/NavbarComponent";
 import ChatWrapper from "../../ChatComponents/ChatWrapper";
 
 function ChatPage() {
@@ -40,10 +40,10 @@ function ChatPage() {
   }, [socket]);
 
   return (
-    <>
-      <Nav orgid={params.orgid} />
+    <main className="vh-100">
+      <NavbarComponent orgid={params.orgid} />
       <ChatWrapper socket={socket} orgid={params.orgid} />
-    </>
+    </main>
   );
 }
 

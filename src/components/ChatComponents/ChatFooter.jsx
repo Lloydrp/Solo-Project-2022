@@ -27,17 +27,20 @@ const ChatFooter = ({ socket, orgid }) => {
   }
 
   return (
-    <div className="chat__footer">
-      <form className="form" onSubmit={handleSendMessage}>
+    <div className="os__footervh p-1 bg-primary">
+      <form
+        className="w-100 h-100 d-flex align-items-center justify-content-around"
+        onSubmit={handleSendMessage}
+      >
         <input
           type="text"
           placeholder="Write message"
-          className="message"
+          className="os__messagebox h-100 rounded border-light p-2"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
           onKeyDown={handleTyping}
         />
-        <button className="sendBtn">SEND</button>
+        <button className="os__sendbtn btn btn-light h-100 p-2">SEND</button>
       </form>
     </div>
   );

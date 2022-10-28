@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
-function AddEventModal({ setToggleModal, orgid }) {
-  const user = useSelector((store) => store.user);
+function AddEventModal({ setToggleModal, toggleModal, orgid }) {
   const dispatch = useDispatch();
   const [eventName, setEventName] = useState("");
   const [eventDate, setEventDate] = useState("");
@@ -26,56 +27,89 @@ function AddEventModal({ setToggleModal, orgid }) {
   }
 
   return (
-    <div className="modal-background" onClick={() => setToggleModal(false)}>
-      <div
-        className="modal-wrapper"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="modal-header">
-          <h2>Add Event</h2>
-        </div>
-        <div className="modal-body">
-          <form onSubmit={handleAddEvent}>
-            <label htmlFor="eventName">
-              Event Name:
-              <input
-                type="text"
-                name="eventName"
-                value={eventName}
-                required
-                onChange={(event) => setEventName(event.target.value)}
-              />
-            </label>
-            <label htmlFor="eventDate">
-              Event Date:
-              <input
-                type="date"
-                name="eventDate"
-                value={eventDate}
-                required
-                onChange={(event) => setEventDate(event.target.value)}
-              />
-            </label>
-            <br />
-            <label htmlFor="eventDescription">
-              Event Description:
-              <textarea
-                type="text"
-                name="eventDescription"
-                value={eventDescription}
-                onChange={(event) => setEventDescription(event.target.value)}
-              />
-            </label>
-            <br />
-            <button type="submit">Add Event</button>
-            <button type="button" onClick={() => setToggleModal(false)}>
-              Cancel
-            </button>
-          </form>
-        </div>
-        <div className="modal-footer"></div>
-      </div>
-    </div>
+    <Modal show={toggleModal} backdrop="static" keyboard={false}>
+      <Modal.Header>
+        <Modal.Title>Add event</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form id="addEvent" onSubmit={handleAddEvent}>
+          <Form.Group>
+            <Form.Label>Event Name:</Form.Label>
+            <Form.Control
+              type="text"
+              name="eventName"
+              value={eventName}
+              required
+              onChange={(event) => setEventName(event.target.value)}
+            />
+            <Form.Label>Event Date:</Form.Label>
+            <Form.Control
+              type="date"
+              name="eventDate"
+              value={eventDate}
+              required
+              onChange={(event) => setEventDate(event.target.value)}
+            />
+            <Form.Label>Description:</Form.Label>
+            <Form.Control
+              as="textarea"
+              type="text"
+              name="eventDescription"
+              value={eventDescription}
+              onChange={(event) => setEventDescription(event.target.value)}
+            />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button type="submit" form="addEvent" variant="primary">
+          Add
+        </Button>
+        <Button
+          type="button"
+          onClick={() => setToggleModal(false)}
+          variant="secondary"
+        >
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
+    //     </div>
+    //     <div className="modal-body">
+    //       <form onSubmit={}>
+    //         <label htmlFor="eventName">
+    //           Event Name:
+    //           <input
+    //             type="text"
+    //             name="eventName"
+    //             value={eventName}
+    //             required
+    //             onChange={(event) => setEventName(event.target.value)}
+    //           />
+    //         </label>
+    //         <label htmlFor="eventDate">
+    //           Event Date:
+    //           <input
+    //
+    //           />
+    //         </label>
+    //         <br />
+    //         <label htmlFor="eventDescription">
+    //           Event Description:
+    //           <textarea
+    //
+    //           />
+    //         </label>
+    //         <br />
+    //         <button type="submit">Add Event</button>
+    //         <button type="button" onClick={() => setToggleModal(false)}>
+    //           Cancel
+    //         </button>
+    //       </form>
+    //     </div>
+    //     <div className="modal-footer"></div>
+    //   </div>
+    // </div>
   );
 }
 

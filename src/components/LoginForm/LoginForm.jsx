@@ -1,69 +1,71 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 function LoginForm() {
+  // Setup local state for inputs
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const errors = useSelector((store) => store.errors);
+
+  // Setup redux variables
   const dispatch = useDispatch();
+
+  // Setup router variables
   const history = useHistory();
 
-  const login = (event) => {
+  // Begin function to handle login
+  function handleLogin(event) {
+    // Prevent form refresh
     event.preventDefault();
 
-    if (username && password) {
-      dispatch({
-        type: "LOGIN",
-        payload: {
-          username: username,
-          password: password,
-        },
-      });
-      history.push("/choose");
-    } else {
-      dispatch({ type: "LOGIN_INPUT_ERROR" });
-    }
-  }; // end login
+    // Dispatch to login user
+    dispatch({
+      type: "LOGIN",
+      payload: {
+        username: username,
+        password: password,
+      },
+    });
+
+    history.push("/choose");
+  } // End handleLogin
 
   return (
-    <form className="formPanel" onSubmit={login}>
-      <h2>Login</h2>
-      {errors.loginMessage && (
-        <h3 className="alert" role="alert">
-          {errors.loginMessage}
-        </h3>
-      )}
-      <div>
-        <label htmlFor="username">
-          Username:
-          <input
+    <main>
+      <h2 className="text-center text-primary mb-3">Login</h2>
+      <Form
+        onSubmit={handleLogin}
+        className="d-flex flex-column justify-content-center align-items-center"
+      >
+        <Form.Group className="mb-3">
+          <Form.Label className="text-primary">Username</Form.Label>
+          <Form.Control
             type="text"
             name="username"
             required
             value={username}
             onChange={(event) => setUsername(event.target.value)}
+            placeholder="Enter username"
+            className="mb-3"
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
+          <Form.Label className="text-primary">Password</Form.Label>
+          <Form.Control
             type="password"
             name="password"
             required
             value={password}
             onChange={(event) => setPassword(event.target.value)}
+            placeholder="Enter Password"
           />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Log In" />
-      </div>
-    </form>
-  );
-}
+        </Form.Group>
+        <Button className="mb-3" variant="primary" type="submit">
+          Login
+        </Button>
+      </Form>
+    </main>
+  ); // End return
+} // End LoginForm
 
 export default LoginForm;

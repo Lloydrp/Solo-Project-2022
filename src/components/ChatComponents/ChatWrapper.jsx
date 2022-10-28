@@ -41,9 +41,9 @@ function ChatPage({ socket, orgid }) {
   }, [socket]);
 
   return (
-    <div className="chat">
+    <div className="os__chatvh w-100 d-flex align-items-center">
       <ChatBar socket={socket} />
-      <div className="chat__main">
+      <div className="os__mainflex h-100">
         <ChatBody
           messages={messages}
           typingStatus={typingStatus}

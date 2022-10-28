@@ -1,8 +1,11 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 function RegisterForm() {
+  // Setup local state for inputs
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
@@ -10,12 +13,16 @@ function RegisterForm() {
   const [email, setEmail] = useState("");
   const [usernameAvailable, setUsernameAvailable] = useState(false);
   const [emailAvailable, setEmailAvailable] = useState(false);
-  const errors = useSelector((store) => store.errors);
+
+  // Setup redux variables
   const dispatch = useDispatch();
 
-  const registerUser = (event) => {
+  // Begin function to handle registration
+  function handleRegistration(event) {
+    // Prevent form refresh
     event.preventDefault();
 
+    // Dispatch to create user in DB
     dispatch({
       type: "REGISTER",
       payload: {
@@ -26,14 +33,16 @@ function RegisterForm() {
         email: email,
       },
     });
-  }; // end registerUser
+  } // end handleRegistration
 
+  // Begin useEffect to check if username is currently available
   useEffect(() => {
     if (username) {
       const delayDebounceFn = setTimeout(() => {
         axios
           .get(`/api/user/checkusername/${username}`)
           .then((result) => {
+            // If result is blank then username is available
             result.data.length === 0
               ? setUsernameAvailable(true)
               : setUsernameAvailable(false);
@@ -45,14 +54,16 @@ function RegisterForm() {
 
       return () => clearTimeout(delayDebounceFn);
     }
-  }, [username]);
+  }, [username]); // End useEffect for username availability
 
+  // Begin useEffect to check if email is currently in use
   useEffect(() => {
     if (email) {
       const delayDebounceFn = setTimeout(() => {
         axios
           .get(`/api/user/checkemail/${email}`)
           .then((result) => {
+            // If result is blank then email is not in use
             result.data.length === 0
               ? setEmailAvailable(true)
               : setEmailAvailable(false);
@@ -64,81 +75,83 @@ function RegisterForm() {
 
       return () => clearTimeout(delayDebounceFn);
     }
-  }, [email]);
+  }, [email]); // End useEffect for email in use
 
   return (
-    <form className="formPanel" onSubmit={registerUser}>
-      <h2>Register User</h2>
-      {errors.registrationMessage && (
-        <h3 className="alert" role="alert">
-          {errors.registrationMessage}
-        </h3>
-      )}
-      <label htmlFor="username">
-        Username:
-        <input
-          type="text"
-          name="username"
-          value={username}
-          required
-          onChange={(event) => setUsername(event.target.value)}
-        />
-      </label>
-      {usernameAvailable ? "✔️ Available" : "❌ Unavailable"}
-      <div>
-        <label htmlFor="firstName">
-          First Name:
-          <input
+    <main>
+      <h2 className="text-center text-primary my-3">Register</h2>
+      <Form
+        onSubmit={handleRegistration}
+        className="d-flex flex-column justify-content-center align-items-center"
+      >
+        <Form.Group className="d-flex flex-column mb-3">
+          <Form.Label className="text-primary">Username</Form.Label>
+          <Form.Control
+            // If username available and not blank then mark valid
+            className={
+              usernameAvailable && usernameAvailable !== ""
+                ? "is-valid mb-3"
+                : "is-invalid mb-3"
+            }
+            type="text"
+            name="username"
+            required
+            value={username}
+            onChange={(event) => setUsername(event.target.value)}
+            placeholder="Enter username"
+          />
+          <Form.Label className="text-primary">First Name</Form.Label>
+          <Form.Control
             type="text"
             name="firstName"
-            value={firstName}
             required
+            value={firstName}
             onChange={(event) => setFirstName(event.target.value)}
+            placeholder="Enter first name"
+            className="mb-3"
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="lastName">
-          Last Name:
-          <input
+          <Form.Label className="text-primary">Last Name</Form.Label>
+          <Form.Control
             type="text"
             name="lastName"
+            required
             value={lastName}
-            required
             onChange={(event) => setLastName(event.target.value)}
+            placeholder="Enter last name"
+            className="mb-3"
           />
-        </label>
-      </div>
-      <div>
-        <label htmlFor="email">
-          Email:
-          <input
-            type="email"
+          <Form.Label className="text-primary">Email</Form.Label>
+          <Form.Control
+            // If email is available and not blank than mark valid
+            className={
+              emailAvailable && emailAvailable !== ""
+                ? "is-valid mb-3"
+                : "is-invalid mb-3"
+            }
+            type="text"
             name="email"
-            value={email}
             required
+            value={email}
             onChange={(event) => setEmail(event.target.value)}
+            placeholder="Enter email"
           />
-        </label>
-        {emailAvailable ? "✔️ Available" : "❌ Unavailable"}
-      </div>
-      <div>
-        <label htmlFor="password">
-          Password:
-          <input
+          <Form.Label className="text-primary">Password</Form.Label>
+          <Form.Control
             type="password"
             name="password"
-            value={password}
             required
+            value={password}
             onChange={(event) => setPassword(event.target.value)}
+            placeholder="Enter Password"
+            className="mb-3"
           />
-        </label>
-      </div>
-      <div>
-        <input className="btn" type="submit" name="submit" value="Register" />
-      </div>
-    </form>
-  );
-}
+        </Form.Group>
+        <Button className="mb-3" variant="primary" type="submit">
+          Submit
+        </Button>
+      </Form>
+    </main>
+  ); // End return
+} // End RegisterForm
 
 export default RegisterForm;

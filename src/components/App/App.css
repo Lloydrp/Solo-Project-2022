@@ -1,136 +1,4 @@
-html,
-body,
-#react-root {
-  height: 100%;
-}
-
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  margin: 0px;
-}
-
-img {
-  display: inline-block;
-  max-width: 100%;
-}
-
-/* --------------------------------------------------------------------------------
-Container
--------------------------------------------------------------------------------- */
-
-.container {
-  padding: 20px;
-}
-
-/* --------------------------------------------------------------------------------
-Button
--------------------------------------------------------------------------------- */
-
-.btn {
-  display: inline-block;
-  padding: 10px 20px;
-  border-color: #014041;
-  border-width: 1px 1px 3px;
-  border-radius: 4px;
-  background-color: #00acb0;
-  color: #f8f8f8;
-  font-size: 1.1rem;
-  outline: 0;
-  cursor: pointer;
-}
-
-.btn_sizeMin {
-  min-height: 50px;
-  min-width: 100px;
-}
-
-.btn_sizeSm {
-  padding: 10px 15px;
-  font-size: 0.8rem;
-}
-
-.btn_sizeFull {
-  display: block;
-  width: 100%;
-}
-
-.btn:hover {
-  background-color: #008183;
-  text-decoration: none;
-}
-
-/* This line makes the "Register" and "Login" buttons look like links */
-.btn_asLink {
-  padding: 0;
-  border-width: 0;
-  border-bottom: 1px solid #444;
-  border-radius: 0;
-  background: none;
-  font: inherit;
-  color: #444;
-}
-
-.btn_asLink:hover {
-  background-color: transparent;
-  border-color: #008183;
-  color: #008183;
-}
-
-/* --------------------------------------------------------------------------------
-Alert
--------------------------------------------------------------------------------- */
-
-.alert {
-  box-sizing: border-box;
-  padding: 15px 10px;
-  margin: 15px 0;
-  border: 2px solid #e01616;
-  background-color: #efefef;
-  border-radius: 3px;
-  color: #e01616;
-  font-size: 0.8rem;
-}
-
-/* --------------------------------------------------------------------------------
-Form Treatment
--------------------------------------------------------------------------------- */
-
-.formPanel {
-  box-sizing: border-box;
-  width: 400px;
-  max-width: 100%;
-  padding: 25px;
-  margin: 0 auto 20px;
-  background-color: #efefef;
-  border-radius: 3px;
-  box-shadow: 0 1px 2px rgb(0, 0, 0, 0.4);
-}
-
-input {
-  margin: 5px;
-  margin-bottom: 10px;
-}
-
-.org-container {
-  display: flex;
-}
-
-.org-sub-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.org-nav li {
-  display: inline-block;
-  margin-right: 5px;
-}
-
-/* Begin Chat CSS */
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
-    monospace;
-}
-
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
 
 * {
@@ -139,164 +7,95 @@ code {
   padding: 0;
   font-family: "Poppins", sans-serif;
 }
-.home__container {
-  width: 100%;
-  height: 80vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.home__container > * {
-  margin-bottom: 10px;
-}
-.home__header {
-  margin-bottom: 30px;
-}
-.username__input {
-  padding: 10px;
-  width: 50%;
-}
-.home__cta {
-  width: 200px;
-  padding: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  background-color: #607eaa;
-  color: #f9f5eb;
-  outline: none;
-  border: none;
-  border-radius: 5px;
-}
-.chat {
-  width: 100%;
-  height: 90vh;
-  display: flex;
-  align-items: center;
-}
-.chat__sidebar {
-  height: 100%;
-  background-color: #f9f5eb;
-  flex: 0.2;
-  padding: 20px;
-  border-right: 1px solid #fdfdfd;
-}
-.chat__main {
-  height: 100%;
-  flex: 0.8;
-}
-.chat__header {
-  margin: 30px 0 20px 0;
-}
-.chat__users > * {
-  margin-bottom: 10px;
-  color: #607eaa;
-  font-size: 14px;
-}
-.online__users > * {
-  margin-bottom: 10px;
-  color: rgb(238, 102, 102);
-  font-style: italic;
-}
-.chat__mainHeader {
-  width: 100%;
-  height: 10vh;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 20px;
-  background-color: #f9f5eb;
-}
-.message__container {
-  width: 100%;
-  height: 70vh;
-  background-color: #fff;
-  padding: 20px;
-  overflow-y: scroll;
+
+main > .os__bg {
+  max-width: 500px;
+  min-width: 300px;
 }
 
-.message__container > * {
-  margin-bottom: 10px;
+div > .os__min_h {
+  min-height: 200px;
 }
-.chat__footer {
-  padding: 10px;
-  background-color: #f9f5eb;
+
+*::placeholder {
+  text-align: center;
+}
+
+.os__shadow {
+  box-shadow: 3px 5px 0.4em black;
+}
+
+.os__listvh {
+  height: 92vh;
+}
+
+.os__chatbodyvh {
+  height: 80vh;
+}
+
+.os__chatbodyvh > * {
+  margin-bottom: 5px;
+}
+
+.os__chatheadervh {
   height: 10vh;
 }
-.form {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.message {
-  width: 80%;
-  height: 100%;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  outline: none;
-  padding: 15px;
-}
-.sendBtn {
-  width: 150px;
-  background-color: green;
-  padding: 10px;
-  border: none;
-  outline: none;
-  color: #eae3d2;
-  cursor: pointer;
-}
-.sendBtn:hover {
-  background-color: rgb(129, 201, 129);
-}
-.message__recipient {
-  background-color: #f5ccc2;
-  width: 300px;
-  padding: 10px;
-  border-radius: 10px;
-  font-size: 15px;
-}
-.message__sender {
-  background-color: rgb(194, 243, 194);
-  max-width: 300px;
-  padding: 10px;
-  border-radius: 10px;
-  margin-left: auto;
-  font-size: 15px;
-}
-.message__chats > p {
+
+.os__chatsize > p {
   font-size: 13px;
+  margin: 0;
 }
-.sender__name {
+
+.os__alignright {
   text-align: right;
 }
-.message__status {
-  position: fixed;
+
+.os__sender {
+  max-width: 400px;
+  font-size: 15px;
+}
+
+.os__received {
+  max-width: 400px;
+  font-size: 15px;
+}
+
+.typing__status {
   bottom: 50px;
   font-size: 13px;
   font-style: italic;
 }
-/* End Chat CSS */
 
-.modal-background {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background-color: rgba(100, 100, 100, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.os__chatflex {
+  flex: 0.2;
 }
 
-.modal-wrapper {
-  background-color: #00acb0;
-  z-index: 1;
+.os__users > * {
+  font-size: 14px;
+  margin-bottom: 10px;
+  font-style: italic;
 }
 
-.image-preview {
-  width: 200px;
-  height: auto;
+.os__mainflex {
+  flex: 0.8;
+}
+
+.os__chatvh {
+  height: 91.5%;
+}
+
+.os__footervh {
+  height: 11.5vh;
+}
+
+.os__messagebox {
+  width: 83%;
+  outline: none;
+}
+
+.os__sendbtn {
+  width: 150px;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }

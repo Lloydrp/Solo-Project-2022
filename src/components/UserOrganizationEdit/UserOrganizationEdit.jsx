@@ -1,331 +1,154 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { useSelector } from "react-redux";
+import Card from "react-bootstrap/Card";
+import UserOrgNameChange from "../UserOrgNameChange/UserOrgNameChange";
+import UserOrgTypeChange from "../UserOrgTypeChange/UserOrgTypeChange";
+import UserOrgAddTitle from "../UserOrgAddTitle/UserOrgAddTitle";
+import UserOrgRemoveTitle from "../UserOrgRemoveTitle/UserOrgRemoveTitle";
+import UserOrgAddUser from "../UserOrgAddUser/UserOrgAddUser";
+import UserOrgAdminStatus from "../UserOrgAdminStatus/UserOrgerAdminStatus";
+import UserOrgShowUsers from "../UserOrgShowUsers/UserOrgShowUsers";
 
 function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
-  const dispatch = useDispatch();
+  // Setup redux variables
   const orgTypes = useSelector((store) => store.organization.orgTypes);
   const orgTitles = useSelector((store) => store.organization.orgTitles);
   const unsortedOrgUsers = useSelector((store) => store.organization.orgUsers);
+  // Sorting users by admin
   const orgUsers = unsortedOrgUsers.sort((userOne, userTwo) =>
     userOne.is_admin === userTwo.is_admin ? 0 : userOne.is_admin ? -1 : 1
   );
-  const [changeOrganizationName, setChangeOrganizationName] = useState("");
-  const [addNewUser, setAddNewUser] = useState("");
-  const [addAdminStatus, setAddAdminStatus] = useState("");
-  const [addTitle, setAddTitle] = useState("");
+  // Setup local state for inputs, toggles, and available booleans
   const [toggleOrganizationName, setToggleOrganizationName] = useState(false);
   const [toggleOrganizationType, setToggleOrganizationType] = useState(false);
   const [toggleAddTitle, setToggleAddTitle] = useState(false);
   const [toggleRemoveTitle, setToggleRemoveTitle] = useState(false);
-  const [orgNameAvailable, setOrgNameAvailable] = useState(false);
-
-  function handleOrgNameSubmit(event) {
-    event.preventDefault();
-
-    dispatch({
-      type: "CHANGE_ORGANIZATION_NAME",
-      payload: {
-        newName: changeOrganizationName,
-        organization_id: organization.organization_id,
-      },
-    });
-
-    setChangeOrganizationName("");
-  }
-
-  function handleOrgTypeSubmit(event) {
-    event.preventDefault();
-
-    dispatch({
-      type: "CHANGE_ORGANIZATION_TYPE",
-      payload: {
-        newType: changeOrgType.value,
-        organization_id: organization.organization_id,
-      },
-    });
-  }
-
-  function handleOrganizationNameInput(event) {
-    setChangeOrganizationName(event.target.value);
-    setOrgNameAvailable(false);
-  }
-
-  function handleOrgNameCancel(event) {
-    event.preventDefault();
-    setToggleOrganizationName(false);
-  }
-
-  function handleOrgTypeCancel(event) {
-    event.preventDefault();
-    setToggleOrganizationType(false);
-  }
-
-  function handleAddUser(event) {
-    event.preventDefault();
-
-    dispatch({
-      type: "ADD_TO_ORGANIZATION",
-      payload: {
-        newUser: addNewUser,
-        title_id: addNewTitle.value === "null" ? null : addNewTitle.value,
-        organization_id: organization.organization_id,
-      },
-    });
-
-    setAddNewUser("");
-  }
-
-  function handleAddAdmin(event) {
-    event.preventDefault();
-
-    console.log({
-      newAdmin: addAdminStatus,
-      organization_id: organization.organization_id,
-    });
-
-    if (event.nativeEvent.submitter.value === "add") {
-      dispatch({
-        type: "ADD_ADMIN_STATUS",
-        payload: {
-          newAdmin: addAdminStatus,
-          organization_id: organization.organization_id,
-        },
-      });
-      setAddAdminStatus("");
-    } else if (event.nativeEvent.submitter.value === "remove") {
-      dispatch({
-        type: "REMOVE_ADMIN_STATUS",
-        payload: {
-          newAdmin: addAdminStatus,
-          organization_id: organization.organization_id,
-        },
-      });
-      setAddAdminStatus("");
-    } else {
-      console.log("Error in add/remove admin submission");
-    }
-  }
-
-  function handleRemoveFromOrg(id) {
-    dispatch({
-      type: "REMOVE_FROM_ORG",
-      payload: {
-        user_id: id,
-        organization_id: organization.organization_id,
-      },
-    });
-  }
-
-  function handleAddTitleCancel(event) {
-    event.preventDefault();
-    setToggleAddTitle(false);
-  }
-
-  function handleAddTitle(event) {
-    event.preventDefault();
-
-    dispatch({
-      type: "ADD_TITLE",
-      payload: {
-        organization_id: organization.organization_id,
-        newTitle: addTitle,
-      },
-    });
-
-    setAddTitle("");
-    setToggleAddTitle(false);
-  }
-
-  function handleRemoveTitle(id) {
-    dispatch({
-      type: "REMOVE_TITLE",
-      payload: {
-        organization_id: organization.organization_id,
-        title_id: id,
-      },
-    });
-  }
-
-  useEffect(() => {
-    if (changeOrganizationName) {
-      const delayDebounceFn = setTimeout(() => {
-        axios
-          .get(`/api/organization/checkorgname/${changeOrganizationName}`)
-          .then((result) => {
-            result.data.length === 0
-              ? setOrgNameAvailable(true)
-              : setOrgNameAvailable(false);
-          })
-          .catch((error) => {
-            console.log("error caught in check org name :>> ", error);
-          });
-      }, 500);
-
-      return () => clearTimeout(delayDebounceFn);
-    }
-  }, [changeOrganizationName]);
+  const [toggleShowUsers, setToggleShowUsers] = useState(false);
 
   return (
-    <>
-      <div onClick={(event) => event.stopPropagation()}>
-        Current Organization Name: {organization.organization_name}
-        {toggleOrganizationName ? (
-          <form onSubmit={handleOrgNameSubmit}>
-            <label htmlFor="changeOrganizationName">
-              Change Organization Name:
-              <input
-                type="text"
-                name="changeOrganizationName"
-                value={changeOrganizationName}
-                onChange={(event) => handleOrganizationNameInput(event)}
-              />
-            </label>
-            {orgNameAvailable
-              ? "✔️ Organization Name Available"
-              : "❌ Organization Name Not Available"}
-            <button>Save</button>
-            <button onClick={handleOrgNameCancel}>Cancel</button>
-          </form>
-        ) : (
-          <div onClick={() => setToggleOrganizationName(true)}>
-            Change Organization Name
-          </div>
-        )}
-        Current Organization Type:{" "}
-        {
-          orgTypes[
-            orgTypes.findIndex(
-              (type) => type.id === organization.organization_type_id
-            )
-          ].name
-        }
-        {toggleOrganizationType ? (
-          <form onSubmit={handleOrgTypeSubmit}>
-            <label htmlFor="changeOrgType">
-              Change Organization Type:
-              <select name="changeOrgType" id="changeOrgType">
-                <option value={organization.organization_type_id}>
-                  Choose Organization Type
-                </option>
-                {orgTypes.map((type, index) => (
-                  <option key={index} value={type.id}>
-                    {type.name}
-                  </option>
-                ))}
-              </select>
-            </label>
-            <button>Save</button>
-            <button onClick={handleOrgTypeCancel}>Cancel</button>
-          </form>
-        ) : (
-          <div onClick={() => setToggleOrganizationType(true)}>
-            Change Organization Type
-          </div>
-        )}
-        {toggleAddTitle ? (
-          <form onSubmit={(event) => handleAddTitle(event)}>
-            <label htmlFor="addTitle">
-              Add Title:
-              <input
-                type="text"
-                name="addTitle"
-                value={addTitle}
-                onChange={(event) => setAddTitle(event.target.value)}
-              />
-            </label>
-            <button>Save</button>
-            <button onClick={handleAddTitleCancel}>Cancel</button>
-          </form>
-        ) : (
-          <div onClick={() => setToggleAddTitle(true)}>
-            Add Organization Title
-          </div>
-        )}
-        {toggleRemoveTitle ? (
-          <>
-            <ul>
-              {orgTitles.map((title, index) => (
-                <li key={index}>
-                  {title.title_name}
-                  <button onClick={() => handleRemoveTitle(title.id)}>
-                    Remove
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button type="button" onClick={() => setToggleRemoveTitle(false)}>
-              Done
+    <section className="d-flex flex-column w-100">
+      <Card className="w-100 p-0 shadow">
+        <h2 className="text-center border-bottom">Edit Organization Info</h2>
+
+        {/* Begin change organization name area */}
+        <div className="d-flex flex-column align-items-center border-bottom w-100">
+          Current Name: {organization.organization_name}
+          {toggleOrganizationName ? (
+            <UserOrgNameChange
+              setToggleOrganizationName={setToggleOrganizationName}
+            />
+          ) : (
+            <button
+              className="btn btn-sm btn-info shadow mb-3"
+              onClick={() => setToggleOrganizationName(true)}
+            >
+              Change Organization Name
             </button>
-          </>
-        ) : (
-          <div onClick={() => setToggleRemoveTitle(true)}>
-            Remove Organization Title
-          </div>
-        )}
-        Add User to Organization:
-        <form onSubmit={(event) => handleAddUser(event)}>
-          <label htmlFor="addNewUser">
-            Username to Add:
-            <input
-              type="text"
-              name="addNewUser"
-              value={addNewUser}
-              onChange={(event) => setAddNewUser(event.target.value)}
-            />
-          </label>
-          <label htmlFor="addNewTitle">
-            Add User Title:
-            <select name="addNewTitle" id="addNewTitle">
-              <option value="null">Choose Title</option>
-              {orgTitles.map((type, index) => (
-                <option key={index} value={type.id}>
-                  {type.title_name}
-                </option>
-              ))}
-            </select>
-          </label>
-          <button>Add</button>
-        </form>
-        <form onSubmit={(event) => handleAddAdmin(event)}>
-          <label htmlFor="addAdminStatus">
-            Admin Access:
-            <input
-              placeholder="Enter username"
-              type="text"
-              name="addAdminStatus"
-              value={addAdminStatus}
-              onChange={(event) => setAddAdminStatus(event.target.value)}
-            />
-          </label>
-          <button value="add" name="addAdmin">
-            Add
-          </button>
-          <button value="remove" name="removeAdmin">
-            Remove
-          </button>
-        </form>
-        <div>
-          <p>Organization users:</p>
-          {orgUsers.map((user, index) => (
-            <li key={index}>
-              {user.first_name} {user.last_name} {user.username}
-              {user.title
-                ? orgTitles[
-                    orgTitles.findIndex((title) => title.id === user.title)
-                  ]?.title_name
-                : "No Title"}
-              {user.is_admin ? "Admin" : ""}
-              <button onClick={() => handleRemoveFromOrg(user.user_id)}>
-                Remove
-              </button>
-            </li>
-          ))}
+          )}
         </div>
-        <button onClick={() => setToggleEditOrganization(false)}>Cancel</button>
+
+        {/* Begin change organization type area */}
+        <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
+          Current Type:{" "}
+          {
+            orgTypes[
+              orgTypes.findIndex(
+                (type) => type.id === organization.organization_type_id
+              )
+            ].name
+          }
+          {toggleOrganizationType ? (
+            <UserOrgTypeChange
+              setToggleOrganizationType={setToggleOrganizationType}
+            />
+          ) : (
+            <div
+              className="btn btn-sm btn-info shadow mb-3"
+              onClick={() => setToggleOrganizationType(true)}
+            >
+              Change Organization Type
+            </div>
+          )}
+        </div>
+
+        {/* Begin adding organization title area */}
+        <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
+          {toggleAddTitle ? (
+            <UserOrgAddTitle setToggleAddTitle={setToggleAddTitle} />
+          ) : (
+            <div
+              className="btn btn-sm btn-info shadow mb-3"
+              onClick={() => setToggleAddTitle(true)}
+            >
+              Add Organization Title
+            </div>
+          )}
+        </div>
+
+        {/* Begin removing organization title area */}
+        <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
+          {toggleRemoveTitle ? (
+            <UserOrgRemoveTitle
+              orgTitles={orgTitles}
+              setToggleRemoveTitle={setToggleRemoveTitle}
+            />
+          ) : (
+            <div
+              className="btn btn-sm btn-info shadow mb-3"
+              onClick={() => setToggleRemoveTitle(true)}
+            >
+              Remove Organization Title
+            </div>
+          )}
+        </div>
+
+        <div className="d-flex flex-column flex-lg-row justify-content-around border-bottom w-100 mt-3">
+          <div className="d-flex flex-column align-items-center">
+            {/* Begin adding user to organization area */}
+            <span>Add User to Organization:</span>
+            <UserOrgAddUser organization={organization} orgTitles={orgTitles} />
+          </div>
+          <div className="d-flex flex-column align-items-center">
+            {/* Begin adding/removing admin status area */}
+            <span>Change Admin Status:</span>
+            <UserOrgAdminStatus />
+          </div>
+        </div>
+
+        {/* Begin Organization user list area */}
+        <div className="d-flex flex-column align-items-center">
+          <span className="mt-3">Organization users:</span>
+          {toggleShowUsers ? (
+            <UserOrgShowUsers
+              orgTitles={orgTitles}
+              orgUsers={orgUsers}
+              setToggleShowUsers={setToggleShowUsers}
+              organization={organization}
+            />
+          ) : (
+            <button
+              className="btn btn-sm btn-info shadow mb-3"
+              onClick={() => setToggleShowUsers(true)}
+            >
+              Show all users
+            </button>
+          )}
+        </div>
+      </Card>
+
+      <div
+        className="d-flex flex-column align-items-center"
+        onClick={(event) => event.stopPropagation()}
+      >
+        <button
+          type="button"
+          className="mt-3 mb-3 btn btn-outline-secondary shadow"
+          onClick={() => setToggleEditOrganization(false)}
+        >
+          Back to Profile
+        </button>
       </div>
-    </>
+    </section>
   );
 }
 

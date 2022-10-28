@@ -74,7 +74,7 @@ router.get("/participants/:orgid", rejectUnauthenticated, (req, res) => {
     JOIN "events" ON "events"."id" = "events_participants"."event_id"
     JOIN "user" ON "events_participants"."user_id" = "user"."id"
     JOIN "user_account" ON "events"."organization_id" = "user_account"."organization_id"
-    LEFT JOIN "titles" ON "titles"."id" = "user_account"."title_id"
+    JOIN "titles" ON "titles"."id" = "user_account"."title_id"
     WHERE "events"."organization_id" = $1
     GROUP BY "events_participants"."event_id";`;
 

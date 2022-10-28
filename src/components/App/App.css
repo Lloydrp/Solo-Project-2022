@@ -99,3 +99,16 @@ div > .os__min_h {
   outline: none;
   cursor: pointer;
 }
+
+.os__resourcesizing {
+  height: 100vh;
+}
+
+.os__imagesizing {
+  height: 74vh;
+}
+
+.os__filessizing {
+  max-height: 74vh;
+  overflow-y: scroll;
+}

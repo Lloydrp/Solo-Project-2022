@@ -87,6 +87,7 @@ function ResourcePage() {
           orgid={params.orgid}
           setToggleModal={setToggleModal}
           shouldCloseOnOverlayClick={true}
+          toggleModal={toggleModal}
         />
       )}
       {toggleImageModal && (

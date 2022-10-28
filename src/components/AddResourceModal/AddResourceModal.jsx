@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
-function AddResourceModal({ setToggleModal, orgid }) {
+function AddResourceModal({ toggleModal, setToggleModal, orgid }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [resourceName, setResourceName] = useState("");
   const [resourceURL, setResourceURL] = useState("");
 
+  // Begin function to handle adding resource
   function handleAddResource(event) {
+    // Prevent form refresh
     event.preventDefault();
-
+    // Dispatch to saga to add to DB
     dispatch({
       type: "ADD_RESOURCE",
       payload: {
@@ -21,51 +26,50 @@ function AddResourceModal({ setToggleModal, orgid }) {
         user_id: user.id,
       },
     });
-
+    // Disable modal
     setToggleModal(false);
-  }
+  } // End handleAddResource
 
   return (
-    <div className="modal-background" onClick={() => setToggleModal(false)}>
-      <div
-        className="modal-wrapper"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="modal-header">
-          <h2>Add Resource</h2>
-        </div>
-        <div className="modal-body">
-          <form onSubmit={handleAddResource}>
-            <label htmlFor="resourceName">
-              Resource Name:
-              <input
-                type="text"
-                name="resourceName"
-                value={resourceName}
-                required
-                onChange={(event) => setResourceName(event.target.value)}
-              />
-            </label>
-            <label htmlFor="resourceURL">
-              Resource URL:
-              <input
-                type="text"
-                name="resourceURL"
-                value={resourceURL}
-                required
-                onChange={(event) => setResourceURL(event.target.value)}
-              />
-            </label>
-            <br />
-            <button type="submit">Add Resource</button>
-            <button type="button" onClick={() => setToggleModal(false)}>
-              Cancel
-            </button>
-          </form>
-        </div>
-        <div className="modal-footer"></div>
-      </div>
-    </div>
+    <Modal show={toggleModal} backdrop="static" keyboard={false}>
+      <Modal.Header>
+        <Modal.Title>Add Resource</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form id="addResource" onSubmit={handleAddResource}>
+          <Form.Group>
+            <Form.Label>Resource Name:</Form.Label>
+            <Form.Control
+              type="text"
+              name="resourceName"
+              value={resourceName}
+              required
+              onChange={(event) => setResourceName(event.target.value)}
+            />
+            <Form.Label>Resource URL:</Form.Label>
+            <Form.Control
+              type="text"
+              name="resourceURL"
+              value={resourceURL}
+              required
+              onChange={(event) => setResourceURL(event.target.value)}
+            />
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button type="submit" form="addResource" variant="primary">
+          Add Resource
+        </Button>
+        <Button
+          type="button"
+          onClick={() => setToggleModal(false)}
+          variant="secondary"
+        >
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 

@@ -74,42 +74,6 @@ function AddEventModal({ setToggleModal, toggleModal, orgid }) {
         </Button>
       </Modal.Footer>
     </Modal>
-    //     </div>
-    //     <div className="modal-body">
-    //       <form onSubmit={}>
-    //         <label htmlFor="eventName">
-    //           Event Name:
-    //           <input
-    //             type="text"
-    //             name="eventName"
-    //             value={eventName}
-    //             required
-    //             onChange={(event) => setEventName(event.target.value)}
-    //           />
-    //         </label>
-    //         <label htmlFor="eventDate">
-    //           Event Date:
-    //           <input
-    //
-    //           />
-    //         </label>
-    //         <br />
-    //         <label htmlFor="eventDescription">
-    //           Event Description:
-    //           <textarea
-    //
-    //           />
-    //         </label>
-    //         <br />
-    //         <button type="submit">Add Event</button>
-    //         <button type="button" onClick={() => setToggleModal(false)}>
-    //           Cancel
-    //         </button>
-    //       </form>
-    //     </div>
-    //     <div className="modal-footer"></div>
-    //   </div>
-    // </div>
   );
 }
 

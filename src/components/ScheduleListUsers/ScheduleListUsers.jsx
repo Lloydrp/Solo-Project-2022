@@ -15,7 +15,7 @@ function ScheduleListUsers({ organization, orgTitles }) {
             <br />
             {item.title
               ? orgTitles[
-                  orgTitles.findIndex((title) => title.id === item.title)
+                  orgTitles.findIndex((title) => title?.id === item.title)
                 ]?.title_name
               : "No Title"}
           </div>

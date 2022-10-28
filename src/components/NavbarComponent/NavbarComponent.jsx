@@ -14,7 +14,7 @@ function NavbarComponent({ orgid }) {
         className="vw-100"
       >
         <Container fluid>
-          <Navbar.Brand className="fs-2" href="#/home">
+          <Navbar.Brand className="fs-1" href="#/home">
             Organization Station
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />

@@ -26,6 +26,7 @@ function ChoosePage() {
     <main
       style={{
         backgroundImage: `url(${image})`,
+        backgroundSize: "cover",
         height: `100vh`,
         width: `100vw`,
       }}

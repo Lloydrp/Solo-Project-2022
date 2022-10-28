@@ -112,7 +112,7 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
         </Form.Group>
       </Form>
       <ListGroup className="list-group-flush">
-        {Number(participants[0].event_id) === Number(eventItem.id) &&
+        {Number(participants[0]?.event_id) === Number(eventItem.id) &&
           participants[0].participant_info.map(
             (eventParticipant, index) =>
               Number(participants[0].event_id) === Number(eventItem.id) && (

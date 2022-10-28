@@ -14,6 +14,7 @@ function LoginPage() {
       className="bg-image d-flex flex-column align-items-center vh-100 justify-content-center"
       style={{
         backgroundImage: `url(${image})`,
+        backgroundSize: "cover",
         height: `100vh`,
         width: `100vw`,
       }}

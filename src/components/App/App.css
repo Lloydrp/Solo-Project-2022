@@ -1,4 +1,12 @@
 @import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", sans-serif;
+}
 
 main > .os__bg {
   max-width: 500px;
@@ -19,4 +27,76 @@ div > .os__min_h {
 
 .os__listvh {
   height: 92vh;
+}
+
+.os__chatbodyvh {
+  height: 80vh;
+}
+
+.os__chatbodyvh > * {
+  margin-bottom: 5px;
+}
+
+.os__chatheadervh {
+  height: 10vh;
+}
+
+.os__chatsize > p {
+  font-size: 13px;
+  margin: 0;
+}
+
+.os__alignright {
+  text-align: right;
+}
+
+.os__sender {
+  max-width: 400px;
+  font-size: 15px;
+}
+
+.os__received {
+  max-width: 400px;
+  font-size: 15px;
+}
+
+.typing__status {
+  bottom: 50px;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.os__chatflex {
+  flex: 0.2;
+}
+
+.os__users > * {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: rgb(238, 102, 102);
+  font-style: italic;
+}
+
+.os__mainflex {
+  flex: 0.8;
+}
+
+.os__chatvh {
+  height: 91.5%;
+}
+
+.os__footervh {
+  height: 11.5vh;
+}
+
+.os__messagebox {
+  width: 83%;
+  outline: none;
+}
+
+.os__sendbtn {
+  width: 150px;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }

@@ -40,10 +40,10 @@ function ChatPage() {
   }, [socket]);
 
   return (
-    <>
+    <main className="vh-100">
       <NavbarComponent orgid={params.orgid} />
       <ChatWrapper socket={socket} orgid={params.orgid} />
-    </>
+    </main>
   );
 }
 

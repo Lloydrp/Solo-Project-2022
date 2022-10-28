@@ -11,7 +11,10 @@ const organizationReducer = (state = defaultOrgState, action) => {
       return {
         ...state,
         orgTitles: action.payload[0].titles,
-        orgEvents: action.payload[0].events,
+        orgEvents: action.payload[0].events.sort(
+          (eventA, eventB) =>
+            new Date(eventA.start_event) - new Date(eventB.start_event)
+        ),
         orgMessages: action.payload[0].messages,
         orgResources: action.payload[0].resources,
       };

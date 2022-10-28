@@ -6,6 +6,7 @@ import NavbarComponent from "../../NavbarComponent/NavbarComponent";
 import AddEventModal from "../../AddEventModal/AddEventModal";
 import ScheduleCard from "../../ScheduleCard/ScheduleCard";
 import ScheduleListUsers from "../../ScheduleListUsers/ScheduleListUsers";
+import Nav from "react-bootstrap/Nav";
 
 function SchedulePage() {
   // Setup redux variables
@@ -22,6 +23,36 @@ function SchedulePage() {
   );
   // Setup local state for toggle
   const [toggleModal, setToggleModal] = useState(false);
+  const [filteredOrganization, setFilteredOrganization] = useState({
+    orgEvents: [],
+  });
+
+  function handleFilterEvents(filter) {
+    const date = new Date();
+    if (filter === "all") {
+      setFilteredOrganization({ ...organization });
+    } else if (filter === "thismonth") {
+      setFilteredOrganization({
+        ...organization,
+        orgEvents: organization.orgEvents.filter(
+          (event) =>
+            Number(event.start_event.slice(5, 7)) ===
+            Number(date.getMonth() + 1)
+        ),
+      });
+    } else if (filter === "nextmonth") {
+      setFilteredOrganization({
+        ...organization,
+        orgEvents: organization.orgEvents.filter(
+          (event) =>
+            Number(event.start_event.slice(5, 7)) ===
+            Number(date.getMonth() + 2)
+        ),
+      });
+    } else {
+      console.log("Error in handleFilterEvents");
+    }
+  }
 
   // Begin useEffect to validate user and get initial page load info
   useEffect(() => {
@@ -50,6 +81,10 @@ function SchedulePage() {
       payload: { id: params.orgid },
     });
   }, []); // End useEffect to get initial load info
+
+  useEffect(() => {
+    setFilteredOrganization({ ...organization });
+  }, [organization]);
 
   return (
     <main>
@@ -81,14 +116,24 @@ function SchedulePage() {
               Add Event
             </button>
           )}
-          <nav>
-            <ul className="org-nav">
-              {"All This week Next Week This Month Next Month"}
-            </ul>
-          </nav>
+          <Nav className="text-center align-self-center" variant="pills">
+            <Nav.Item>
+              <Nav.Link onClick={() => handleFilterEvents("all")}>All</Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link onClick={() => handleFilterEvents("thismonth")}>
+                This Month
+              </Nav.Link>
+            </Nav.Item>
+            <Nav.Item>
+              <Nav.Link onClick={() => handleFilterEvents("nextmonth")}>
+                Next Month
+              </Nav.Link>
+            </Nav.Item>
+          </Nav>
           <div className="d-flex flex-wrap">
-            {!organization.orgEvents.includes(null) &&
-              organization.orgEvents.map((item, index) => (
+            {!filteredOrganization.orgEvents.includes(null) &&
+              filteredOrganization.orgEvents.map((item, index) => (
                 <ScheduleCard
                   key={index}
                   eventItem={item}

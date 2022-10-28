@@ -16,3 +16,7 @@ div > .os__min_h {
 .os__shadow {
   box-shadow: 3px 5px 0.4em black;
 }
+
+.os__listvh {
+  height: 92vh;
+}

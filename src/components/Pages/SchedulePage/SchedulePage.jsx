@@ -90,6 +90,7 @@ function SchedulePage() {
     <main>
       {toggleModal && (
         <AddEventModal
+          toggleModal={toggleModal}
           orgid={params.orgid}
           setToggleModal={setToggleModal}
           shouldCloseOnOverlayClick={true}
@@ -99,7 +100,7 @@ function SchedulePage() {
 
       <section className="d-flex">
         {/* Begin nav user section */}
-        <div className="bg-primary col-5 col-lg-3 vh-100 border-end me-1">
+        <div className="os__listvh bg-primary col-5 col-lg-3 border-end me-1">
           <ScheduleListUsers
             organization={organization}
             orgTitles={orgTitles}
@@ -110,7 +111,7 @@ function SchedulePage() {
         <div className="col d-flex flex-column">
           {userOrganization.is_admin && (
             <button
-              className="btn btn-success btn-sm mt-1"
+              className="btn btn-success btn-sm mt-1 shadow"
               onClick={() => setToggleModal(true)}
             >
               Add Event
@@ -131,7 +132,7 @@ function SchedulePage() {
               </Nav.Link>
             </Nav.Item>
           </Nav>
-          <div className="d-flex flex-wrap">
+          <div className="d-flex flex-wrap justify-content-evenly">
             {!filteredOrganization.orgEvents.includes(null) &&
               filteredOrganization.orgEvents.map((item, index) => (
                 <ScheduleCard

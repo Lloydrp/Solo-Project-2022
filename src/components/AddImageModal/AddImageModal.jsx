@@ -1,9 +1,12 @@
 import { useState } from "react";
-import { PickerOverlay, PickerInline } from "filestack-react";
+import { PickerInline } from "filestack-react";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import Button from "react-bootstrap/Button";
+import Modal from "react-bootstrap/Modal";
+import Form from "react-bootstrap/Form";
 
-function AddImageModal({ setToggleImageModal, orgid }) {
+function AddImageModal({ toggleImageModal, setToggleImageModal, orgid }) {
   const user = useSelector((store) => store.user);
   const dispatch = useDispatch();
   const [uploadFile, setUploadFile] = useState({
@@ -53,30 +56,21 @@ function AddImageModal({ setToggleImageModal, orgid }) {
   }
 
   return (
-    <div
-      className="modal-background"
-      onClick={() => setToggleImageModal(false)}
-    >
-      <div
-        className="modal-wrapper"
-        onClick={(event) => event.stopPropagation()}
-      >
-        <div className="modal-header">
-          <h2>Add Image</h2>
-        </div>
-        <div className="modal-body">
-          <form onSubmit={handleAddImage}>
+    <Modal show={toggleImageModal} backdrop="static" keyboard={false}>
+      <Modal.Header>
+        <Modal.Title>Add Image</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form id="addImage" onSubmit={handleAddImage}>
+          <Form.Group>
             <PickerInline
               apikey={process.env.REACT_APP_FILESTACK_API_KEY}
-              buttonText="Upload Image"
-              buttonClass="ui medium button gray"
               options={basicOptions}
               onSuccess={onSuccess}
               onError={onError}
             />
-            <br />
-            File Name:
-            <input
+            <Form.Label>File Name:</Form.Label>
+            <Form.Control
               type="text"
               onChange={(e) =>
                 setUploadFile({ ...uploadFile, file_name: e.target.value })
@@ -84,24 +78,62 @@ function AddImageModal({ setToggleImageModal, orgid }) {
               value={uploadFile.file_type}
             />
             {uploadFile.file_url && (
-              <p>Uploaded Image URL: {uploadFile.file_url}</p>
+              <p className="mt-3">Uploaded Image URL: {uploadFile.file_url}</p>
             )}
-            <br />
-            Description:{" "}
-            <input
+            <Form.Label>Description:</Form.Label>
+            <Form.Control
               onChange={(e) =>
                 setUploadFile({ ...uploadFile, description: e.target.value })
               }
               value={uploadFile.description}
             />
-            <div>
-              <button type="submit">Submit Image</button>
-            </div>
-          </form>
-        </div>
-        <div className="modal-footer"></div>
-      </div>
-    </div>
+          </Form.Group>
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button type="submit" form="addImage" variant="primary">
+          Add Image
+        </Button>
+        <Button
+          type="button"
+          onClick={() => setToggleImageModal(false)}
+          variant="secondary"
+        >
+          Cancel
+        </Button>
+      </Modal.Footer>
+    </Modal>
+    // <div
+    //   className="modal-background"
+    //   onClick={() => setToggleImageModal(false)}
+    // >
+    //   <div
+    //     className="modal-wrapper"
+    //     onClick={(event) => event.stopPropagation()}
+    //   >
+    //
+    //     <div className="modal-body">
+    //       <form onSubmit={handleAddImage}>
+    //
+    //         <br />
+    //         File Name:
+    //         <input
+    //
+    //         />
+    //
+    //         <br />
+    //         Description:{" "}
+    //         <input
+    //
+    //         />
+    //         <div>
+    //           <button type="submit">Submit Image</button>
+    //         </div>
+    //       </form>
+    //     </div>
+    //     <div className="modal-footer"></div>
+    //   </div>
+    // </div>
   );
 }
 

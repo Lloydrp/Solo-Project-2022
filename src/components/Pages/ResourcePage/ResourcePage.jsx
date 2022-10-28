@@ -92,6 +92,7 @@ function ResourcePage() {
       )}
       {toggleImageModal && (
         <AddImageModal
+          toggleImageModal={toggleImageModal}
           setToggleImageModal={setToggleImageModal}
           shouldCloseOnOverlayClick={true}
           orgid={params.orgid}

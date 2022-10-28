@@ -64,7 +64,7 @@ function SchedulePage() {
 
       <section className="d-flex">
         {/* Begin nav user section */}
-        <div className="col-5 col-lg-3 vh-100 border-end me-1">
+        <div className="bg-primary col-5 col-lg-3 vh-100 border-end me-1">
           <ScheduleListUsers
             organization={organization}
             orgTitles={orgTitles}

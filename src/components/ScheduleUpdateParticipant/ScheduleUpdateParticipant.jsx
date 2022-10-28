@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import ListGroup from "react-bootstrap/ListGroup";
 import Form from "react-bootstrap/Form";
+import { useEffect } from "react";
 
 function ScheduleUpdateParticipant({ eventParticipant, orgid, eventItem }) {
   const dispatch = useDispatch();
-  const [newDuty, setNewDuty] = useState(eventParticipant.ep_event_duty);
+  const [newDuty, setNewDuty] = useState("");
 
   function handleDeleteParticipant(id) {
     dispatch({
@@ -30,12 +31,18 @@ function ScheduleUpdateParticipant({ eventParticipant, orgid, eventItem }) {
     });
   }
 
+  useEffect(() => {
+    setNewDuty(eventParticipant.ep_event_duty);
+  }, [eventParticipant]);
+
   return (
-    <ListGroup.Item>
-      <span>{`${eventParticipant.first_name} ${eventParticipant.last_name}
+    <ListGroup.Item className="text-white bg-primary">
+      <div className="px-1">{`${eventParticipant.first_name} ${
+        eventParticipant.last_name
+      }
       (${
         eventParticipant.title_name ? eventParticipant.title_name : "No Title"
-      })`}</span>
+      })`}</div>
       <Form>
         <Form.Group>
           <Form.Control
@@ -51,7 +58,7 @@ function ScheduleUpdateParticipant({ eventParticipant, orgid, eventItem }) {
             onChange={(event) => setNewDuty(event.target.value)}
           />
           <button
-            className="btn btn-sm btn-primary"
+            className="btn btn-sm btn-light"
             type="button"
             onClick={() => handleUpdateParticipant(eventParticipant.ep_user_id)}
           >
@@ -66,14 +73,6 @@ function ScheduleUpdateParticipant({ eventParticipant, orgid, eventItem }) {
           </button>
         </Form.Group>
       </Form>
-      {/*
-      {
-        <input
-
-        />
-      }
-      {newDuty === eventParticipant.ep_event_duty ? "✔️" : "❌"}
-       */}
     </ListGroup.Item>
   );
 }

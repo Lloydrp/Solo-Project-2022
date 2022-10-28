@@ -28,9 +28,11 @@ function CardNonEdit({ eventItem, orgid, setToggleEdit }) {
   } // End handleDeleteEvent
 
   return (
-    <Card className="col-11 col-lg-3 mx-auto mx-lg-1 mb-3 text-center">
-      <h5>{eventItem.event_name}</h5>
-      <h5>{eventItem.start_event}</h5>
+    <Card className="os__shadow col-11 col-lg-3 mx-auto mx-lg-1 mb-3 text-white bg-primary text-center d-flex justify-content-between">
+      <div className="card-header">
+        <h5>{eventItem.event_name}</h5>
+        <h5 className="m-0">{eventItem.start_event}</h5>
+      </div>
       <span>
         {eventItem.event_description
           ? eventItem.event_description
@@ -42,7 +44,10 @@ function CardNonEdit({ eventItem, orgid, setToggleEdit }) {
             Number(eventParticipants.event_id) === Number(eventItem.id) &&
             eventParticipants.participant_info.map(
               (eventParticipant, index) => (
-                <ListGroup.Item className="p-0" key={index}>
+                <ListGroup.Item
+                  className="p-0 bg-primary text-white"
+                  key={index}
+                >
                   <span>
                     {`${eventParticipant.first_name} ${eventParticipant.last_name} `}
                   </span>
@@ -62,7 +67,7 @@ function CardNonEdit({ eventItem, orgid, setToggleEdit }) {
         {userOrganization.is_admin && (
           <>
             <button
-              className="badge bg-secondary"
+              className="badge bg-info"
               onClick={() => setToggleEdit(true)}
             >
               Edit

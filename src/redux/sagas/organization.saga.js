@@ -205,7 +205,7 @@ function* addEventParticipant(action) {
       action.payload,
       config
     );
-    yield console.log("results :>> ", results.data);
+    
     if (results.data[0]?.id) {
       yield put({
         type: "FETCH_PARTICIPANTS",

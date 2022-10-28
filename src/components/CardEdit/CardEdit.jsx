@@ -58,9 +58,9 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
   } // End handleAddParticipant
 
   return (
-    <Card className="col-11 col-lg-3 mx-auto mx-lg-1 mb-3 text-center">
+    <Card className="os__shadow col-11 col-lg-3 mx-auto mx-lg-1 mb-3 text-white bg-primary text-center">
       <Form onSubmit={handleEdit}>
-        <Form.Group>
+        <Form.Group className="px-1 pt-1">
           <Form.Control
             type="text"
             name="eventName"
@@ -84,10 +84,10 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
             onChange={(event) => setEventDescription(event.target.value)}
           />
         </Form.Group>
-        <button className="btn btn-sm btn-primary mt-1 mb-3" type="submit">
+        <button className="btn btn-sm btn-light mt-1 mb-3" type="submit">
           Update Event
         </button>
-        <Form.Group>
+        <Form.Group className="px-1">
           <Form.Control
             placeholder="Username to add"
             type="text"
@@ -103,7 +103,7 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
             onChange={(event) => setNewDuty(event.target.value)}
           />
           <button
-            className="btn btn-sm btn-primary mt-1 mb-3"
+            className="btn btn-sm btn-light mt-1 mb-3"
             type="button"
             onClick={handleAddParticipant}
           >
@@ -112,24 +112,21 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
         </Form.Group>
       </Form>
       <ListGroup className="list-group-flush">
-        {participants?.map(
-          (eventParticipants) =>
-            Number(eventParticipants.event_id) === Number(eventItem.id) &&
-            eventParticipants.participant_info.map(
-              (eventParticipant, index) =>
-                Number(eventParticipants.event_id) === Number(eventItem.id) && (
-                  <ScheduleUpdateParticipant
-                    eventItem={eventItem}
-                    orgid={orgid}
-                    key={index}
-                    eventParticipant={eventParticipant}
-                  />
-                )
-            )
-        )}
+        {Number(participants[0].event_id) === Number(eventItem.id) &&
+          participants[0].participant_info.map(
+            (eventParticipant, index) =>
+              Number(participants[0].event_id) === Number(eventItem.id) && (
+                <ScheduleUpdateParticipant
+                  eventItem={eventItem}
+                  orgid={orgid}
+                  key={index}
+                  eventParticipant={eventParticipant}
+                />
+              )
+          )}
       </ListGroup>
       <button
-        className="btn btn-sm btn-primary mt-1"
+        className="btn btn-sm btn-info"
         type="button"
         onClick={() => setToggleEdit(false)}
       >

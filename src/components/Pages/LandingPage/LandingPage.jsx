@@ -18,11 +18,13 @@ function LandingPage() {
         width: `100vw`,
       }}
     >
-      <div className="os__bg bg-light w-75 h-50 rounded-4 d-flex flex-column justify-content-center align-items-center">
-        <h1 className="text-primary mb-3 fw-bold fs-1 ">
+      <div className="os__bg p-4 bg-light w-75 h-50 rounded-4 d-flex flex-column justify-content-center align-items-center">
+        <h1 className="text-center text-primary mb-3 fw-bold fs-1 ">
           Organization Station
         </h1>
-        <p className="text-dark">A place to park all your trains of thought</p>
+        <p className="text-center text-dark">
+          A place to park all your trains of thought
+        </p>
         <button
           type="button"
           className="btn btn-primary mb-3"

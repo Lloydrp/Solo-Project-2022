@@ -32,8 +32,10 @@ function ChoosePage() {
       }}
       className="bg-image vw-100 d-flex flex-column justify-content-center align-items-center"
     >
-      <div className="os__bg bg-light w-50 h-auto py-3 rounded-4 d-flex flex-column justify-content-center align-items-center">
-        <h2 className="text-primary mb-3">Choose your organization</h2>
+      <div className="os__bg bg-light w-50 h-50 py-3 rounded-4 d-flex flex-column justify-content-center align-items-center">
+        <h2 className="text-center text-primary mb-3">
+          Choose your organization
+        </h2>
         <ListGroup className="w-75 mb-3">
           {user.organization_array.length === 0 ? (
             <div className="mt-3">
@@ -54,12 +56,12 @@ function ChoosePage() {
         </ListGroup>
         <button
           type="button"
-          className="btn btn-primary mb-3 w-75"
+          className="btn btn-primary mb-1 w-75"
           onClick={() => history.push("/create")}
         >
           Create Organization
         </button>
-        <LogOutButton className={"btn btn-secondary"} />
+        <LogOutButton className={"w-75 btn btn-secondary"} />
       </div>
     </main>
   ); // End return

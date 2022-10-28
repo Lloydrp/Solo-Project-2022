@@ -106,13 +106,13 @@ function ResourcePage() {
               className="btn btn-sm btn-success col-5 m-2"
               onClick={() => setToggleModal(true)}
             >
-              Add Link
+              <i class="bi bi-card-text"></i> Add Link
             </button>
             <button
               className="btn btn-sm btn-success col-5 m-2"
               onClick={() => setToggleImageModal(true)}
             >
-              Add Image
+              <i class="bi bi-card-image"></i> Add Image
             </button>
           </>
         )}
@@ -157,14 +157,20 @@ function ResourcePage() {
                     key={index}
                   >
                     {resource?.file_type === 0 ? (
-                      <a href={resource?.file_url}>{resource?.file_name}</a>
+                      <div>
+                        <i class="bi text-success bi-card-image"></i>{" "}
+                        <a href={resource?.file_url}>{resource?.file_name}</a>
+                      </div>
                     ) : (
-                      <a
-                        onClick={() => handleFilePreview(event, resource)}
-                        href=""
-                      >
-                        {resource?.file_name}
-                      </a>
+                      <div>
+                        <i class="bi text-success bi-card-text"></i>{" "}
+                        <a
+                          onClick={() => handleFilePreview(event, resource)}
+                          href=""
+                        >
+                          {resource?.file_name}
+                        </a>
+                      </div>
                     )}
                     <i
                       onClick={() => handleDeleteResource(resource.id)}

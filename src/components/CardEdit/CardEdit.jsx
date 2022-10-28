@@ -112,10 +112,11 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
         </Form.Group>
       </Form>
       <ListGroup className="list-group-flush">
-        {Number(participants[0]?.event_id) === Number(eventItem.id) &&
-          participants[0].participant_info.map(
-            (eventParticipant, index) =>
-              Number(participants[0].event_id) === Number(eventItem.id) && (
+        {participants?.map(
+          (eventParticipants) =>
+            Number(eventParticipants.event_id) === Number(eventItem.id) &&
+            eventParticipants.participant_info.map(
+              (eventParticipant, index) => (
                 <ScheduleUpdateParticipant
                   eventItem={eventItem}
                   orgid={orgid}
@@ -123,7 +124,8 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
                   eventParticipant={eventParticipant}
                 />
               )
-          )}
+            )
+        )}
       </ListGroup>
       <button
         className="btn btn-sm btn-info"

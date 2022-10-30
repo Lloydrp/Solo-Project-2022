@@ -26,7 +26,8 @@ div > .os__min_h {
 }
 
 .os__listvh {
-  height: 92vh;
+  min-height: 92vh;
+  flex: 0 0 auto;
 }
 
 .os__chatbodyvh {

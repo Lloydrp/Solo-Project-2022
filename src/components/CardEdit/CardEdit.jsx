@@ -125,7 +125,7 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
       <ListGroup className="list-group-flush">
         {participants?.map(
           (eventParticipants) =>
-            Number(eventParticipants.event_id) === Number(eventItem.id) &&
+            Number(eventParticipants.id) === Number(eventItem.id) &&
             eventParticipants.participant_info.map(
               (eventParticipant, index) => (
                 <ScheduleUpdateParticipant

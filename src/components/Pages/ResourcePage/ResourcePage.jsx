@@ -6,6 +6,8 @@ import { useHistory, useParams } from "react-router-dom";
 import AddImageModal from "../../AddImageModal/AddImageModal";
 import AddResourceModal from "../../AddResourceModal/AddResourceModal";
 import NavbarComponent from "../../NavbarComponent/NavbarComponent";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Popover from "react-bootstrap/Popover";
 
 function ResourcePage() {
   // Setup redux variables
@@ -63,7 +65,15 @@ function ResourcePage() {
     // Prevent movement on link click
     event.preventDefault();
     // Set current image to preview state
-    setFilePreview(item?.file_url);
+    setFilePreview({
+      uri: item?.file_url,
+      popover: (
+        <Popover id="popover-description">
+          <Popover.Header as="h4">Description</Popover.Header>
+          <Popover.Body>{item?.file_description}</Popover.Body>
+        </Popover>
+      ),
+    });
   }
 
   // Begin useEffect to verify user is a part of the current organization AND
@@ -106,13 +116,13 @@ function ResourcePage() {
               className="btn btn-sm btn-success col-5 m-2"
               onClick={() => setToggleModal(true)}
             >
-              <i class="bi bi-card-text"></i> Add Link
+              <i className="bi bi-card-text"></i> Add Link
             </button>
             <button
               className="btn btn-sm btn-success col-5 m-2"
               onClick={() => setToggleImageModal(true)}
             >
-              <i class="bi bi-card-image"></i> Add Image
+              <i className="bi bi-card-image"></i> Add Image
             </button>
           </>
         )}
@@ -158,12 +168,12 @@ function ResourcePage() {
                   >
                     {resource?.file_type === 0 ? (
                       <div>
-                        <i class="bi text-success bi-card-text"></i>{" "}
+                        <i className="bi text-success bi-card-text"></i>{" "}
                         <a href={resource?.file_url}>{resource?.file_name}</a>
                       </div>
                     ) : (
                       <div>
-                        <i class="bi text-success bi-card-image"></i>{" "}
+                        <i className="bi text-success bi-card-image"></i>{" "}
                         <a
                           onClick={() => handleFilePreview(event, resource)}
                           href=""
@@ -184,7 +194,17 @@ function ResourcePage() {
           <div className="col">
             <div className="os__imagesizing d-flex align-items-center justify-content-center ms-2 me-2 border rounded bg-light">
               {filePreview ? (
-                <img className="w-100" src={`${filePreview}`} />
+                <OverlayTrigger
+                  trigger="click"
+                  placement="top"
+                  overlay={filePreview.popover}
+                >
+                  <img
+                    type="button"
+                    className="w-100"
+                    src={`${filePreview.uri}`}
+                  />
+                </OverlayTrigger>
               ) : (
                 <p className="text-center">
                   Images will appear here when clicked

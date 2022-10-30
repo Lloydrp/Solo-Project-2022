@@ -40,7 +40,7 @@ function ChoosePage() {
         <ListGroup className="w-75 mb-3">
           {user.organization_array.length === 0 ? (
             <div className="mt-3">
-              <h6>No organizations</h6>
+              <h6 className="text-center">No organizations</h6>
             </div>
           ) : (
             user.organization_array.map((item, index) => (

@@ -54,7 +54,7 @@ router.get("/checkorgname/:newname", rejectUnauthenticated, (req, res) => {
 // Begin GET event participants
 router.get("/participants/:orgid", rejectUnauthenticated, (req, res) => {
   const queryText = `SELECT
-    "events_participants"."event_id",
+    "events"."id" AS "id",
     json_agg(distinct jsonb_build_object(
     'ep_event_id',
     "events_participants"."event_id",
@@ -70,13 +70,13 @@ router.get("/participants/:orgid", rejectUnauthenticated, (req, res) => {
     "user_account"."title_id",
     'title_name',
     "titles"."title_name")) AS "participant_info"
-    FROM "events_participants"
-    JOIN "events" ON "events"."id" = "events_participants"."event_id"
-    JOIN "user" ON "events_participants"."user_id" = "user"."id"
-    JOIN "user_account" ON "events"."organization_id" = "user_account"."organization_id"
-    LEFT JOIN "titles" ON "titles"."id" = "user_account"."title_id"
+    FROM "user"
+    JOIN "user_account" ON "user"."id" = "user_account"."user_id"
+    JOIN "events_participants" ON "user"."id" = "events_participants"."user_id"
+    JOIN "events" ON "events_participants"."event_id" = "events"."id"
+    JOIN "titles" ON "user_account"."title_id" = "titles"."id"
     WHERE "events"."organization_id" = $1
-    GROUP BY "events_participants"."event_id";`;
+    GROUP BY "events"."id";`;
 
   pool
     .query(queryText, [req.params.orgid])

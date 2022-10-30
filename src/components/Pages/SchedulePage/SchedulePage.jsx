@@ -100,7 +100,7 @@ function SchedulePage() {
 
       <section className="d-flex">
         {/* Begin nav user section */}
-        <div className="os__listvh bg-primary col-5 col-lg-3 border-end me-1">
+        <div className="os__listvh align-self-stretch bg-primary col-5 col-lg-3 border-end me-1">
           <ScheduleListUsers
             organization={organization}
             orgTitles={orgTitles}

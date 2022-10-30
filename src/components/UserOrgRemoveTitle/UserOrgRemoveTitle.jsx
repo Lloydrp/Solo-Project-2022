@@ -22,15 +22,15 @@ function UserOrgRemoveTitle({ organization, orgTitles, setToggleRemoveTitle }) {
       <span>Current Organization Titles:</span>
       <ListGroup>
         {orgTitles.map((title, index) => (
-          <ListGroup.Item key={index}>
+          <ListGroup.Item
+            className="d-flex justify-content-between"
+            key={index}
+          >
             <span className="me-3">{title.title_name}</span>
-            <Button
-              variant="danger"
-              type="button"
+            <i
               onClick={() => handleRemoveTitle(title.id)}
-            >
-              Remove
-            </Button>
+              className="text-danger bi bi-trash-fill"
+            ></i>
           </ListGroup.Item>
         ))}
       </ListGroup>

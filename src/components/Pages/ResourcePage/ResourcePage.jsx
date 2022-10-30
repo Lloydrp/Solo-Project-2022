@@ -113,13 +113,13 @@ function ResourcePage() {
         {userOrganization?.is_admin && (
           <>
             <button
-              className="btn btn-sm btn-success col-5 m-2"
+              className="btn btn-sm btn-info col-5 m-2"
               onClick={() => setToggleModal(true)}
             >
               <i className="bi bi-card-text"></i> Add Link
             </button>
             <button
-              className="btn btn-sm btn-success col-5 m-2"
+              className="btn btn-sm btn-info col-5 m-2"
               onClick={() => setToggleImageModal(true)}
             >
               <i className="bi bi-card-image"></i> Add Image
@@ -168,24 +168,29 @@ function ResourcePage() {
                   >
                     {resource?.file_type === 0 ? (
                       <div>
-                        <i className="bi text-success bi-card-text"></i>{" "}
-                        <a href={resource?.file_url}>{resource?.file_name}</a>
+                        <i className="bi text-info bi-card-text"></i>{" "}
+                        <a className="text-info" href={resource?.file_url}>
+                          {resource?.file_name}
+                        </a>
                       </div>
                     ) : (
                       <div>
-                        <i className="bi text-success bi-card-image"></i>{" "}
+                        <i className="bi text-info bi-card-image"></i>{" "}
                         <a
                           onClick={() => handleFilePreview(event, resource)}
+                          className="text-info"
                           href=""
                         >
                           {resource?.file_name}
                         </a>
                       </div>
                     )}
-                    <i
-                      onClick={() => handleDeleteResource(resource.id)}
-                      className="text-danger bi bi-trash-fill"
-                    ></i>
+                    {userOrganization?.is_admin && (
+                      <i
+                        onClick={() => handleDeleteResource(resource.id)}
+                        className="text-danger bi bi-trash-fill"
+                      ></i>
+                    )}
                   </ListGroup.Item>
                 )
               )}

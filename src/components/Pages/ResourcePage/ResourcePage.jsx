@@ -100,7 +100,7 @@ function ResourcePage() {
       )}
       <NavbarComponent orgid={params.orgid} />
       <section className="bg-white w-100 d-flex justify-content-evenly">
-        {userOrganization.is_admin && (
+        {userOrganization?.is_admin && (
           <>
             <button
               className="btn btn-sm btn-success col-5 m-2"
@@ -158,12 +158,12 @@ function ResourcePage() {
                   >
                     {resource?.file_type === 0 ? (
                       <div>
-                        <i class="bi text-success bi-card-image"></i>{" "}
+                        <i class="bi text-success bi-card-text"></i>{" "}
                         <a href={resource?.file_url}>{resource?.file_name}</a>
                       </div>
                     ) : (
                       <div>
-                        <i class="bi text-success bi-card-text"></i>{" "}
+                        <i class="bi text-success bi-card-image"></i>{" "}
                         <a
                           onClick={() => handleFilePreview(event, resource)}
                           href=""

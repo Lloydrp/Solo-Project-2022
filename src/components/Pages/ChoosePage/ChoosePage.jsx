@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import LogOutButton from "../../LogOutButton/LogOutButton";
 import ListGroup from "react-bootstrap/ListGroup";
+import { useEffect } from "react";
 
 // Import local image
 const image = require("../../../images/organization-station-background.png");

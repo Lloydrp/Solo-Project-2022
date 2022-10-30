@@ -76,6 +76,7 @@ function AddImageModal({ toggleImageModal, setToggleImageModal, orgid }) {
                 setUploadFile({ ...uploadFile, file_name: e.target.value })
               }
               value={uploadFile.file_type}
+              autoComplete="off"
             />
             {uploadFile.file_url && (
               <p className="mt-3">Uploaded Image URL: {uploadFile.file_url}</p>
@@ -86,6 +87,7 @@ function AddImageModal({ toggleImageModal, setToggleImageModal, orgid }) {
                 setUploadFile({ ...uploadFile, description: e.target.value })
               }
               value={uploadFile.description}
+              autoComplete="off"
             />
           </Form.Group>
         </Form>
@@ -103,37 +105,6 @@ function AddImageModal({ toggleImageModal, setToggleImageModal, orgid }) {
         </Button>
       </Modal.Footer>
     </Modal>
-    // <div
-    //   className="modal-background"
-    //   onClick={() => setToggleImageModal(false)}
-    // >
-    //   <div
-    //     className="modal-wrapper"
-    //     onClick={(event) => event.stopPropagation()}
-    //   >
-    //
-    //     <div className="modal-body">
-    //       <form onSubmit={handleAddImage}>
-    //
-    //         <br />
-    //         File Name:
-    //         <input
-    //
-    //         />
-    //
-    //         <br />
-    //         Description:{" "}
-    //         <input
-    //
-    //         />
-    //         <div>
-    //           <button type="submit">Submit Image</button>
-    //         </div>
-    //       </form>
-    //     </div>
-    //     <div className="modal-footer"></div>
-    //   </div>
-    // </div>
   );
 }
 

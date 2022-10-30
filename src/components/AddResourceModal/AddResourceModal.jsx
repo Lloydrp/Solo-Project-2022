@@ -45,6 +45,7 @@ function AddResourceModal({ toggleModal, setToggleModal, orgid }) {
               value={resourceName}
               required
               onChange={(event) => setResourceName(event.target.value)}
+              autoComplete="off"
             />
             <Form.Label>Resource URL:</Form.Label>
             <Form.Control
@@ -53,6 +54,7 @@ function AddResourceModal({ toggleModal, setToggleModal, orgid }) {
               value={resourceURL}
               required
               onChange={(event) => setResourceURL(event.target.value)}
+              autoComplete="off"
             />
           </Form.Group>
         </Form>

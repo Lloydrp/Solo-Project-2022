@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function UserOrgAdminStatus() {
+function UserOrgAdminStatus({ organization }) {
   // Setup redux variables
   const dispatch = useDispatch();
   // Setup local state variables
@@ -50,6 +50,7 @@ function UserOrgAdminStatus() {
           onChange={(event) => setAddAdminStatus(event.target.value)}
           type="text"
           placeholder="Username"
+          autoComplete="off"
         />
       </Form.Group>
       <div className="d-flex justify-content-center">

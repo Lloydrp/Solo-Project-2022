@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function UserOrgTypeChange({ setToggleOrganizationType }) {
+function UserOrgTypeChange({ setToggleOrganizationType, organization }) {
   // Setup redux variables
   const dispatch = useDispatch();
   const orgTypes = useSelector((store) => store.organization.orgTypes);

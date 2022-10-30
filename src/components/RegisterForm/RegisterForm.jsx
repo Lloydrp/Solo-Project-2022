@@ -99,6 +99,7 @@ function RegisterForm() {
             value={username}
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter username"
+            autoComplete="off"
           />
           <Form.Label className="text-primary">First Name</Form.Label>
           <Form.Control
@@ -109,6 +110,7 @@ function RegisterForm() {
             onChange={(event) => setFirstName(event.target.value)}
             placeholder="Enter first name"
             className="mb-3"
+            autoComplete="off"
           />
           <Form.Label className="text-primary">Last Name</Form.Label>
           <Form.Control
@@ -119,6 +121,7 @@ function RegisterForm() {
             onChange={(event) => setLastName(event.target.value)}
             placeholder="Enter last name"
             className="mb-3"
+            autoComplete="off"
           />
           <Form.Label className="text-primary">Email</Form.Label>
           <Form.Control
@@ -134,6 +137,7 @@ function RegisterForm() {
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             placeholder="Enter email"
+            autoComplete="off"
           />
           <Form.Label className="text-primary">Password</Form.Label>
           <Form.Control
@@ -144,6 +148,7 @@ function RegisterForm() {
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Enter Password"
             className="mb-3"
+            autoComplete="off"
           />
         </Form.Group>
         <Button className="mb-3" variant="primary" type="submit">

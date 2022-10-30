@@ -1,10 +1,22 @@
 import { useDispatch } from "react-redux";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
+import { useHistory, useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-function UserOrgShowUsers({ orgTitles, orgUsers, setToggleShowUsers, organization }) {
+function UserOrgShowUsers({
+  orgTitles,
+  orgUsers,
+  setToggleShowUsers,
+  organization,
+}) {
   // Setup redux variables
   const dispatch = useDispatch();
+  const params = useParams();
+  const user = useSelector((store) => store.user);
+
+  // Setup router variables
+  const history = useHistory();
 
   // Begin function to remove user from organization
   function handleRemoveFromOrg(id) {
@@ -16,6 +28,11 @@ function UserOrgShowUsers({ orgTitles, orgUsers, setToggleShowUsers, organizatio
         organization_id: organization.organization_id,
       },
     });
+    // If current user removes themself then return to choose page and re-fetch
+    if (Number(user.id) === Number(id)) {
+      history.replace("/choose");
+      dispatch({ type: "FETCH_USER" });
+    }
   } // End handleRemoveFromOrg
 
   return (

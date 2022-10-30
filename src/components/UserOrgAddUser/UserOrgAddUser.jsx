@@ -36,6 +36,7 @@ function UserOrgAddUser({ orgTitles, organization }) {
           onChange={(event) => setAddNewUser(event.target.value)}
           type="text"
           placeholder="Username"
+          autoComplete="off"
         />
         <Form.Select name="addNewTitle" id="addNewTitle">
           <option value={"null"}>Select title</option>

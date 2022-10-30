@@ -205,14 +205,14 @@ function* addEventParticipant(action) {
       action.payload,
       config
     );
-    
+
     if (results.data[0]?.id) {
       yield put({
         type: "FETCH_PARTICIPANTS",
         payload: { id: action.payload.organization_id },
       });
     } else {
-      alert("User already a participant!");
+      alert("User already an event participant!");
     }
   } catch (error) {
     alert(
@@ -406,26 +406,26 @@ function* deleteResource(action) {
 function* organizationSaga() {
   yield takeEvery("FETCH_ORGANIZATION", fetchOrganization);
   yield takeEvery("FETCH_ORG_USERS", fetchOrgUsers);
-  yield takeEvery("CREATE_ORGANIZATION", createOrg);
   yield takeEvery("FETCH_TYPES", fetchTypes);
   yield takeEvery("FETCH_TITLES", fetchTitles);
+  yield takeEvery("FETCH_PARTICIPANTS", fetchParticipants);
   yield takeEvery("ADD_RESOURCE", addResource);
   yield takeEvery("ADD_EVENT", addEvent);
-  yield takeEvery("UPDATE_EVENT", updateEvent);
-  yield takeEvery("FETCH_PARTICIPANTS", fetchParticipants);
-  yield takeEvery("DELETE_EVENT", deleteEvent);
-  yield takeEvery("DELETE_EVENT_PARTICIPANT", deleteEventParticipant);
   yield takeEvery("ADD_EVENT_PARTICIPANT", addEventParticipant);
-  yield takeEvery("UPDATE_PARTICIPANT", updateParticipant);
-  yield takeEvery("CHANGE_ORGANIZATION_NAME", changeOrganizationName);
-  yield takeEvery("CHANGE_ORGANIZATION_TYPE", changeOrganizationType);
   yield takeEvery("ADD_TO_ORGANIZATION", addToOrganization);
   yield takeEvery("ADD_ADMIN_STATUS", addAdminStatus);
+  yield takeEvery("ADD_TITLE", addTitle);
+  yield takeEvery("CREATE_ORGANIZATION", createOrg);
+  yield takeEvery("CHANGE_ORGANIZATION_NAME", changeOrganizationName);
+  yield takeEvery("CHANGE_ORGANIZATION_TYPE", changeOrganizationType);
+  yield takeEvery("UPDATE_PARTICIPANT", updateParticipant);
+  yield takeEvery("UPDATE_EVENT", updateEvent);
+  yield takeEvery("DELETE_EVENT", deleteEvent);
+  yield takeEvery("DELETE_EVENT_PARTICIPANT", deleteEventParticipant);
+  yield takeEvery("DELETE_RESOURCE", deleteResource);
   yield takeEvery("REMOVE_ADMIN_STATUS", removeAdminStatus);
   yield takeEvery("REMOVE_FROM_ORG", removeFromOrg);
   yield takeEvery("REMOVE_TITLE", removeTitle);
-  yield takeEvery("ADD_TITLE", addTitle);
-  yield takeEvery("DELETE_RESOURCE", deleteResource);
 }
 
 export default organizationSaga;

@@ -65,7 +65,7 @@ function CreateOrganization() {
               />
             </Form.Label>
             <Form.Select name="orgType" id="orgType">
-              <option value="">Organization Type</option>
+              <option value="1">Organization Type</option>
               {types?.map((item, index) => (
                 <option key={index} value={item.id}>
                   {item.name}
@@ -73,7 +73,9 @@ function CreateOrganization() {
               ))}
             </Form.Select>
             <div className="w-100 d-flex justify-content-center mt-1">
-              <Button variant="primary">Create</Button>
+              <Button type="submit" variant="primary">
+                Create
+              </Button>
               <Button
                 className="ms-1"
                 variant="secondary"
@@ -85,22 +87,6 @@ function CreateOrganization() {
             </div>
           </Form.Group>
         </Form>
-        {/* <form className="formPanel" >
-          <label htmlFor="orgName">
-
-            <input
-
-            />
-          </label>
-          <select name="orgType" id="orgType">
-
-          </select>
-          <br />
-          <button></button>
-          <button>
-            Cancel
-          </button>
-        </form> */}
       </div>
     </main>
   ); // End return

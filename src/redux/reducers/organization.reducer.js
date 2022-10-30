@@ -21,7 +21,7 @@ const organizationReducer = (state = defaultOrgState, action) => {
     case "SET_ORG_USERS":
       return {
         ...state,
-        orgUsers: action.payload[0].users,
+        orgUsers: action.payload[0]?.users ? action.payload[0].users : [],
       };
     case "SET_TYPES":
       return { ...state, orgTypes: action.payload };

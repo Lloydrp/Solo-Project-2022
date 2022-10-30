@@ -41,6 +41,7 @@ function AddEventModal({ setToggleModal, toggleModal, orgid }) {
               value={eventName}
               required
               onChange={(event) => setEventName(event.target.value)}
+              autoComplete="off"
             />
             <Form.Label>Event Date:</Form.Label>
             <Form.Control

@@ -12,6 +12,7 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
   const participants = useSelector(
     (store) => store.organization.eventParticipants
   );
+  const organization = useSelector((store) => store.organization);
   // Setup local state with some defaults
   const [eventName, setEventName] = useState(eventItem.event_name);
   const [eventDescription, setEventDescription] = useState(
@@ -42,19 +43,26 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
 
   // Begin function to handle adding a participant to event
   function handleAddParticipant() {
-    // Dispatch to saga to add event participant
-    dispatch({
-      type: "ADD_EVENT_PARTICIPANT",
-      payload: {
-        organization_id: orgid,
-        event_id: eventItem.id,
-        username: addParticipant,
-        event_duty: newDuty,
-      },
-    });
-    // Clear participant info
-    setAddParticipant("");
-    setNewDuty("");
+    const checkUserInOrg = organization.orgUsers.some(
+      (currentUser) => currentUser.username === addParticipant
+    );
+    if (checkUserInOrg) {
+      // Dispatch to saga to add event participant
+      dispatch({
+        type: "ADD_EVENT_PARTICIPANT",
+        payload: {
+          organization_id: orgid,
+          event_id: eventItem.id,
+          username: addParticipant,
+          event_duty: newDuty,
+        },
+      });
+      // Clear participant info
+      setAddParticipant("");
+      setNewDuty("");
+    } else {
+      return alert("Please add User to organization first.");
+    }
   } // End handleAddParticipant
 
   return (
@@ -62,6 +70,7 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
       <Form onSubmit={handleEdit}>
         <Form.Group className="px-1 pt-1">
           <Form.Control
+            autoComplete="off"
             type="text"
             name="eventName"
             value={eventName}
@@ -89,6 +98,7 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
         </button>
         <Form.Group className="px-1">
           <Form.Control
+            autoComplete="off"
             placeholder="Username to add"
             type="text"
             name="addParticipant"
@@ -96,6 +106,7 @@ function CardEdit({ setToggleEdit, eventItem, orgid }) {
             onChange={(event) => setAddParticipant(event.target.value)}
           />
           <Form.Control
+            autoComplete="off"
             placeholder="Participant duty"
             type="text"
             name="newDuty"

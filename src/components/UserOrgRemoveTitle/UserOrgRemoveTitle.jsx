@@ -2,7 +2,7 @@ import { useDispatch } from "react-redux";
 import ListGroup from "react-bootstrap/ListGroup";
 import Button from "react-bootstrap/Button";
 
-function UserOrgRemoveTitle({ orgTitles, setToggleRemoveTitle }) {
+function UserOrgRemoveTitle({ organization, orgTitles, setToggleRemoveTitle }) {
   // Setup redux variables
   const dispatch = useDispatch();
 

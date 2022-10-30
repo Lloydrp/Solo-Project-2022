@@ -12,7 +12,8 @@ function ChatPage() {
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const socket = socketIO.connect("http://10.39.20.27:3000");
+  // EDA IP 10.39.20.27:3000
+  const socket = socketIO.connect("http://192.168.0.28:3000");
 
   socket.on("connect", () =>
     socket.emit("newUser", {

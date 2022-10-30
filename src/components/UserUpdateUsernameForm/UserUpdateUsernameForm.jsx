@@ -75,6 +75,7 @@ function UserUpdateUsernameForm({ setToggleUsername }) {
           onChange={(event) => handleUsernameInput(event)}
           type="text"
           placeholder="New username"
+          autoComplete="off"
         />
       </Form.Group>
 

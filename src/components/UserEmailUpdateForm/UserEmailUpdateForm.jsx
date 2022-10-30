@@ -76,6 +76,7 @@ function UserEmailUpdateForm({ setToggleEmail }) {
           value={changeEmail}
           onChange={(event) => handleEmailInput(event)}
           placeholder="New email"
+          autoComplete="off"
         />
       </Form.Group>
 

@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import axios from "axios";
 
-function UserOrgNameChange({ setToggleOrganizationName }) {
+function UserOrgNameChange({ setToggleOrganizationName, organization }) {
   // Setup redux variables
   const dispatch = useDispatch();
   // Setup local state for inputs, toggles, etc.
@@ -73,6 +73,7 @@ function UserOrgNameChange({ setToggleOrganizationName }) {
           onChange={(event) => handleOrganizationNameInput(event)}
           type="text"
           placeholder="Enter new name"
+          autoComplete="off"
         />
       </Form.Group>
       <div className="d-flex justify-content-center">

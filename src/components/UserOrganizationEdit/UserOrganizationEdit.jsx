@@ -35,6 +35,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           Current Name: {organization.organization_name}
           {toggleOrganizationName ? (
             <UserOrgNameChange
+              organization={organization}
               setToggleOrganizationName={setToggleOrganizationName}
             />
           ) : (
@@ -59,6 +60,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           }
           {toggleOrganizationType ? (
             <UserOrgTypeChange
+              organization={organization}
               setToggleOrganizationType={setToggleOrganizationType}
             />
           ) : (
@@ -74,7 +76,10 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         {/* Begin adding organization title area */}
         <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
           {toggleAddTitle ? (
-            <UserOrgAddTitle setToggleAddTitle={setToggleAddTitle} />
+            <UserOrgAddTitle
+              organization={organization}
+              setToggleAddTitle={setToggleAddTitle}
+            />
           ) : (
             <div
               className="btn btn-sm btn-info shadow mb-3"
@@ -89,6 +94,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
         <div className="d-flex flex-column align-items-center border-bottom w-100 mt-3">
           {toggleRemoveTitle ? (
             <UserOrgRemoveTitle
+              organization={organization}
               orgTitles={orgTitles}
               setToggleRemoveTitle={setToggleRemoveTitle}
             />
@@ -111,7 +117,7 @@ function UserOrganizationEdit({ organization, setToggleEditOrganization }) {
           <div className="d-flex flex-column align-items-center">
             {/* Begin adding/removing admin status area */}
             <span>Change Admin Status:</span>
-            <UserOrgAdminStatus />
+            <UserOrgAdminStatus organization={organization} />
           </div>
         </div>
 

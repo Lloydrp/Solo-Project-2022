@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 
-function UserOrgAddTitle({ setToggleAddTitle }) {
+function UserOrgAddTitle({ setToggleAddTitle, organization }) {
   // Setup redux variables
   const dispatch = useDispatch();
   // Setup local state variables
@@ -35,6 +35,7 @@ function UserOrgAddTitle({ setToggleAddTitle }) {
           onChange={(event) => setAddTitle(event.target.value)}
           type="text"
           placeholder="Enter new title"
+          autoComplete="off"
         />
       </Form.Group>
       <div className="d-flex justify-content-center">

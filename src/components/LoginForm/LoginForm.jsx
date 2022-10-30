@@ -49,6 +49,7 @@ function LoginForm() {
             onChange={(event) => setUsername(event.target.value)}
             placeholder="Enter username"
             className="mb-3"
+            autoComplete="off"
           />
           <Form.Label className="text-primary">Password</Form.Label>
           <Form.Control
@@ -58,6 +59,7 @@ function LoginForm() {
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Enter Password"
+            autoComplete="off"
           />
         </Form.Group>
         <Button className="mb-3" variant="primary" type="submit">

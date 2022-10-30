@@ -36,7 +36,7 @@ function SchedulePage() {
         ...organization,
         orgEvents: organization.orgEvents.filter(
           (event) =>
-            Number(event.start_event.slice(5, 7)) ===
+            Number(event?.start_event.slice(5, 7)) ===
             Number(date.getMonth() + 1)
         ),
       });
@@ -45,7 +45,7 @@ function SchedulePage() {
         ...organization,
         orgEvents: organization.orgEvents.filter(
           (event) =>
-            Number(event.start_event.slice(5, 7)) ===
+            Number(event?.start_event.slice(5, 7)) ===
             Number(date.getMonth() + 2)
         ),
       });

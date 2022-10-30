@@ -17,7 +17,12 @@ const ChatFooter = ({ socket, orgid }) => {
     if (message.trim() && user.id) {
       socket.emit("message", {
         message: message,
-        user_sent_id: user.id,
+        user_sent_id:
+          user.organization_array[
+            user.organization_array.findIndex(
+              (org) => Number(org.organization_id) === Number(orgid)
+            )
+          ]?.id,
         organization_id: orgid,
         id: `${socket.id}${Math.random()}`,
         socketID: socket.id,

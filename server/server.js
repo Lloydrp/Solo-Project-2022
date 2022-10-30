@@ -46,6 +46,7 @@ socketIO.on("connection", (socket) => {
 
   //Listens and logs the message to the console
   socket.on("message", (data) => {
+    console.log("data :>> ", data);
     const queryText = `INSERT INTO "messages" ("message", "user_sent_id", "organization_id")
     VALUES ($1, $2, $3);`;
     pool

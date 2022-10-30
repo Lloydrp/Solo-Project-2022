@@ -31,7 +31,14 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
     <>
       <div className="os__chatbodyvh px-2 bg-light overflow-scroll w-100">
         {messages.map((message, index) => {
-          return Number(message.user_sent_id) === Number(user.id) ? (
+          return Number(message.user_sent_id) ===
+            Number(
+              user.organization_array[
+                user.organization_array.findIndex(
+                  (org) => Number(org.organization_id) === Number(params.orgid)
+                )
+              ]?.id
+            ) ? (
             <div className="os__chatsize" key={message.id}>
               {messages[index]?.date_sent !==
                 messages[index - 1 > 0 ? index - 1 : 0]?.date_sent && (
@@ -56,15 +63,17 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
                 {orgUsers?.length > 0 &&
                   orgUsers[
                     orgUsers?.findIndex(
-                      (user) =>
-                        Number(user?.user_id) === Number(message.user_sent_id)
+                      (currUser) =>
+                        Number(currUser.user_account_id) ===
+                        Number(message.user_sent_id)
                     )
                   ]?.first_name}{" "}
                 {
                   orgUsers[
                     orgUsers?.findIndex(
-                      (user) =>
-                        Number(user?.user_id) === Number(message.user_sent_id)
+                      (currUser) =>
+                        Number(currUser?.user_account_id) ===
+                        Number(message.user_sent_id)
                     )
                   ]?.last_name
                 }

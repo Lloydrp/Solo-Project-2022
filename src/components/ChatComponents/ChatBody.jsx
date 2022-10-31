@@ -64,8 +64,8 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
                   orgUsers[
                     orgUsers?.findIndex(
                       (currUser) =>
-                        Number(currUser.user_account_id) ===
-                        Number(message.user_sent_id)
+                        Number(currUser?.user_account_id) ===
+                        Number(message?.user_sent_id)
                     )
                   ]?.first_name}{" "}
                 {
@@ -73,7 +73,7 @@ const ChatBody = ({ messages, lastMessageRef, typingStatus }) => {
                     orgUsers?.findIndex(
                       (currUser) =>
                         Number(currUser?.user_account_id) ===
-                        Number(message.user_sent_id)
+                        Number(message?.user_sent_id)
                     )
                   ]?.last_name
                 }
